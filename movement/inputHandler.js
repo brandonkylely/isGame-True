@@ -16,18 +16,3 @@ addEventListener("keyup", function(event){
     if (event.code === 'KeyD') {vxr = 0};
 })
 
-addEventListener("keydown", function(event){
-    console.log(event.code)
-    if (event.code === 'KeyW') {vy = -5};
-    if (event.code === 'KeyA') {vx = -5};
-    if (event.code === 'KeyS') {vy = 5};
-    if (event.code === 'KeyD') {vx = 5};
-})
-
-addEventListener("keyup", function(event){
-    console.log(event.code)
-    if (event.code === 'KeyW') {vy = 0};
-    if (event.code === 'KeyA') {vx = 0};
-    if (event.code === 'KeyS') {vy = 0};
-    if (event.code === 'KeyD') {vx = 0};
-})
