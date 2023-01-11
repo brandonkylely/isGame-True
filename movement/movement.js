@@ -16,8 +16,6 @@ let vyd = 0;
 
 function animate(){
     ctx.clearRect(0, 0, canvas3.width, canvas3.height);
-    x += vx;
-    y += vy;
     x += vxl;
     x += vxr;
     y += vyu;
