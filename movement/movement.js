@@ -9,8 +9,6 @@ const canvasheight = canvas3.height = innerHeight;
 
 let x = 0;
 let y = 0;
-// let vx = 0;
-// let vy = 0;
 let vxl = 0;
 let vxr = 0;
 let vyu = 0;
