@@ -10,7 +10,7 @@ const canvasWidth = canvas1.width = innerWidth;
 const canvasHeight = canvas1.height = innerHeight;
 
 const playerSprite = new Image()
-playerSprite.src = 'sheets/redhood-spritesheet.png';
+playerSprite.src = 'redhood-spritesheet.png';
 const spriteWidth = 32;
 const spriteHeight = 32;
 
