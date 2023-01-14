@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3001;
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('index.html'));
+app.use(express.static('public'));
 
 // const subscribersRouter = require('./routes/subscribers')
 // app.use('/subscribers', subscribersRouter)
