@@ -98,19 +98,19 @@ function animate() {
     requestAnimationFrame(animate);
 };
 
-function flipHorizontally(playerSprite, spriteWidth, spriteHeight, x, y){
-    let position = Math.floor(gameFrame/framePersistence) % spriteAnimations[playerState].loc.length;
-    frameX = spriteWidth * position;
-    let frameY = spriteAnimations[playerState].loc[position].y;
+// function flipHorizontally(playerSprite, spriteWidth, spriteHeight, x, y){
+//     let position = Math.floor(gameFrame/framePersistence) % spriteAnimations[playerState].loc.length;
+//     frameX = spriteWidth * position;
+//     let frameY = spriteAnimations[playerState].loc[position].y;
 
-    ctx.translate(x+spriteWidth, y);
+//     ctx.translate(x+spriteWidth, y);
 
-    ctx.scale(-1,1);
+//     ctx.scale(-1,1);
     
-    ctx.drawImage(playerSprite, frameX, frameY, spriteWidth, spriteHeight, x, y, spriteWidth, spriteHeight);
+//     ctx.drawImage(playerSprite, frameX, frameY, spriteWidth, spriteHeight, x, y, spriteWidth, spriteHeight);
     
-    ctx.setTransform(1,0,0,1,0,0);
-}
+//     ctx.setTransform(1,0,0,1,0,0);
+// }
 
 addEventListener("keydown", function(event){
     console.log(event.code)

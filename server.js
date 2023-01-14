@@ -1,13 +1,18 @@
 const express = require('express')
-const app = express()
+// const routes = require('./routes');
+const app = express();
 const sequelize = require('./config/connections');
+const PORT = process.env.PORT || 3001;
 
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('index.html'));
 
-const subscribersRouter = require('./routes/subscribers')
-app.use('/subscribers', subscribersRouter)
+// const subscribersRouter = require('./routes/subscribers')
+// app.use('/subscribers', subscribersRouter)
 
-app.listen(3001, () => console.log('Server Started'))
-
+sequelize.sync().then(() => {
+    app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
+  });
 
