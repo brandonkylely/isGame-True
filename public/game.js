@@ -37,6 +37,7 @@ function preload ()
     this.load.image('ground', 'http://labs.phaser.io/assets/sprites/platform.png');
     this.load.image('star', 'http://labs.phaser.io/assets/sprites/star.png');
     this.load.image('bomb', 'http://labs.phaser.io/assets/sprites/ghost.png');
+    this.load.image('tile1', 'assets/tile1.jpg');
 
     // this.load.image('cavern', 'assets/cavern1.png');
     // this.load.spritesheet('dude', 
@@ -47,6 +48,10 @@ function preload ()
 
 
 var platforms;
+var platforms2;
+var inventory = {
+    starsCollected: 0,
+};
 
 function create ()
 {
@@ -57,12 +62,16 @@ function create ()
     platforms = this.physics.add.staticGroup();
 
     // set scale enlarges the image by X value, refreshBody tells the game to apply static tag to new image
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+    platforms.create(800, 700, 'ground').setScale(4).refreshBody();
 
     // (distance from left, distance from top, image key)
-    platforms.create(600, 400, 'ground');
-    platforms.create(50, 250, 'ground');
-    platforms.create(750, 220, 'ground');
+    // platforms.create(600, 400, 'ground');
+    platforms.create(50, 350, 'ground');
+    platforms.create(750, 320, 'ground');
+    platforms.create(800, 650, 'tile1');
+    platforms.create(600, 650, 'tile1');
+    platforms.create(400, 470, 'tile1');
+    platforms.create(200, 650, 'tile1');
 
     // this.physics.add has dynamic physics by default
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -196,10 +205,11 @@ function create ()
 
         gameOver = true;
     }
-
     // 
     function collectStar (player, star)
     {
+        inventory.starsCollected += 1;
+
         star.disableBody(true, true);
     
         score += 10;
@@ -232,16 +242,28 @@ function update ()
     // player.on('animationstop', cursors.down.isDown)
 
     if (cursors.left.isDown)
-    {
-        player.setVelocityX(-160);
-        player.anims.play('running', true);
-        player.flipX = true;
+    {  
+        if (inventory.starsCollected) {
+            player.setVelocityX(-300);
+            player.anims.play('running', true);
+            player.flipX = true;
+        } else {
+            player.setVelocityX(-160);
+            player.anims.play('walking', true);
+            player.flipX = true;
+        }
     }
     else if (cursors.right.isDown)
     {
-        player.setVelocityX(160);
-        player.anims.play('running', true);
-        player.flipX = false;
+        if (inventory.starsCollected) {
+            player.setVelocityX(300);
+            player.anims.play('running', true);
+            player.flipX = false;
+        } else {
+            player.setVelocityX(160);
+            player.anims.play('walking', true);
+            player.flipX = false;
+        }
     }
     else if (cursors.down.isDown)
     {
