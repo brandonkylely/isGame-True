@@ -29,15 +29,6 @@ function preload() {
   // use to set link prefix to use phaser assets
   // this.load.setBaseURL('http://labs.phaser.io');
 
-
-  this.load.spritesheet('dude',
-    'assets/redhood-spritesheet.png',
-    { frameWidth: 32, frameHeight: 32 }
-  );
-
-  this.load.image('sky', 'assets/background_layer_1.png');
-  this.load.image('ground', 'http://labs.phaser.io/assets/sprites/platform.png');
-=======
   this.load.spritesheet('dude', 'assets/redhood-spritesheet.png', {
     frameWidth: 32,
     frameHeight: 32
