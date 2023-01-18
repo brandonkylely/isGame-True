@@ -48,10 +48,16 @@ function preload ()
 
 
 var platforms;
-var platforms2;
+// mapping wasd
+let keyA;
+let keyD;
+let keyW;
+let keyS;
 var inventory = {
     starsCollected: 0,
+    isSprinting: false,
 };
+console.log(Phaser.Input.Keyboard.KeyCodes)
 
 function create ()
 {
@@ -147,7 +153,7 @@ function create ()
     this.anims.create({
         key: 'attack',
         frames: this.anims.generateFrameNumbers('dude', { start: 64, end: 71 }),
-        frameRate: 10,
+        frameRate: 15,
         repeat: 0,
     });
 
@@ -232,16 +238,25 @@ function create ()
     
         }
     }
+    // mapping wasd controls
+    keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 }
+
+
 
 function update ()
 {
-    cursors = this.input.keyboard.createCursorKeys();
+    // depreciated cursor.left.isDown, etc since wasd is mapped
+    // cursors = this.input.keyboard.createCursorKeys();
 
     // pauses everything on screen when cursor is down
     // player.on('animationstop', cursors.down.isDown)
 
-    if (cursors.left.isDown)
+    if (keyA.isDown)
     {  
         if (inventory.starsCollected) {
             player.setVelocityX(-300);
@@ -253,7 +268,7 @@ function update ()
             player.flipX = true;
         }
     }
-    else if (cursors.right.isDown)
+    else if (keyD.isDown)
     {
         if (inventory.starsCollected) {
             player.setVelocityX(300);
@@ -265,21 +280,25 @@ function update ()
             player.flipX = false;
         }
     }
-    else if (cursors.down.isDown)
+    else if (keyS.isDown)
     {
         // player.anims.play('crouching', true);
         player.anims.play('crouched', true);
 
     }
+    else if (keySpace.isDown)
+    {
+        player.anims.play('attack', true);
+    }
     else
     {
         player.setVelocityX(0);        
-        player.anims.play('idle');
+        player.anims.play('idle', true);
     }
     
-    if (cursors.up.isDown && player.body.touching.down)
+    if (keyW.isDown && player.body.touching.down)
     {
         player.setVelocityY(-330);
-        player.anims.play('jumping');
+        player.anims.play('jumping', true);
     }
 }
