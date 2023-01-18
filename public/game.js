@@ -55,6 +55,7 @@ let keyW;
 let keyS;
 var inventory = {
     starsCollected: 0,
+
     isSprinting: false,
     enemiesDefeated: 0,
     sword: false,

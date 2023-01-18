@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script type = "text/javascript" src = "../public/phaser.min.js"></script>
+    <!-- <script type = "text/javascript" src = "scene1.js"></script>
+    <script type = "text/javascript" src = "scene2.js"></script> -->
+    <script type = "text/javascript" src = "../public/game.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/assets/style.css" />
+    <title>Placeholder Title</title>
+</head>
+
+<body>
+
+    {{#if logged_in}}
+    <nav>
+      <button class="btn" id="logout">logout</button>
+    </nav>
+    {{{ game }}}
+    {{/if}}
+
+  {{#if logged_in}}
+  <script src="/js/logout.js"></script>
+  {{/if}}
+
+</body>
+
+</html>
