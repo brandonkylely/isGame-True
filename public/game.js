@@ -39,6 +39,7 @@ function preload() {
     'ground',
     'http://labs.phaser.io/assets/sprites/platform.png'
   );
+
   this.load.image('star', 'http://labs.phaser.io/assets/sprites/star.png');
   this.load.image('bomb', 'http://labs.phaser.io/assets/sprites/ghost.png');
   this.load.image('tile1', 'assets/tile1.jpg');
@@ -65,7 +66,8 @@ var inventory = {
   lives: 3,
   health: 5,
   stage: 1,
-  difficulty: 1
+  difficulty: 1,
+
 };
 console.log(Phaser.Input.Keyboard.KeyCodes);
 
@@ -188,6 +190,7 @@ function create() {
 
   // checks if there is overlap between stars and player to collect stars
 
+
   function collectStar(player, star) {
     star.disableBody(true, true);
 
@@ -270,6 +273,7 @@ function update() {
 
   this.scene.resume();
 
+
   if (keyA.isDown) {
     if (inventory.starsCollected) {
       player.setVelocityX(-300);
@@ -293,6 +297,7 @@ function update() {
   } else if (keyS.isDown) {
     // player.anims.play('crouching', true);
     player.anims.play('crouched', true);
+
   } else if (keySpace.isDown) {
     player.anims.play('attack', true);
   } else {
@@ -305,3 +310,4 @@ function update() {
     player.anims.play('jumping', true);
   }
 }
+
