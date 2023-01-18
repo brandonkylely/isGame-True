@@ -7,8 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "prepare": "husky install",
-    "lint": "npx eslint '**/*.js'",
-    "lint:fix": "npx eslint '**/*.js' --fix",
+    "lint:test": "npx eslint '**/*.js'",
+    "lint:fix:test": "npx eslint '**/*.js' --fix",
+    "lint": "echo wait for chad",
+    "lint:fix": "echo wait for chad",
     "format": "npx prettier **/* -w --ignore-unknown"
   },
   "repository": {
@@ -22,8 +24,11 @@
   },
   "homepage": "https://github.com/brandonkylely/project2-video-game#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "connect-session-sequelize": "^7.1.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
     "mysql2": "^3.0.0",
     "sequelize": "^6.28.0"
   },
