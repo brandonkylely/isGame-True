@@ -9,8 +9,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// const subscribersRouter = require('./routes/subscribers')
-// app.use('/subscribers', subscribersRouter)
+const subscribersRouter = require('./routes/subscribers')
+app.use('/subscribers', subscribersRouter)
 
 sequelize.sync().then(() => {
     app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
