@@ -56,6 +56,13 @@ let keyS;
 var inventory = {
     starsCollected: 0,
     isSprinting: false,
+    enemiesDefeated: 0,
+    sword: false,
+    lives: 3,
+    health: 5,
+    stage: 1,
+    difficulty: 1,
+
 };
 console.log(Phaser.Input.Keyboard.KeyCodes)
 
@@ -207,7 +214,7 @@ function create ()
 
         player.setTint(0xff0000);
 
-        player.anims.play('turn');
+        player.anims.play('banished');
 
         gameOver = true;
     }
@@ -215,7 +222,7 @@ function create ()
     function collectStar (player, star)
     {
         inventory.starsCollected += 1;
-
+        console.log(inventory.starsCollected);
         star.disableBody(true, true);
     
         score += 10;
@@ -238,12 +245,15 @@ function create ()
     
         }
     }
+
     // mapping wasd controls
     keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 }
 
 
@@ -253,8 +263,16 @@ function update ()
     // depreciated cursor.left.isDown, etc since wasd is mapped
     // cursors = this.input.keyboard.createCursorKeys();
 
-    // pauses everything on screen when cursor is down
-    // player.on('animationstop', cursors.down.isDown)
+    // pauses everything on screen when keyP is down
+    // player.on('animationstop', keyP.isDown)
+
+    // also pauses everything
+    // if (keyP.isDown) {
+    //     this.scene.pause();
+    // }
+
+
+    this.scene.resume();
 
     if (keyA.isDown)
     {  
