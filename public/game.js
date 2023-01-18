@@ -1,5 +1,7 @@
 // http://phaser.io/tutorials/making-your-first-phaser-3-game/part10
 
+
+
 var config = {
   type: Phaser.AUTO,
   // width: 800,
@@ -27,6 +29,7 @@ function preload() {
   // use to set link prefix to use phaser assets
   // this.load.setBaseURL('http://labs.phaser.io');
 
+
   this.load.spritesheet('dude',
     'assets/redhood-spritesheet.png',
     { frameWidth: 32, frameHeight: 32 }
@@ -34,6 +37,18 @@ function preload() {
 
   this.load.image('sky', 'assets/background_layer_1.png');
   this.load.image('ground', 'http://labs.phaser.io/assets/sprites/platform.png');
+=======
+  this.load.spritesheet('dude', 'assets/redhood-spritesheet.png', {
+    frameWidth: 32,
+    frameHeight: 32
+  });
+
+  this.load.image('sky', 'assets/background_layer_1.png');
+  this.load.image(
+    'ground',
+    'http://labs.phaser.io/assets/sprites/platform.png'
+  );
+
   this.load.image('star', 'http://labs.phaser.io/assets/sprites/star.png');
   this.load.image('bomb', 'http://labs.phaser.io/assets/sprites/ghost.png');
   this.load.image('tile1', 'assets/tile1.jpg');
@@ -44,7 +59,6 @@ function preload() {
   // { frameWidth: 32, frameHeight: 48 }
   // );
 }
-
 
 var platforms;
 // mapping wasd
@@ -153,14 +167,14 @@ function create() {
     key: 'defeated',
     frames: this.anims.generateFrameNumbers('dude', { start: 56, end: 63 }),
     frameRate: 10,
-    repeat: 0,
+    repeat: 0
   });
 
   this.anims.create({
     key: 'attack',
     frames: this.anims.generateFrameNumbers('dude', { start: 64, end: 71 }),
     frameRate: 15,
-    repeat: 0,
+    repeat: 0
   });
 
   // adds physics to the player and platforms
@@ -172,32 +186,35 @@ function create() {
     // adds 11 more stars, making 12 stars
     repeat: 8,
     // first star at x:12,y:0, every next star is 70 pixels right\
-    setXY: { x: 12, y: 0, stepX: 70 },
+    setXY: { x: 12, y: 0, stepX: 70 }
   });
 
   stars.children.iterate(function (child) {
     // sets random bounciness for each star
     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-
   });
 
   // adds collision to stars and platforms
   this.physics.add.collider(stars, platforms);
 
   // checks if there is overlap between stars and player to collect stars
-  this.physics.add.overlap(player, stars, collectStar, null, this);
+
 
   function collectStar(player, star) {
     star.disableBody(true, true);
+
+    this.physics.add.overlap(player, stars, collectStar, null, this);
 
     score += 10;
     scoreText.setText('Score: ' + score);
   }
 
-
   var score = 0;
   var scoreText;
-  scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+  scoreText = this.add.text(16, 16, 'score: 0', {
+    fontSize: '32px',
+    fill: '#000'
+  });
 
   // adds enemies
   bombs = this.physics.add.group();
@@ -226,18 +243,18 @@ function create() {
 
     if (stars.countActive(true) === 0) {
       stars.children.iterate(function (child) {
-
         child.enableBody(true, child.x, 0, true, true);
-
       });
 
-      var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+      var x =
+        player.x < 400
+          ? Phaser.Math.Between(400, 800)
+          : Phaser.Math.Between(0, 400);
 
       var bomb = bombs.create(x, 16, 'bomb');
       bomb.setBounce(1);
       bomb.setCollideWorldBounds(true);
       bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-
     }
   }
 
@@ -251,8 +268,6 @@ function create() {
   keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 }
 
-
-
 function update() {
   // depreciated cursor.left.isDown, etc since wasd is mapped
   // cursors = this.input.keyboard.createCursorKeys();
@@ -265,8 +280,8 @@ function update() {
   //     this.scene.pause();
   // }
 
-
   this.scene.resume();
+
 
   if (keyA.isDown) {
     if (inventory.starsCollected) {
@@ -304,3 +319,4 @@ function update() {
     player.anims.play('jumping', true);
   }
 }
+
