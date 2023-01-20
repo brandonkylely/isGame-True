@@ -1,24 +1,22 @@
-INSERT INTO users (username, pass)
-VALUES  ("", "");
+use leaderboards;
 
-INSERT INTO characters (characters, health, inventory)
-VALUES  ("Main", 100, FALSE);
-        ("Secondary", 100, FALSE );
-        ("Leveled Up", 125, TRUE );
+INSERT INTO users
+    (id, username, pass, isLoggedIn, score)
+    
+VALUES
+    (1, 'Chris1', 'ABC1234', TRUE, 5020),
+    (2, 'Brandon', 'ACB1324', FALSE, 5200),
+    (3, 'Mirjana', 'BCA2341', TRUE, 5050),
+    (4, 'Logan', 'CCA2233', FALSE, 5100);
 
-INSERT INTO villains (villain, health, inventory)
-VALUES  ("One", 75, TRUE);
-        ("Two", 100, TRUE );
-        ("Three", 125, TRUE );
-        ("Four", 150, TRUE);
+INSERT INTO game
+    (userID, levels, characters, villains, inventory, startingDifficulty)
+VALUES
+    ('Chris', 2, 1, 2, FALSE, 2);
 
-INSERT INTO inventory (item, damage, equipped)
-VALUES  ("Villain Sword", 10, TRUE);
-        ("Bat", 75, FALSE );
-        ("Sword", 100, FALSE );
-        ("Power-up", 150, FALSE);
-INSERT INTO levels (levels)
-VALUES  (1);
-        (2);
-        (3);
-        (4);
+INSERT INTO gameTag
+    (id, userID, gameID)
+VALUES
+    (1, 'Chris1234', 'chrispoturalski');
+
+
