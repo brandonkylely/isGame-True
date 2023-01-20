@@ -1,8 +1,8 @@
 
-DROP DATABASE IF EXISTS leaderboards;
-CREATE DATABASE leaderboards;
+DROP DATABASE IF EXISTS game_db;
+CREATE DATABASE game_db;
 
-USE leaderboards;
+USE game_db;
 
 CREATE TABLE users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

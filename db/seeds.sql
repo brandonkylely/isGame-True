@@ -1,4 +1,4 @@
-use leaderboards;
+use game_db;
 
 INSERT INTO users
     (id, username, pass, isLoggedIn, score)
