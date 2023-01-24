@@ -1,4 +1,4 @@
-// index.js establishes relationships between the models, 
+// index.js establishes relationships between the models,
 //and also creates the foreign key constraights without explicitly setting them in the Models
 const User = require('./User');
 const Post = require('./Post');

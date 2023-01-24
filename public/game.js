@@ -10,7 +10,7 @@ window.addEventListener('load', () => {
       arcade: {
         debug: true,
         gravity: {
-          y: 300
+          y: 190
         }
       }
     },
@@ -36,6 +36,14 @@ function preload() {
 
   this.cameras.main.setBackgroundColor(0x9900e3);
 
+  this.load.spritesheet('orc', 'assets/orc.png', {
+    frameWidth: 20,
+    frameHeight: 20
+  })
+  this.load.spritesheet('pig', 'assets/pig.png', {
+    frameWidth: 20,
+    frameHeight: 20
+  })
   this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
   this.load.tilemapTiledJSON('map', 'Map1.json');
   this.load.spritesheet('dude', 'assets/redhood-spritesheet.png', {
@@ -80,6 +88,10 @@ function create() {
   //player
 
   player = this.physics.add.sprite(1500, 1000, 'dude').setScale(2);
+  orcs = this.physics.add.group();
+  pigs = this.physics.add.group();
+
+
 
   // bounciness of player of landing after a jump
   player.setBounce(0.2);
@@ -164,9 +176,9 @@ function create() {
   stars = this.physics.add.group({
     key: 'star',
     // adds 11 more stars, making 12 stars
-    repeat: 8,
+    repeat: 0,
     // first star at x:12,y:0, every next star is 70 pixels right\
-    setXY: { x: 12, y: 0, stepX: 70 }
+    setXY: { x: 1500, y: 800, stepX: 70 }
   });
 
   stars.children.iterate(function (child) {
@@ -189,20 +201,23 @@ function create() {
 
   var score = 0;
   var scoreText;
-  scoreText = this.add.text(16, 16, 'score: 0', {
+  scoreText = this.add.text(16, 16, 'Score: 0', {
     fontSize: '32px',
     fill: '#000'
   });
 
   // adds enemies
-  bombs = this.physics.add.group();
+//   bombs = this.physics.add.group();
 
-  this.physics.add.collider(bombs, platforms);
+  this.physics.add.collider(orcs, worldLayer);
+  this.physics.add.collider(orcs, pigs);
+//   this.physics.add.collider(pigs, worldLayer);
 
-  this.physics.add.collider(player, bombs, hitBomb, null, this);
+  this.physics.add.collider(player, orcs, hitByEnemy, null, this);
+  this.physics.add.collider(player, pigs, hitByEnemy, null, this);
 
-  function hitBomb(player, bomb) {
-    this.physics.pause();
+  function hitByEnemy(player, enemy) {
+    // this.physics.pause();
 
     player.setTint(0xff0000);
 
@@ -229,10 +244,14 @@ function create() {
           ? Phaser.Math.Between(400, 800)
           : Phaser.Math.Between(0, 400);
 
-      var bomb = bombs.create(x, 16, 'bomb');
-      bomb.setBounce(1);
-      bomb.setCollideWorldBounds(true);
-      bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      var orc = orcs.create(x, 10, 'orc').setScale(3)
+      orc.setBounce(1);
+      orc.setCollideWorldBounds(true);
+      orc.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      var pig = pigs.create(x, 10, 'pig').setScale(3)
+      pig.setBounce(1);
+      pig.setCollideWorldBounds(true);
+      pig.setVelocity(Phaser.Math.Between(-200, 200), 20);
     }
   }
 

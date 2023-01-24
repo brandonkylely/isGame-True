@@ -38,8 +38,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(routes);
 
-app.listen(PORT, () => {console.log(`http://localhost:${PORT}`);
-sequelize.sync({ force: false });
+app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}`);
+  sequelize.sync({ force: false });
 });
 
 // const path = require('path');
