@@ -10,7 +10,7 @@ window.addEventListener('load', () => {
       arcade: {
         debug: true,
         gravity: {
-          y: 190
+          y: 220
         }
       }
     },
@@ -29,7 +29,9 @@ window.addEventListener('load', () => {
 
   let game = new Phaser.Game(config);
 });
-
+let starLayer;
+let stars;
+let starScore;
 function preload() {
   // use to set link prefix to use phaser assets
   // this.load.setBaseURL('http://labs.phaser.io');
@@ -45,7 +47,8 @@ function preload() {
     frameHeight: 20
   })
   this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
-  this.load.tilemapTiledJSON('map', 'Map1.json');
+  this.load.image('star-image', 'assets/star.png');
+  this.load.tilemapTiledJSON('tileset', 'map-2.json');
   this.load.spritesheet('dude', 'assets/redhood-spritesheet.png', {
     frameWidth: 32,
     frameHeight: 32
@@ -75,12 +78,28 @@ var inventory = {
 console.log(Phaser.Input.Keyboard.KeyCodes);
 
 function create() {
-  const map = this.make.tilemap({ key: 'map' });
-
   this.cursors = this.input.keyboard.createCursorKeys();
-  const tileset = map.addTilesetImage('Main-Tileset', 'tiles');
-//   const backgroundLayer = map.createLayer('Background', tileset, 0, 0);
-  const worldLayer = map.createLayer('World Layer', tileset, 0, 0);
+
+  var map = this.make.tilemap({ key: 'tileset' });
+
+  var tileset = map.addTilesetImage('Main-Tileset', 'tiles');
+  //   const backgroundLayer = map.createLayer('Background', tileset, 0, 0);
+  const worldLayer = map.createStaticLayer('World Layer', tileset, 0, 0);
+  // const itemLayer = map.createStaticLayer('Stars', itemset, 0, 0);
+
+  //star physics
+  starLayer = map.getObjectLayer('Stars')['objects'];
+  stars = this.physics.add.staticGroup();
+
+  starLayer.forEach((object) => {
+    let obj = stars.create(object.x+35, object.y-20, 'star-image');
+    // obj.setScale(object.width / 16, object.height / 16);
+    obj.setOrigin(0.5);
+    obj.body.width = object.width;
+    obj.body.height = object.height;
+  });
+  player = this.physics.add.sprite(1500, 600, 'dude').setScale(2);
+  this.physics.add.overlap(player, stars, collectStar, null, this);
 
   worldLayer.setCollisionByProperty({ Collides: true });
   console.log(worldLayer)
@@ -173,30 +192,31 @@ function create() {
   this.physics.add.collider(player, worldLayer);
 
   // adds stars
-  stars = this.physics.add.group({
-    key: 'star',
-    // adds 11 more stars, making 12 stars
-    repeat: 0,
-    // first star at x:12,y:0, every next star is 70 pixels right\
-    setXY: { x: 1500, y: 800, stepX: 70 }
-  });
+  // stars = this.physics.add.group({
+  //   key: 'star',
+  //   // adds 11 more stars, making 12 stars
+  //   repeat: 8,
+  //   // first star at x:12,y:0, every next star is 70 pixels right\
+  //   setXY: { x: 12, y: 0, stepX: 70 }
+  // });
 
-  stars.children.iterate(function (child) {
-    // sets random bounciness for each star
-    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-  });
+  // stars.children.iterate(function (child) {
+  //   // sets random bounciness for each star
+  //   child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+  // });
 
   // adds collision to stars and platforms
-  this.physics.add.collider(stars, worldLayer);
+  // this.physics.add.collider(stars, worldLayer);
 
   // checks if there is overlap between stars and player to collect stars
   this.physics.add.overlap(player, stars, collectStar, null, this);
 
   function collectStar(player, star) {
     star.disableBody(true, true);
-
+    inventory.starsCollected += 1;
     score += 10;
     scoreText.setText('Score: ' + score);
+    
   }
 
   var score = 0;
@@ -226,23 +246,20 @@ function create() {
     gameOver = true;
   }
   //
-  function collectStar(player, star) {
-    inventory.starsCollected += 1;
-    console.log(inventory.starsCollected);
-    star.disableBody(true, true);
+  // function collectStar(player, star) {
+  //   
+  //   console.log(inventory.starsCollected);
+  //   star.disableBody(true, true);
 
-    score += 10;
-    scoreText.setText('Score: ' + score);
+  //   score += 10;
+  //   scoreText.setText('Score: ' + score);
 
-    if (stars.countActive(true) === 0) {
-      stars.children.iterate(function (child) {
-        child.enableBody(true, child.x, 0, true, true);
-      });
+  //   
 
-      var x =
-        player.x < 400
-          ? Phaser.Math.Between(400, 800)
-          : Phaser.Math.Between(0, 400);
+  //     var x =
+  //       player.x < 400
+  //         ? Phaser.Math.Between(400, 800)
+  //         : Phaser.Math.Between(0, 400);
 
       var orc = orcs.create(x, 10, 'orc').setScale(3)
       orc.setBounce(1);
