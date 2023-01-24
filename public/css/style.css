@@ -1,0 +1,27 @@
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: Andale Mono, monospace;
+    /* color: rgb(135, 102, 102); */
+    margin: 0 0 0.5em 0;
+    padding: 10;
+    color: #000;
+    text-align: center;
+    
+}
+h5 {
+    text-align: center;
+}
+form {
+    margin: 0 auto;
+    width: 22%;
+    padding: 2em;
+    /* border: 1px #CCC; */
+    border-radius: 1em;
+
+}
+
+body {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/7a/Pixel_Art_Background.jpg");
+    background-color: #cccccc;
+   }
