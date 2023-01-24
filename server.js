@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3001;
 // reference: https://www.piesocket.com/blog/nodejs-websocket
 const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ server: 3001 });
+const wss = new WebSocket.Server({ port: 3002 });
 
 // creating connection with websocket
 wss.on("connection", ws => {
