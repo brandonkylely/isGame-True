@@ -8,7 +8,7 @@ window.addEventListener('load', () => {
     physics: {
       default: 'arcade',
       arcade: {
-        debug: true,
+        debug: false  ,
         gravity: {
           y: 220
         }
@@ -40,6 +40,7 @@ function preload() {
 
   this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
   this.load.image('star-image', 'assets/star.png');
+  this.load.image('Background', 'assets/night.png');
   this.load.tilemapTiledJSON('tileset', 'map-2.json');
   this.load.spritesheet('dude', 'assets/redhood-spritesheet.png', {
     frameWidth: 32,
@@ -75,8 +76,12 @@ function create() {
   var map = this.make.tilemap({ key: 'tileset' });
 
   var tileset = map.addTilesetImage('Main-Tileset', 'tiles');
+  var background = map.addTilesetImage('night-bg', 'Background');
   //   const backgroundLayer = map.createLayer('Background', tileset, 0, 0);
-  const worldLayer = map.createStaticLayer('World Layer', tileset, 0, 0);
+  const bgLayer = map.createLayer('Background', background, 0, 0);
+  const worldLayer = map.createLayer('World Layer', tileset, 0, 0);
+  
+  
   // const itemLayer = map.createStaticLayer('Stars', itemset, 0, 0);
 
   //star physics
@@ -95,6 +100,7 @@ function create() {
 
   worldLayer.setCollisionByProperty({ Collides: true });
   console.log(worldLayer);
+  console.log(bgLayer)
 
 
   // bounciness of player of landing after a jump
