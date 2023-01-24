@@ -57,23 +57,15 @@ function preload() {
   this.player;
 }
 
-var platforms;
-// mapping wasd
-let keyA;
-let keyD;
-let keyW;
-let keyS;
-let keyShift;
 var inventory = {
   starsCollected: 0,
-
   isSprinting: false,
   enemiesDefeated: 0,
   sword: false,
   lives: 3,
   health: 5,
-  stage: 1,
-  difficulty: 1
+  // stage: 1,
+  // difficulty: 1
 };
 console.log(Phaser.Input.Keyboard.KeyCodes);
 
@@ -98,7 +90,7 @@ function create() {
     obj.body.width = object.width;
     obj.body.height = object.height;
   });
-  player = this.physics.add.sprite(1500, 600, 'dude').setScale(2);
+  player = this.physics.add.sprite(1500, 1000, 'dude').setScale(2);
   this.physics.add.overlap(player, stars, collectStar, null, this);
 
   worldLayer.setCollisionByProperty({ Collides: true });
@@ -106,14 +98,14 @@ function create() {
   
   //player
 
-  player = this.physics.add.sprite(1500, 1000, 'dude').setScale(2);
+
   orcs = this.physics.add.group();
   pigs = this.physics.add.group();
 
 
 
   // bounciness of player of landing after a jump
-  player.setBounce(0.2);
+  player.setBounce(0.15);
   // player cannot move outside the game dimensions
   player.setCollideWorldBounds(true);
   this.physics.add.collider(player, worldLayer);
@@ -216,6 +208,11 @@ function create() {
     inventory.starsCollected += 1;
     score += 10;
     scoreText.setText('Score: ' + score);
+
+    if (score % 50 === 0) {
+      orcSpawn();
+      pigSpawn()
+    }
     
   }
 
@@ -245,32 +242,22 @@ function create() {
 
     gameOver = true;
   }
-  //
-  // function collectStar(player, star) {
-  //   
-  //   console.log(inventory.starsCollected);
-  //   star.disableBody(true, true);
 
-  //   score += 10;
-  //   scoreText.setText('Score: ' + score);
 
-  //   
-
-  //     var x =
-  //       player.x < 400
-  //         ? Phaser.Math.Between(400, 800)
-  //         : Phaser.Math.Between(0, 400);
-
-//       var orc = orcs.create(x, 10, 'orc').setScale(3)
-//       orc.setBounce(1);
-//       orc.setCollideWorldBounds(true);
-//       orc.setVelocity(Phaser.Math.Between(-200, 200), 20);
-//       var pig = pigs.create(x, 10, 'pig').setScale(3)
-//       pig.setBounce(1);
-//       pig.setCollideWorldBounds(true);
-//       pig.setVelocity(Phaser.Math.Between(-200, 200), 20);
-//     }
-//   }
+function orcSpawn() {
+  let x = player.x < 1750 ? Phaser.Math.Between(1750, 3500) : Phaser.Math.Between(0, 1750);
+  let orc = orcs.create(x, 10, 'orc').setScale(3)
+  orc.setBounce(1);
+  orc.setCollideWorldBounds(true);
+  orc.setVelocity(Phaser.Math.Between(-200, 200), 20);
+}
+function pigSpawn() {
+  let x = player.x < 1750 ? Phaser.Math.Between(1750, 3500) : Phaser.Math.Between(0, 1750);
+  let pig = pigs.create(x, 10, 'pig').setScale(3)
+  pig.setBounce(1);
+  pig.setCollideWorldBounds(true);
+  pig.setVelocity(Phaser.Math.Between(-200, 200), 20);
+}
 
   // mapping wasd controls
   keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -294,7 +281,9 @@ function update() {
   //     this.scene.pause();
   // }
 
-  this.scene.resume();
+  // this.scene.resume();
+
+  // TODO: try switch statement instead of if statement
 
   if (keyA.isDown) {
     if (inventory.starsCollected) {
@@ -318,6 +307,7 @@ function update() {
     }
   } else if (keyS.isDown) {
     // player.anims.play('crouching', true);
+    player.setVelocityY(250);
     player.anims.play('crouched', true);
   } else if (keySpace.isDown) {
     player.anims.play('attack', true);
