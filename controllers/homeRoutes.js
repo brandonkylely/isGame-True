@@ -1,38 +1,34 @@
-
-const router = require("express").Router();
+const router = require('express').Router();
 // const { Post, Comment, User } = require("../models/");
 
-
-router.get("/", async (req, res) => {
-  
-  res.render("login");
+router.get('/', async (req, res) => {
+  res.render('login');
 });
 
-router.get("/game", async (req, res) => {
+router.get('/game', async (req, res) => {
   if (!req.session.loggedIn) {
-    res.redirect("/login");
+    res.redirect('/login');
     return;
   }
-  res.render("game", { layout: "startgame" });
+  console.log('HELLO ')
+  res.render('game', { layout: 'startgame' });
 });
 
-
-
-router.get("/login", (req, res) => {
+router.get('/login', (req, res) => {
   if (req.session.loggedIn) {
-    res.redirect("/");
+    res.redirect('/');
     return;
   }
-  res.render("login");
+  res.render('login');
 });
 
-
-router.get("/signup", (req, res) => {
+router.get('/signup', (req, res) => {
   if (req.session.loggedIn) {
-    res.redirect("/");
+    conole.log('logged in');
+    res.redirect('/');
     return;
   }
-  res.render("signup");
+  res.render('signup');
 });
 
 module.exports = router;
