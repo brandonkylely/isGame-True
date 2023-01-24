@@ -261,16 +261,16 @@ function create() {
   //         ? Phaser.Math.Between(400, 800)
   //         : Phaser.Math.Between(0, 400);
 
-      var orc = orcs.create(x, 10, 'orc').setScale(3)
-      orc.setBounce(1);
-      orc.setCollideWorldBounds(true);
-      orc.setVelocity(Phaser.Math.Between(-200, 200), 20);
-      var pig = pigs.create(x, 10, 'pig').setScale(3)
-      pig.setBounce(1);
-      pig.setCollideWorldBounds(true);
-      pig.setVelocity(Phaser.Math.Between(-200, 200), 20);
-    }
-  }
+//       var orc = orcs.create(x, 10, 'orc').setScale(3)
+//       orc.setBounce(1);
+//       orc.setCollideWorldBounds(true);
+//       orc.setVelocity(Phaser.Math.Between(-200, 200), 20);
+//       var pig = pigs.create(x, 10, 'pig').setScale(3)
+//       pig.setBounce(1);
+//       pig.setCollideWorldBounds(true);
+//       pig.setVelocity(Phaser.Math.Between(-200, 200), 20);
+//     }
+//   }
 
   // mapping wasd controls
   keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
