@@ -1,0 +1,21 @@
+<h2>REGISTER: </h2>
+
+<form id="signup-form" class="card-body" method= "POST" action="/api/user">
+  <div class="form-outline mb-4">
+    <label for="username-input-signup" class="form-label">Username</label>
+    <input name="username" type="text" id="username-input-signup" class="form-control" />
+  </div>
+  
+  <div class="form-outline mb-4">
+    <label for="password-input-signup" class="form-label">Password</label>
+    <input name= "password" type="password" id="password-input-signup" class="form-control" />
+  </div>
+
+  {{!-- <button type="submit" class="btn btn-primary" >Signup!</button> --}}
+  <a type="button" href="/login" class="btn btn-primary"> Signup!</a>
+
+  
+  {{!-- <a type="button" href="/login" class="btn btn-secondary">Now Login</a> --}}
+</form>
+
+{{!-- <script src="/js/signup.js"></script> --}}
