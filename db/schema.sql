@@ -1,42 +1,41 @@
-DROP DATABASE IF EXISTS user_db;
-CREATE DATABASE user_db;
 
-USE user_db;
+DROP DATABASE IF EXISTS leaderboards;
+CREATE DATABASE leaderboards;
+
+USE leaderboards;
 
 CREATE TABLE users (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(30) NOT NULL,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(30) UNIQUE NOT NULL,
     pass VARCHAR(30) NOT NULL,
-)
+    isLoggedIn BOOLEAN,
+    score INT NOT NULL
+);
 
-CREATE TABLE characters (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    characters VARCHAR(30) NOT NULL,
-    health INT,
-    inventory BOOLEAN
-    FOREIGN KEY (inventory)
-    REFERENCES users(id)
-)
+CREATE TABLE game (
+    userID VARCHAR(30) UNIQUE NOT NULL,
+    levels INT NOT NULL,
+    characters INT NOT NULL,
+    villains VARCHAR(30) NOT NULL,
+    inventory BOOLEAN NOT NULL,
+    startingDifficulty INT NOT NULL
+);
 
-CREATE TABLE villains (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    villain VARCHAR(30) NOT NULL,
-    health INT,
-    inventory BOOLEAN,
-    FOREIGN KEY (inventory)
-    REFERENCES levels(id)
-)
+CREATE TABLE gameTag (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    userID VARCHAR(30) NOT NULL,
+    gameID VARCHAR(30) NOT NULL
+);
 
-CREATE TABLE inventory (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    item VARCHAR(30),
-    damage INT,
-    equipped BOOLEAN,
-    FOREIGN KEY (damage)
-    REFERENCES characters(id)
-)
 
-CREATE TABLE levels (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    levels INT
-)
+
+
+
+
+
+
+
+-- CREATE TABLE levels (
+--     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+--     levels INT
+-- )
