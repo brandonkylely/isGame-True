@@ -1,0 +1,20 @@
+{{!-- https://mdbootstrap.com/docs/standard/extended/login/#section-login-register --}}
+<h2>WELCOME TO OUR GAME</h2>
+
+<h5> PLEASE LOGIN: </h3>
+
+<form id="login-form" class="card-body" method="POST" action="/api/user/login">
+  <div class="form-outline mb-4">
+    <label class="form-label" for="loginName">Username</label>
+    <input name="username" type="text" id="loginName" class="form-control"/>
+  </div>
+
+  <div class="form-outline mb-4">
+    <label for="password-input-login" class="form-label">Password</label>
+    <input name="password" type="password" id="loginPassword" class="form-control" />
+  </div>
+
+<button type="submit" class="btn btn-primary">Login!</button>
+  {{!-- <a type="button" href="/game" class="btn btn-primary"> Login</a> --}}
+  <a type="button" href="/signup" class="btn btn-secondary" >Sign up instead</a>
+</form>
