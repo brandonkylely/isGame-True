@@ -1,54 +1,49 @@
 // http://phaser.io/tutorials/making-your-first-phaser-3-game/part10
-
-
-
-var config = {
-  type: Phaser.AUTO,
-  // width: 800,
-  // height: 600,
-  width: 1600,
-  height: innerHeight,
-
-  physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: { y: 300 },
-      debug: false
+window.addEventListener('load', () => {
+  let config = {
+    type: Phaser.AUTO,
+    width: 3500,
+    height: 1400,
+    backgroundColor: 0x9900e3,
+    physics: {
+      default: 'arcade',
+      arcade: {
+        debug: true,
+        gravity: {
+          y: 300
+        }
+      }
+    },
+    scale: {
+      parent: 'thegame',
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    pixleArt: true,
+    scene: {
+      preload: preload,
+      create: create,
+      update: update
     }
-  },
-  scene: {
-    preload: preload,
-    create: create,
-    update: update
-  }
-};
+  };
 
-var game = new Phaser.Game(config);
+  let game = new Phaser.Game(config);
+});
 
 function preload() {
   // use to set link prefix to use phaser assets
   // this.load.setBaseURL('http://labs.phaser.io');
 
+  this.cameras.main.setBackgroundColor(0x9900e3);
+
+  this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
+  this.load.tilemapTiledJSON('map', 'Map1.json');
   this.load.spritesheet('dude', 'assets/redhood-spritesheet.png', {
     frameWidth: 32,
     frameHeight: 32
   });
 
-  this.load.image('sky', 'assets/background_layer_1.png');
-  this.load.image(
-    'ground',
-    'http://labs.phaser.io/assets/sprites/platform.png'
-  );
-
-  this.load.image('star', 'http://labs.phaser.io/assets/sprites/star.png');
-  this.load.image('bomb', 'http://labs.phaser.io/assets/sprites/ghost.png');
-  this.load.image('tile1', 'assets/tile1.jpg');
-
-  // this.load.image('cavern', 'assets/cavern1.png');
-  // this.load.spritesheet('dude',
-  // 'assets/animations/knight.png',
-  // { frameWidth: 32, frameHeight: 48 }
-  // );
+  this.player;
 }
 
 var platforms;
@@ -57,6 +52,7 @@ let keyA;
 let keyD;
 let keyW;
 let keyS;
+let keyShift;
 var inventory = {
   starsCollected: 0,
 
@@ -66,37 +62,30 @@ var inventory = {
   lives: 3,
   health: 5,
   stage: 1,
-  difficulty: 1,
-
+  difficulty: 1
 };
 console.log(Phaser.Input.Keyboard.KeyCodes);
 
 function create() {
-  this.add.image(800, 400, 'sky').setScale(5);
-  // this.add.image(1200, 300, 'sky');
-  // this.add.image(1600, 300, 'sky');
+  const map = this.make.tilemap({ key: 'map' });
 
-  platforms = this.physics.add.staticGroup();
+  this.cursors = this.input.keyboard.createCursorKeys();
+  const tileset = map.addTilesetImage('Main-Tileset', 'tiles');
+//   const backgroundLayer = map.createLayer('Background', tileset, 0, 0);
+  const worldLayer = map.createLayer('World Layer', tileset, 0, 0);
 
-  // set scale enlarges the image by X value, refreshBody tells the game to apply static tag to new image
-  platforms.create(800, 700, 'ground').setScale(4).refreshBody();
+  worldLayer.setCollisionByProperty({ Collides: true });
+  console.log(worldLayer)
+  
+  //player
 
-  // (distance from left, distance from top, image key)
-  // platforms.create(600, 400, 'ground');
-  platforms.create(50, 350, 'ground');
-  platforms.create(750, 320, 'ground');
-  platforms.create(800, 650, 'tile1');
-  platforms.create(600, 650, 'tile1');
-  platforms.create(400, 470, 'tile1');
-  platforms.create(200, 650, 'tile1');
-
-  // this.physics.add has dynamic physics by default
-  player = this.physics.add.sprite(100, 450, 'dude');
+  player = this.physics.add.sprite(1500, 1000, 'dude').setScale(2);
 
   // bounciness of player of landing after a jump
   player.setBounce(0.2);
   // player cannot move outside the game dimensions
   player.setCollideWorldBounds(true);
+  this.physics.add.collider(player, worldLayer);
 
   this.anims.create({
     key: 'idle',
@@ -169,7 +158,7 @@ function create() {
   });
 
   // adds physics to the player and platforms
-  this.physics.add.collider(player, platforms);
+  this.physics.add.collider(player, worldLayer);
 
   // adds stars
   stars = this.physics.add.group({
@@ -186,15 +175,13 @@ function create() {
   });
 
   // adds collision to stars and platforms
-  this.physics.add.collider(stars, platforms);
+  this.physics.add.collider(stars, worldLayer);
 
   // checks if there is overlap between stars and player to collect stars
-
+  this.physics.add.overlap(player, stars, collectStar, null, this);
 
   function collectStar(player, star) {
     star.disableBody(true, true);
-
-    this.physics.add.overlap(player, stars, collectStar, null, this);
 
     score += 10;
     scoreText.setText('Score: ' + score);
@@ -273,7 +260,6 @@ function update() {
 
   this.scene.resume();
 
-
   if (keyA.isDown) {
     if (inventory.starsCollected) {
       player.setVelocityX(-300);
@@ -297,7 +283,6 @@ function update() {
   } else if (keyS.isDown) {
     // player.anims.play('crouching', true);
     player.anims.play('crouched', true);
-
   } else if (keySpace.isDown) {
     player.anims.play('attack', true);
   } else {
@@ -305,9 +290,8 @@ function update() {
     player.anims.play('idle', true);
   }
 
-  if (keyW.isDown && player.body.touching.down) {
+  if (keyW.isDown && player.body.blocked.down) {
     player.setVelocityY(-330);
     player.anims.play('jumping', true);
   }
 }
-
