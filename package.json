@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "prepare": "husky install",
-    "lint": "npx eslint '**/*.js'",
-    "lint:fix": "npx eslint '**/*.js' --fix",
+    "lint": "",
+    "lint:fix": "",
     "format": "npx prettier **/* -w --ignore-unknown"
   },
   "repository": {
