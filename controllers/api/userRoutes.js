@@ -13,9 +13,9 @@ router.post('/', async (req, res) => {
       req.session.userId = newUser.id;
       req.session.username = newUser.username;
       req.session.loggedIn = true;
-
-      res.json(newUser);
     });
+
+    res.redirect('/game');
   } catch (err) {
     res.status(500).json(err);
   }

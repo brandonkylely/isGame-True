@@ -17,7 +17,7 @@ const sess = {
     maxAge: 300000,
     httpOnly: true,
     secure: false,
-    sameSite: 'strict',
+    sameSite: 'strict'
   },
   resave: false,
   saveUninitialized: true,
@@ -38,8 +38,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(routes);
 
-app.listen(PORT, () => {console.log(`http://localhost:${PORT}`);
-sequelize.sync({ force: false });
+app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}/login`);
+  sequelize.sync({ force: false });
 });
 
 // const path = require('path');
@@ -73,9 +74,7 @@ sequelize.sync({ force: false });
 
 // app.use(session(sess));
 
-
 // app.set('view engine', 'handlebars');
-
 
 // app.use(express.json())
 // app.use(express.urlencoded({ extended: true }));
@@ -86,4 +85,3 @@ sequelize.sync({ force: false });
 // sequelize.sync().then(() => {
 //   app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
 // });
-
