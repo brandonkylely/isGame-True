@@ -10,13 +10,13 @@ router.get('/game', async (req, res) => {
     res.redirect('/login');
     return;
   }
-  console.log('HELLO ')
+  console.log('HELLO ');
   res.render('game', { layout: 'startgame' });
 });
 
 router.get('/login', (req, res) => {
   if (req.session.loggedIn) {
-    res.redirect('/');
+    res.redirect('/game');
     return;
   }
   res.render('login');
@@ -24,8 +24,8 @@ router.get('/login', (req, res) => {
 
 router.get('/signup', (req, res) => {
   if (req.session.loggedIn) {
-    conole.log('logged in');
-    res.redirect('/');
+    console.log('logged in');
+    res.redirect('/game');
     return;
   }
   res.render('signup');
