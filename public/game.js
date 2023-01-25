@@ -1,4 +1,5 @@
 // http://phaser.io/tutorials/making-your-first-phaser-3-game/part10
+let game;
 window.addEventListener('load', () => {
   let config = {
     type: Phaser.AUTO,
@@ -8,7 +9,7 @@ window.addEventListener('load', () => {
     physics: {
       default: 'arcade',
       arcade: {
-        debug: false  ,
+        debug: true,
         gravity: {
           y: 220
         }
@@ -20,298 +21,281 @@ window.addEventListener('load', () => {
       autoCenter: Phaser.Scale.CENTER_BOTH
     },
     pixleArt: true,
-    scene: {
-      preload: preload,
-      create: create,
-      update: update
-    }
+    scene: [GameScene]
   };
 
-  let game = new Phaser.Game(config);
+  game = new Phaser.Game(config);
 });
-let starLayer;
-let stars;
-let starScore;
-function preload() {
-  // use to set link prefix to use phaser assets
-  // this.load.setBaseURL('http://labs.phaser.io');
 
-  this.cameras.main.setBackgroundColor(0x9900e3);
+class GameScene extends Phaser.Scene {
+  constructor() {
+    super('gameScene');
+    this.player = undefined;
+    this.cursors = undefined;
+    this.stars = undefined;
+    this.starLayer = undefined;
+    this.inventory = undefined;
+  }
 
-  this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
-  this.load.image('star-image', 'assets/star.png');
-  this.load.image('Background', 'assets/night.png');
-  this.load.tilemapTiledJSON('tileset', 'map-2.json');
-  this.load.spritesheet('dude', 'assets/redhood-spritesheet.png', {
-    frameWidth: 32,
-    frameHeight: 32
-  });
+  preload() {
+    // use to set link prefix to use phaser assets
+    // this.load.setBaseURL('http://labs.phaser.io');
 
-  this.player;
-}
+    this.cameras.main.setBackgroundColor(0x9900e3);
 
-var platforms;
-// mapping wasd
-let keyA;
-let keyD;
-let keyW;
-let keyS;
-let keyShift;
-var inventory = {
-  starsCollected: 0,
+    this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
+    this.load.image('star-image', 'assets/star.png');
+    this.load.image('Background', 'assets/night.png');
+    this.load.tilemapTiledJSON('tileset', 'map-2.json');
+    this.load.spritesheet('dude', 'assets/redhood-spritesheet.png', {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+  }
+  createPlayer() {
+    this.player = this.physics.add.sprite(1500, 600, 'dude').setScale(2);
+    this.player.setCollideWorldBounds(true);
+    this.anims.create({
+      key: 'idle',
+      frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 1 }),
+      frameRate: 8,
+      repeat: -1
+    });
 
-  isSprinting: false,
-  enemiesDefeated: 0,
-  sword: false,
-  lives: 3,
-  health: 5,
-  stage: 1,
-  difficulty: 1
-};
-console.log(Phaser.Input.Keyboard.KeyCodes);
+    this.anims.create({
+      key: 'idle2',
+      frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 9 }),
+      frameRate: 8,
+      repeat: -1
+    });
 
-function create() {
-  this.cursors = this.input.keyboard.createCursorKeys();
+    this.anims.create({
+      key: 'walking',
+      frames: this.anims.generateFrameNumbers('dude', { start: 16, end: 19 }),
+      frameRate: 10,
+      repeat: -1
+    });
 
-  var map = this.make.tilemap({ key: 'tileset' });
+    this.anims.create({
+      key: 'running',
+      frames: this.anims.generateFrameNumbers('dude', { start: 24, end: 31 }),
+      frameRate: 10,
+      repeat: -1
+    });
 
-  var tileset = map.addTilesetImage('Main-Tileset', 'tiles');
-  var background = map.addTilesetImage('night-bg', 'Background');
-  //   const backgroundLayer = map.createLayer('Background', tileset, 0, 0);
-  const bgLayer = map.createLayer('Background', background, 0, 0);
-  const worldLayer = map.createLayer('World Layer', tileset, 0, 0);
-  
-  
-  // const itemLayer = map.createStaticLayer('Stars', itemset, 0, 0);
+    this.anims.create({
+      key: 'crouching',
+      frames: this.anims.generateFrameNumbers('dude', { start: 32, end: 35 }),
+      frameRate: 10,
+      repeat: 0
+    });
 
-  //star physics
-  starLayer = map.getObjectLayer('Stars')['objects'];
-  stars = this.physics.add.staticGroup();
+    this.anims.create({
+      key: 'crouched',
+      frames: [{ key: 'dude', frame: 35 }],
+      frameRate: 10
+    });
 
-  starLayer.forEach((object) => {
-    let obj = stars.create(object.x+35, object.y-20, 'star-image');
-    // obj.setScale(object.width / 16, object.height / 16);
-    obj.setOrigin(0.5);
-    obj.body.width = object.width;
-    obj.body.height = object.height;
-  });
-  player = this.physics.add.sprite(1500, 600, 'dude').setScale(2);
-  this.physics.add.overlap(player, stars, collectStar, null, this);
+    this.anims.create({
+      key: 'jumping',
+      frames: this.anims.generateFrameNumbers('dude', { start: 40, end: 47 }),
+      frameRate: 10,
+      repeat: 0
+    });
 
-  worldLayer.setCollisionByProperty({ Collides: true });
-  console.log(worldLayer);
-  console.log(bgLayer)
+    this.anims.create({
+      key: 'banished',
+      frames: this.anims.generateFrameNumbers('dude', { start: 48, end: 53 }),
+      frameRate: 10,
+      repeat: 0
+    });
 
+    this.anims.create({
+      key: 'defeated',
+      frames: this.anims.generateFrameNumbers('dude', { start: 56, end: 63 }),
+      frameRate: 10,
+      repeat: 0
+    });
 
-  // bounciness of player of landing after a jump
-  player.setBounce(0.2);
-  // player cannot move outside the game dimensions
-  player.setCollideWorldBounds(true);
-  this.physics.add.collider(player, worldLayer);
+    this.anims.create({
+      key: 'attack',
+      frames: this.anims.generateFrameNumbers('dude', { start: 64, end: 71 }),
+      frameRate: 15,
+      repeat: 0
+    });
+  }
+  createMap(){
+    const map = this.make.tilemap({ key: 'tileset' });
 
-  this.anims.create({
-    key: 'idle',
-    frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 1 }),
-    frameRate: 8,
-    repeat: -1
-  });
+    let tileset = map.addTilesetImage('Main-Tileset', 'tiles');
+    let background = map.addTilesetImage('night-bg', 'Background');
 
-  this.anims.create({
-    key: 'idle2',
-    frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 9 }),
-    frameRate: 8,
-    repeat: -1
-  });
+    const bgLayer = map.createLayer('Background', background, 0, 0);
+    const worldLayer = map.createLayer('World Layer', tileset, 0, 0);
+    worldLayer.setCollisionByProperty({ Collides: true });
+    this.starLayer = map.getObjectLayer('Stars')['objects'];
+    this.stars = this.physics.add.staticGroup();
 
-  this.anims.create({
-    key: 'walking',
-    frames: this.anims.generateFrameNumbers('dude', { start: 16, end: 19 }),
-    frameRate: 10,
-    repeat: -1
-  });
+    this.starLayer.forEach((object) => {
+      let obj = this.stars.create(object.x + 35, object.y - 20, 'star-image');
+      // obj.setScale(object.width / 16, object.height / 16);
+      obj.setOrigin(0.5);
+      obj.body.width = object.width;
+      obj.body.height = object.height;
+    });
 
-  this.anims.create({
-    key: 'running',
-    frames: this.anims.generateFrameNumbers('dude', { start: 24, end: 31 }),
-    frameRate: 10,
-    // tells animation to loop
-    repeat: -1
-  });
+    this.inventory = {
+      starsCollected: 0,
 
-  this.anims.create({
-    key: 'crouching',
-    frames: this.anims.generateFrameNumbers('dude', { start: 32, end: 35 }),
-    frameRate: 10,
-    repeat: 0
-  });
+      isSprinting: false,
+      enemiesDefeated: 0,
+      sword: false,
+      lives: 3,
+      health: 5,
+      stage: 1,
+      difficulty: 1
+    };
 
-  this.anims.create({
-    key: 'crouched',
-    frames: [{ key: 'dude', frame: 35 }],
-    frameRate: 10
-  });
+    this.physics.add.overlap(this.player, this.stars, collectStar, null, this);
+    function collectStar(player, star) {
+      this.star.disableBody(true, true);
+      this.inventory.starsCollected += 1;
+      score += 10;
+      scoreText.setText('Score: ' + score);
+    }
+    var score = 0;
+    var scoreText;
+    scoreText = this.add.text(16, 16, 'score: 0', {
+      fontSize: '32px',
+      fill: '#000'
+    });
+    let bombs = this.physics.add.group();
 
-  this.anims.create({
-    key: 'jumping',
-    frames: this.anims.generateFrameNumbers('dude', { start: 40, end: 47 }),
-    frameRate: 10,
-    repeat: 0
-  });
+    // this.physics.add.collider(bombs, platforms);
 
-  this.anims.create({
-    key: 'banished',
-    frames: this.anims.generateFrameNumbers('dude', { start: 48, end: 53 }),
-    frameRate: 10,
-    repeat: 0
-  });
+    this.physics.add.collider(this.player, bombs, hitBomb, null, this);
 
-  this.anims.create({
-    key: 'defeated',
-    frames: this.anims.generateFrameNumbers('dude', { start: 56, end: 63 }),
-    frameRate: 10,
-    repeat: 0
-  });
+    function hitBomb(player, bomb) {
+      this.physics.pause();
 
-  this.anims.create({
-    key: 'attack',
-    frames: this.anims.generateFrameNumbers('dude', { start: 64, end: 71 }),
-    frameRate: 15,
-    repeat: 0
-  });
+      player.setTint(0xff0000);
 
-  // adds physics to the player and platforms
-  this.physics.add.collider(player, worldLayer);
+      player.anims.play('banished');
 
-  // adds stars
-  // stars = this.physics.add.group({
-  //   key: 'star',
-  //   // adds 11 more stars, making 12 stars
-  //   repeat: 8,
-  //   // first star at x:12,y:0, every next star is 70 pixels right\
-  //   setXY: { x: 12, y: 0, stepX: 70 }
-  // });
+      gameOver = true;
+    }
+  }
 
-  // stars.children.iterate(function (child) {
-  //   // sets random bounciness for each star
-  //   child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-  // });
+  create() {
+    this.createPlayer();
+    this.createMap();
+    console.log('anims',this.anims)
 
-  // adds collision to stars and platforms
-  // this.physics.add.collider(stars, worldLayer);
-
-  // checks if there is overlap between stars and player to collect stars
-  this.physics.add.overlap(player, stars, collectStar, null, this);
-
-  function collectStar(player, star) {
-    star.disableBody(true, true);
-    inventory.starsCollected += 1;
-    score += 10;
-    scoreText.setText('Score: ' + score);
+    
+    this.cursors = this.input.keyboard.addKeys('W,S,A,D, SPACE, P, ESC');
+    console.log('logging cursors', this.cursors);
     
   }
 
-  var score = 0;
-  var scoreText;
-  scoreText = this.add.text(16, 16, 'score: 0', {
-    fontSize: '32px',
-    fill: '#000'
-  });
+  update() {
+    // if (keyP.isDown) this.isPause = !this.isPause;
 
-  // adds enemies
-  bombs = this.physics.add.group();
+    // if (this.isPause) return;
+    // depreciated cursor.left.isDown, etc since wasd is mapped
+    // cursors = this.input.keyboard.createCursorKeys();
 
-  this.physics.add.collider(bombs, platforms);
+    // pauses everything on screen when keyP is down
+    // player.on('animationstop', keyP.isDown)
 
-  this.physics.add.collider(player, bombs, hitBomb, null, this);
+    // also pauses everything
+    // if (keyP.isDown) {
+    //     this.scene.pause();
+    // }
 
-  function hitBomb(player, bomb) {
-    this.physics.pause();
+    this.scene.resume();
+    
+    if (this.cursors.A.isDown) {
+      if (inventory.starsCollected) {
+        this.player.setVelocityX(-300);
+        this.player.anims.play('running', true);
+        this.player.flipX = true;
+      } else {
+        this.player.setVelocityX(-160);
+        this.player.anims.play('walking', true);
+        this.player.flipX = true;
+      }
+    } else if (this.cursors.D.isDown) {
+      if (inventory.starsCollected) {
+        this.player.setVelocityX(300);
+        this.player.anims.play('running', true);
+        this.player.flipX = false;
+      } else {
+        this.player.setVelocityX(160);
+        this.player.anims.play('walking', true);
+        this.player.flipX = false;
+      }
+    } else if (this.cursors.S.isDown) {
+      // this.player.anims.play('crouching', true);
+      this.player.anims.play('crouched', true);
+    } else if (this.cursors.SPACE.isDown) {
+      this.player.anims.play('attack', true);
+    } else {
+      this.player.setVelocityX(0);
+      this.player.anims.play('idle', true);
+    }
 
-    player.setTint(0xff0000);
-
-    player.anims.play('banished');
-
-    gameOver = true;
-  }
-  //
-  // function collectStar(player, star) {
-  //   
-  //   console.log(inventory.starsCollected);
-  //   star.disableBody(true, true);
-
-  //   score += 10;
-  //   scoreText.setText('Score: ' + score);
-
-  //   
-
-  //     var x =
-  //       player.x < 400
-  //         ? Phaser.Math.Between(400, 800)
-  //         : Phaser.Math.Between(0, 400);
-
-  //     var bomb = bombs.create(x, 16, 'bomb');
-  //     bomb.setBounce(1);
-  //     bomb.setCollideWorldBounds(true);
-  //     bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+    if (this.cursors.W.isDown && this.player.body.blocked.down) {
+      this.player.setVelocityY(-330);
+      this.player.anims.play('jumping', true);
+    }
+  //   if (Phaser.Input.Keyboard.JustDown(this.cursors.P) && isPaused === false) {
+  //     this.physics.pause();
+  //     isPaused = true;
+  //     console.log('pausing', isPaused);
+  //   } else if (Phaser.Input.Keyboard.JustDown(keyP) && isPaused === true) {
+  //     this.physics.resume();
+  //     isPaused = false;
+  //     console.log('resuming', isPaused);
   //   }
   // }
-
-  // mapping wasd controls
-  keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-  keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-  keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-  keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-  keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-  keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
-  keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+}
 }
 
-function update() {
-  // depreciated cursor.left.isDown, etc since wasd is mapped
-  // cursors = this.input.keyboard.createCursorKeys();
+// // Phaser.Input.Keyboard.JustDown
 
-  // pauses everything on screen when keyP is down
-  // player.on('animationstop', keyP.isDown)
+// //Pause
+// createPauseScreen() {
+//   //transparent veil
+//   this.veil = this.add.graphics({x:0, y:0});
+//   this.veil.fillStyle('0x000000', 0.3);
+//   this.veil.fillRect(0,0, this.CONFIG.width, this.CONFIG.height);
+//   this.veil.setDepth(this.DEPTH.ui);
+//   this.veil.setScrollFactor(0);
+//   //pause text
+//   this.txt_pause = new Text(
+//     this, this.CONFIG.centerX, this.CONFIG.centerY - 32,
+//     'Pause', 'title'
+//   );
+//   this.txt_pause.setDepth(this.DEPTH.ui);
+//   this.txt_pause.setScroll(0);
 
-  // also pauses everything
-  // if (keyP.isDown) {
-  //     this.scene.pause();
-  // }
+//   //hide at start
+//   this.togglePauseScreen(false);
+// }
 
-  this.scene.resume();
+// togglePauseScreen(is_visible) {
+//   this.veil.setVisible(is_visible);
+//   this.txt_pause.setVisible(is_visible);
+// }
+// clickPause() {
+//   if(!this.allow_input) return;
+//   if(this.is_gameover) return;
+//   //Flag
+//   //Toggle Pause Overlay
+//   //
+// }
+// //Scenes
 
-  if (keyA.isDown) {
-    if (inventory.starsCollected) {
-      player.setVelocityX(-300);
-      player.anims.play('running', true);
-      player.flipX = true;
-    } else {
-      player.setVelocityX(-160);
-      player.anims.play('walking', true);
-      player.flipX = true;
-    }
-  } else if (keyD.isDown) {
-    if (inventory.starsCollected) {
-      player.setVelocityX(300);
-      player.anims.play('running', true);
-      player.flipX = false;
-    } else {
-      player.setVelocityX(160);
-      player.anims.play('walking', true);
-      player.flipX = false;
-    }
-  } else if (keyS.isDown) {
-    // player.anims.play('crouching', true);
-    player.anims.play('crouched', true);
-  } else if (keySpace.isDown) {
-    player.anims.play('attack', true);
-  } else {
-    player.setVelocityX(0);
-    player.anims.play('idle', true);
-  }
-
-  if (keyW.isDown && player.body.blocked.down) {
-    player.setVelocityY(-330);
-    player.anims.play('jumping', true);
-  }
-}
+// goMenu () {
+//   this.scene.start('Menu');
+//
