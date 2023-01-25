@@ -58,6 +58,8 @@ function preload() {
   this.player;
 }
 
+let orcGroup = [];
+let pigGroup = [];
 var inventory = {
   starsCollected: 0,
   isSprinting: false,
@@ -71,6 +73,7 @@ var inventory = {
 console.log(Phaser.Input.Keyboard.KeyCodes);
 
 function create() {
+
   this.cursors = this.input.keyboard.createCursorKeys();
 
   var map = this.make.tilemap({ key: 'tileset' });
@@ -215,9 +218,10 @@ function create() {
     score += 10;
     scoreText.setText('Score: ' + score);
 
-    if (score % 50 === 0) {
+
+  if (score % 50 === 0) {
       orcSpawn();
-      pigSpawn()
+      pigSpawn();
     }
     
   }
@@ -250,12 +254,14 @@ function create() {
   }
 
 
+
 function orcSpawn() {
   let x = player.x < 1750 ? Phaser.Math.Between(1750, 3500) : Phaser.Math.Between(0, 1750);
   let orc = orcs.create(x, 10, 'orc').setScale(3)
   orc.setBounce(1);
   orc.setCollideWorldBounds(true);
   orc.setVelocity(Phaser.Math.Between(-200, 200), 20);
+  orcGroup.push(orc);
 }
 function pigSpawn() {
   let x = player.x < 1750 ? Phaser.Math.Between(1750, 3500) : Phaser.Math.Between(0, 1750);
@@ -263,6 +269,7 @@ function pigSpawn() {
   pig.setBounce(1);
   pig.setCollideWorldBounds(true);
   pig.setVelocity(Phaser.Math.Between(-200, 200), 20);
+  pigGroup.push(pig);
 }
 
   // mapping wasd controls
@@ -273,7 +280,9 @@ function pigSpawn() {
   keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
   keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+
 }
+
 
 function update() {
   // depreciated cursor.left.isDown, etc since wasd is mapped
@@ -290,6 +299,7 @@ function update() {
   // this.scene.resume();
 
   // TODO: try switch statement instead of if statement
+
 
   if (keyA.isDown) {
     if (inventory.starsCollected) {
@@ -325,5 +335,25 @@ function update() {
   if (keyW.isDown && player.body.blocked.down) {
     player.setVelocityY(-330);
     player.anims.play('jumping', true);
+    console.log(player.body.velocity.y)
   }
+
+  entityBoost(orcGroup);
+  entityBoost(pigGroup);
+}
+
+function entityBoost(entity) {
+  if (entity.length === 0) {
+    return
+  }
+  // console.log(entity)
+
+  for (let i = 0; i < entity.length; i++){
+
+    if ((entity[i].body.velocity.y === 0) && entity[i].body.blocked.down) {
+      entity[i].setVelocityY(Phaser.Math.Between(-200, -800));
+      entity[i].setVelocityX(Phaser.Math.Between(-300, 300));
+    }
+  }
+  // else return
 }
