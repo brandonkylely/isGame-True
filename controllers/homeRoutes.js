@@ -24,7 +24,7 @@ router.get('/login', (req, res) => {
 
 router.get('/signup', (req, res) => {
   if (req.session.loggedIn) {
-    conole.log('logged in');
+    console.log('logged in');
     res.redirect('/');
     return;
   }

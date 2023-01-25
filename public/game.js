@@ -46,6 +46,7 @@ function preload() {
     frameWidth: 20,
     frameHeight: 20
   })
+  this.load.image('sword', 'assets/sword.png')
   this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
   this.load.image('star-image', 'assets/star.png');
   this.load.image('Background', 'assets/night.png');
@@ -58,6 +59,8 @@ function preload() {
   this.player;
 }
 
+let orcGroup = [];
+let pigGroup = [];
 var inventory = {
   starsCollected: 0,
   isSprinting: false,
@@ -95,7 +98,17 @@ function create() {
     obj.body.width = object.width;
     obj.body.height = object.height;
   });
+
+  // playerContainer = this.add.container(1500, 1000);
   player = this.physics.add.sprite(1500, 1000, 'dude').setScale(2);
+  sword = this.physics.add.staticSprite(1500, 1000, 'sword').setScale(1.5);
+  sword.rotation = 1.5;
+  console.log(sword.body)
+  // sword.body.setDisplaySize(50, 100, player.width, player.height / 2);
+  // playerContainer.add(player);
+  // playerContainer.add(sword);
+
+
   this.physics.add.overlap(player, stars, collectStar, null, this);
 
   worldLayer.setCollisionByProperty({ Collides: true });
@@ -238,6 +251,12 @@ function create() {
 
   this.physics.add.collider(player, orcs, hitByEnemy, null, this);
   this.physics.add.collider(player, pigs, hitByEnemy, null, this);
+  this.physics.add.overlap(sword, orcs);
+  this.physics.add.overlap(sword, pigs);
+
+  function hitEnemy(sword, enemy) {
+    enemy.destroy()
+  }
 
   function hitByEnemy(player, enemy) {
     // this.physics.pause();
@@ -253,14 +272,14 @@ function create() {
 function orcSpawn() {
   let x = player.x < 1750 ? Phaser.Math.Between(1750, 3500) : Phaser.Math.Between(0, 1750);
   let orc = orcs.create(x, 10, 'orc').setScale(3)
-  orc.setBounce(1);
+  orc.setBounce(0);
   orc.setCollideWorldBounds(true);
   orc.setVelocity(Phaser.Math.Between(-200, 200), 20);
 }
 function pigSpawn() {
   let x = player.x < 1750 ? Phaser.Math.Between(1750, 3500) : Phaser.Math.Between(0, 1750);
   let pig = pigs.create(x, 10, 'pig').setScale(3)
-  pig.setBounce(1);
+  pig.setBounce(0.4);
   pig.setCollideWorldBounds(true);
   pig.setVelocity(Phaser.Math.Between(-200, 200), 20);
 }
@@ -326,4 +345,39 @@ function update() {
     player.setVelocityY(-330);
     player.anims.play('jumping', true);
   }
+  if (player.flipX === false) {
+    sword.setX(player.body.center.x + 40)
+    sword.setY(player.body.center.y)
+    sword.rotation = 1.5;
+  } else {
+    sword.setX(player.body.center.x - 40)
+    sword.setY(player.body.center.y)
+    sword.rotation = -1.5;
+  }
+
+  // if ((!player.body.velocity.x === 0) && (!player.body.velocity.y === 0)) {
+  //   sword.setX(player.body.center.x)
+  //   sword.setY(player.body.center.y)
+  //   // sword.body.center.y = player.body.center.y
+  // }
+  if (Phaser.Input.Keyboard.JustDown(keyR)) {
+    console.log(player.body.position)
+    console.log(player.body.center)
+  }
+}
+
+function entityBoost(entity) {
+  if (entity.length === 0) {
+    return
+  }
+  // console.log(entity)
+
+  for (let i = 0; i < entity.length; i++){
+
+    if ((entity[i].body.velocity.y === 0) && entity[i].body.blocked.down) {
+      entity[i].setVelocityY(Phaser.Math.Between(-200, -800));
+      entity[i].setVelocityX(Phaser.Math.Between(-300, 300));
+    }
+  }
+  // else return
 }
