@@ -32,7 +32,7 @@ class GameScene extends Phaser.Scene {
     super('gameScene');
     this.player = undefined;
     this.cursors = undefined;
-    this.stars = undefined;
+    // this.stars = undefined;
     this.starLayer = undefined;
     this.inventory = undefined;
   }
@@ -134,10 +134,10 @@ class GameScene extends Phaser.Scene {
     const worldLayer = map.createLayer('World Layer', tileset, 0, 0);
     worldLayer.setCollisionByProperty({ Collides: true });
     this.starLayer = map.getObjectLayer('Stars')['objects'];
-    this.stars = this.physics.add.staticGroup();
+    const stars = this.physics.add.staticGroup();
 
     this.starLayer.forEach((object) => {
-      let obj = this.stars.create(object.x + 35, object.y - 20, 'star-image');
+      let obj = stars.create(object.x + 35, object.y - 20, 'star-image');
       // obj.setScale(object.width / 16, object.height / 16);
       obj.setOrigin(0.5);
       obj.body.width = object.width;
@@ -155,10 +155,10 @@ class GameScene extends Phaser.Scene {
       stage: 1,
       difficulty: 1
     };
-
-    this.physics.add.overlap(this.player, this.stars, collectStar, null, this);
+    this.physics.add.collider(this.player, worldLayer)
+    this.physics.add.overlap(this.player, stars, collectStar, null, this);
     function collectStar(player, star) {
-      this.star.disableBody(true, true);
+      star.disableBody(true, true);
       this.inventory.starsCollected += 1;
       score += 10;
       scoreText.setText('Score: ' + score);
@@ -215,7 +215,7 @@ class GameScene extends Phaser.Scene {
     this.scene.resume();
     
     if (this.cursors.A.isDown) {
-      if (inventory.starsCollected) {
+      if (this.inventoryy.starsCollected) {
         this.player.setVelocityX(-300);
         this.player.anims.play('running', true);
         this.player.flipX = true;
@@ -225,7 +225,7 @@ class GameScene extends Phaser.Scene {
         this.player.flipX = true;
       }
     } else if (this.cursors.D.isDown) {
-      if (inventory.starsCollected) {
+      if (this.inventoryy.starsCollected) {
         this.player.setVelocityX(300);
         this.player.anims.play('running', true);
         this.player.flipX = false;
