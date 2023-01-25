@@ -1,5 +1,6 @@
 // http://phaser.io/tutorials/making-your-first-phaser-3-game/part10
 let game;
+const DUDE_KEY = 'dude';
 window.addEventListener('load', () => {
   let config = {
     type: Phaser.AUTO,
@@ -47,84 +48,12 @@ class GameScene extends Phaser.Scene {
     this.load.image('star-image', 'assets/star.png');
     this.load.image('Background', 'assets/night.png');
     this.load.tilemapTiledJSON('tileset', 'map-2.json');
-    this.load.spritesheet('dude', 'assets/redhood-spritesheet.png', {
+    this.load.spritesheet(DUDE_KEY, 'assets/redhood-spritesheet.png', {
       frameWidth: 32,
       frameHeight: 32
     });
   }
   createPlayer() {
-    this.player = this.physics.add.sprite(1500, 600, 'dude').setScale(2);
-    this.player.setCollideWorldBounds(true);
-    this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 1 }),
-      frameRate: 8,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'idle2',
-      frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 9 }),
-      frameRate: 8,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'walking',
-      frames: this.anims.generateFrameNumbers('dude', { start: 16, end: 19 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'running',
-      frames: this.anims.generateFrameNumbers('dude', { start: 24, end: 31 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'crouching',
-      frames: this.anims.generateFrameNumbers('dude', { start: 32, end: 35 }),
-      frameRate: 10,
-      repeat: 0
-    });
-
-    this.anims.create({
-      key: 'crouched',
-      frames: [{ key: 'dude', frame: 35 }],
-      frameRate: 10
-    });
-
-    this.anims.create({
-      key: 'jumping',
-      frames: this.anims.generateFrameNumbers('dude', { start: 40, end: 47 }),
-      frameRate: 10,
-      repeat: 0
-    });
-
-    this.anims.create({
-      key: 'banished',
-      frames: this.anims.generateFrameNumbers('dude', { start: 48, end: 53 }),
-      frameRate: 10,
-      repeat: 0
-    });
-
-    this.anims.create({
-      key: 'defeated',
-      frames: this.anims.generateFrameNumbers('dude', { start: 56, end: 63 }),
-      frameRate: 10,
-      repeat: 0
-    });
-
-    this.anims.create({
-      key: 'attack',
-      frames: this.anims.generateFrameNumbers('dude', { start: 64, end: 71 }),
-      frameRate: 15,
-      repeat: 0
-    });
-  }
-  createMap(){
     const map = this.make.tilemap({ key: 'tileset' });
 
     let tileset = map.addTilesetImage('Main-Tileset', 'tiles');
@@ -144,6 +73,79 @@ class GameScene extends Phaser.Scene {
       obj.body.height = object.height;
     });
 
+    
+    this.player = this.physics.add.sprite(1500, 600, DUDE_KEY).setScale(2);
+    this.player.setCollideWorldBounds(true);
+
+    this.anims.create({
+      key: 'idle',
+      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 0, end: 1 }),
+      frameRate: 8,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'idle2',
+      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 8, end: 9 }),
+      frameRate: 8,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'walking',
+      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 16, end: 19 }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'running',
+      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 24, end: 31 }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'crouching',
+      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 32, end: 35 }),
+      frameRate: 10,
+      repeat: 0
+    });
+
+    this.anims.create({
+      key: 'crouched',
+      frames: [{ key: DUDE_KEY, frame: 35 }],
+      frameRate: 10
+    });
+
+    this.anims.create({
+      key: 'jumping',
+      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 40, end: 47 }),
+      frameRate: 10,
+      repeat: 0
+    });
+
+    this.anims.create({
+      key: 'banished',
+      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 48, end: 53 }),
+      frameRate: 10,
+      repeat: 0
+    });
+
+    this.anims.create({
+      key: 'defeated',
+      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 56, end: 63 }),
+      frameRate: 10,
+      repeat: 0
+    });
+
+    this.anims.create({
+      key: 'attack',
+      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 64, end: 71 }),
+      frameRate: 15,
+      repeat: 0
+    });
+
     this.inventory = {
       starsCollected: 0,
 
@@ -155,6 +157,8 @@ class GameScene extends Phaser.Scene {
       stage: 1,
       difficulty: 1
     };
+
+    console.log(this.inventory);
     this.physics.add.collider(this.player, worldLayer)
     this.physics.add.overlap(this.player, stars, collectStar, null, this);
     function collectStar(player, star) {
@@ -171,7 +175,7 @@ class GameScene extends Phaser.Scene {
     });
     let bombs = this.physics.add.group();
 
-    // this.physics.add.collider(bombs, platforms);
+    this.physics.add.collider(bombs, platforms);
 
     this.physics.add.collider(this.player, bombs, hitBomb, null, this);
 
@@ -185,10 +189,12 @@ class GameScene extends Phaser.Scene {
       gameOver = true;
     }
   }
+  
 
   create() {
     this.createPlayer();
-    this.createMap();
+    console.log('inventory 2', this.inventory);
+    
     console.log('anims',this.anims)
 
     
@@ -198,6 +204,7 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
+    // console.log('inventory 3', this.inventory);
     // if (keyP.isDown) this.isPause = !this.isPause;
 
     // if (this.isPause) return;
@@ -212,10 +219,10 @@ class GameScene extends Phaser.Scene {
     //     this.scene.pause();
     // }
 
-    this.scene.resume();
-    
+    // this.scene.resume();
+    //this.inventoryy.starsCollected
     if (this.cursors.A.isDown) {
-      if (this.inventoryy.starsCollected) {
+      if (true) {
         this.player.setVelocityX(-300);
         this.player.anims.play('running', true);
         this.player.flipX = true;
@@ -224,8 +231,9 @@ class GameScene extends Phaser.Scene {
         this.player.anims.play('walking', true);
         this.player.flipX = true;
       }
+      //this.inventoryy.starsCollected
     } else if (this.cursors.D.isDown) {
-      if (this.inventoryy.starsCollected) {
+      if (true) {
         this.player.setVelocityX(300);
         this.player.anims.play('running', true);
         this.player.flipX = false;
@@ -240,7 +248,7 @@ class GameScene extends Phaser.Scene {
     } else if (this.cursors.SPACE.isDown) {
       this.player.anims.play('attack', true);
     } else {
-      this.player.setVelocityX(0);
+      this.player.setVelocityX(0); 
       this.player.anims.play('idle', true);
     }
 
