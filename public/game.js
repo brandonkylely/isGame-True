@@ -346,12 +346,12 @@ function update() {
     player.anims.play('jumping', true);
   }
   if (player.flipX === false) {
-    sword.setX(player.body.center.x + 40)
-    sword.setY(player.body.center.y)
+    sword.setX(player.body.center.x + 30)
+    sword.setY(player.body.center.y + 5)
     sword.rotation = 1.5;
   } else {
-    sword.setX(player.body.center.x - 40)
-    sword.setY(player.body.center.y)
+    sword.setX(player.body.center.x - 30)
+    sword.setY(player.body.center.y + 5)
     sword.rotation = -1.5;
   }
 
