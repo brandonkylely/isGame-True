@@ -26,6 +26,7 @@ router.get('/signup', (req, res) => {
   if (req.session.loggedIn) {
     console.log('logged in');
     res.redirect('/game');
+
     return;
   }
   res.render('signup');
