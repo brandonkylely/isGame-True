@@ -1,0 +1,20 @@
+<h2>GAME OVER!!!</h2>
+
+<div class="leaderboards">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each this}}
+            <tr>
+                <td>{{this.username}}</td>
+                <td>{{this.score}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

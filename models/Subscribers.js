@@ -20,14 +20,6 @@ Subscribers.init(
                 isAlphanumeric: true,
             },
         },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                isEmail: true,
-            },
-        },
         password: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -36,6 +28,12 @@ Subscribers.init(
                 len: [6],
             },
         },
+        score: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+            autoIncrement: true,
+        }
 
     },
     {
