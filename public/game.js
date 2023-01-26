@@ -356,38 +356,32 @@ class GameScene extends Phaser.Scene {
     // this.scene.resume();
     //this.inventoryy.starsCollected
     if (this.cursors.A.isDown) {
-      if (true) {
-        this.player.setVelocityX(-300);
-        this.player.anims.play('running', true);
-        this.player.flipX = true;
-      } else {
-        this.player.setVelocityX(-160);
-        this.player.anims.play('walking', true);
-        this.player.flipX = true;
-      }
+      this.player.setVelocityX(-300);
+      this.player.anims.play('running', true);
+      this.player.flipX = true;
+      } 
       //this.inventoryy.starsCollected
-    } else if (this.cursors.D.isDown) {
-      if (true) {
-        this.player.setVelocityX(300);
-        this.player.anims.play('running', true);
-        this.player.flipX = false;
-      } else {
-        this.player.setVelocityX(160);
-        this.player.anims.play('walking', true);
-        this.player.flipX = false;
-      }
-    } else if (this.cursors.S.isDown) {
+    
+    if (this.cursors.D.isDown) {
+      this.player.setVelocityX(300);
+      this.player.anims.play('running', true);
+      this.player.flipX = false;
+      } 
+
+    if (this.cursors.S.isDown) {
       // this.player.anims.play('crouching', true);
       this.player.anims.play('crouched', true);
-    } else if (this.cursors.W.isDown) {
-      // this.player.anims.play('attack', true);
+    } 
+    if (this.cursors.W.isDown) {
       this.sword.setX(this.player.body.center.x)
       this.sword.setY(this.player.body.center.y - 50)
       this.sword.rotation = 0;
 
       // this.sword.enableBody(true, true);
       // console.log(this.player.body.center)
-    } else {
+    } 
+    
+    if(this.cursors.W.isUp && this.cursors.A.isUp && this.cursors.S.isUp && this.cursors.D.isUp && this.cursors.SPACE.isUp){
       this.player.setVelocityX(0);
       this.player.anims.play('idle', true);
     }
