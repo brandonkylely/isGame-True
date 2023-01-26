@@ -351,7 +351,16 @@ class GameScene extends Phaser.Scene {
     // if (keyP.isDown) {
     //     this.scene.pause();
     // }
-
+    if (this.player.flipX === false) {
+      this.sword.setX(this.player.body.center.x + 30)
+      this.sword.setY(this.player.body.center.y + 5)
+      this.sword.rotation = 1.5;
+    } else {
+      this.sword.setX(this.player.body.center.x - 30)
+      this.sword.setY(this.player.body.center.y + 5)
+      this.sword.rotation = -1.5;
+      this.sword.body.setSize(50, 30, -20, 0);
+    }
     // this.scene.resume();
     //this.inventoryy.starsCollected
     if (this.cursors.A.isDown) {
@@ -379,7 +388,10 @@ class GameScene extends Phaser.Scene {
       // this.player.anims.play('crouching', true);
       this.player.anims.play('crouched', true);
     } else if (this.cursors.SPACE.isDown) {
-      this.player.anims.play('attack', true);
+      // this.player.anims.play('attack', true);
+      this.sword.setX(this.player.body.center.x)
+      this.sword.setY(this.player.body.center.y - 50)
+      this.sword.rotation = 0;
 
       // this.sword.enableBody(true, true);
       // console.log(this.player.body.center)
@@ -393,16 +405,7 @@ class GameScene extends Phaser.Scene {
       this.player.anims.play('jumping', true);
     }
 
-    if (this.player.flipX === false) {
-      this.sword.setX(this.player.body.center.x + 30)
-      this.sword.setY(this.player.body.center.y + 5)
-      this.sword.rotation = 1.5;
-    } else {
-      this.sword.setX(this.player.body.center.x - 30)
-      this.sword.setY(this.player.body.center.y + 5)
-      this.sword.rotation = -1.5;
-      this.sword.body.setSize(50, 30, -20, 0);
-    }
+
 
     // if (this.inventory.hit === true){
     //   console.log(this.inventory.hit);
