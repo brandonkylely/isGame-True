@@ -120,7 +120,7 @@ class GameScene extends Phaser.Scene {
     this.anims.create({
       key: 'banished',
       frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 48, end: 53 }),
-      frameRate: 10,
+      frameRate: 20,
       repeat: 0
     });
 
@@ -162,7 +162,9 @@ class GameScene extends Phaser.Scene {
       enemiesDefeated: 0,
       sword: false,
       lives: 3,
-      health: 5
+      health: 3,
+      hit: false,
+      gameOver: false,
       // stage: 1,
       // difficulty: 1
     };
@@ -196,25 +198,17 @@ class GameScene extends Phaser.Scene {
 
     this.createAnimations();
 
+
     this.inventory = {
       starsCollected: 0,
-
       isSprinting: false,
       enemiesDefeated: 0,
-      sword: false,
+      // sword: false,
       lives: 3,
-      health: 5,
+      health: 3,
       stage: 1,
       difficulty: 1
     };
-
-    function hitByEnemy(player, enemy) {
-      this.player.setTint(0xff0000);
-
-      this.player.anims.play('banished');
-
-      // gameOver = true;
-    }
 
     this.physics.add.collider(this.player, worldLayer);
     this.physics.add.overlap(this.player, stars, collectStar, null, this);
@@ -239,16 +233,63 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.orcs, worldLayer);
     this.physics.add.collider(this.orcs, this.pigs);
 
-    this.physics.add.collider(this.player, this.orcs, hitByEnemy, null, this);
-    this.physics.add.collider(this.player, this.pigs, hitByEnemy, null, this);
+    this.physics.add.collider(this.player, this.orcs, this.hitByEnemy, null, this);
+    this.physics.add.collider(this.player, this.pigs, this.hitByEnemy, null, this);
 
     this.physics.add.overlap(this.sword, this.orcs, this.hitEnemy, null, this);
     this.physics.add.overlap(this.sword, this.pigs, this.hitEnemy, null, this);
 
+    this.physics.add.collider(this.pigs, this.pigs);
+    this.physics.add.collider(this.orcs, this.orcs);
   }
 
   hitEnemy(sword, enemy) {
       enemy.disableBody(true, true);
+      // this.inventory.enemiesDefeated++;
+  }
+
+  hitByEnemy(player, enemy) {
+    // this.player.setTint(0xff0000);
+    if (!this.inventory.hit) {
+      this.inventory.hit = true;
+      this.inventory.health--;
+      console.log(this.inventory.health + ' health')
+      setTimeout(() => {
+        this.inventory.hit = false;
+      }, 500);
+    } else {
+      return
+    }
+
+    if (this.inventory.health === 0) {
+      this.inventory.lives--;
+      this.player.enableBody(true, true);
+      this.inventory.health = 3;
+      console.log(this.inventory.lives + ' lives')
+    }
+
+    if (this.inventory.lives === 0) {
+      this.inventory.gameOver = true;
+      console.log('Game Over :(')
+    }
+
+    // this.inventory.hit = true;
+
+    // this.inventory.lives--;
+
+
+    // this.player.disableBody(false, false);
+
+    // if (this.inventory.lives === 0){
+    //   this.inventory.gameOver = true;
+    // }
+
+    // setTimeout(() => {
+    //   
+    //   console.log(this.inventory.lives)
+    //   this.inventory.hit = false;
+    // }, 1000);
+    
   }
 
   orcSpawn() {
@@ -281,7 +322,13 @@ class GameScene extends Phaser.Scene {
     }
 
     for (let i = 0; i < entity.length; i++){
-  
+      if (entity[i].body.blocked.left) {
+        // entity[i].setVelocityX(500);
+        entity[i].setVelocityY(Phaser.Math.Between(200, 400))
+      }
+      if (entity[i].body.blocked.right) {
+        entity[i].setVelocityY(Phaser.Math.Between(-200, -400))
+      }
       if ((entity[i].body.velocity.y === 0) && entity[i].body.blocked.down) {
         entity[i].setVelocityY(Phaser.Math.Between(-200, -800));
         entity[i].setVelocityX(Phaser.Math.Between(-300, 300));
@@ -356,6 +403,11 @@ class GameScene extends Phaser.Scene {
       this.sword.rotation = -1.5;
       this.sword.body.setSize(50, 30, -20, 0);
     }
+
+    // if (this.inventory.hit === true){
+    //   console.log(this.inventory.hit);
+    //   this.player.anims.play('banished', true)
+    // }
 
     this.entityBoost(orcGroup);
     this.entityBoost(pigGroup);
