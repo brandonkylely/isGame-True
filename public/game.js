@@ -41,6 +41,7 @@ class GameScene extends Phaser.Scene {
     this.orcs = undefined;
     this.pigs = undefined;
     this.sword = undefined;
+    this.flipFlop = true;
   }
 
   preload() {
@@ -156,18 +157,7 @@ class GameScene extends Phaser.Scene {
 
     let tileset = map.addTilesetImage('Main-Tileset', 'tiles');
     let background = map.addTilesetImage('night-bg', 'Background');
-    var inventory = {
-      starsCollected: 0,
-      isSprinting: false,
-      enemiesDefeated: 0,
-      sword: false,
-      lives: 3,
-      health: 3,
-      hit: false,
-      gameOver: false,
-      // stage: 1,
-      // difficulty: 1
-    };
+
     console.log(Phaser.Input.Keyboard.KeyCodes);
 
     const bgLayer = map.createLayer('Background', background, 0, 0);
@@ -207,7 +197,9 @@ class GameScene extends Phaser.Scene {
       lives: 3,
       health: 3,
       stage: 1,
-      difficulty: 1
+      difficulty: 1,
+      hit: false,
+      gameOver: false
     };
 
     this.physics.add.collider(this.player, worldLayer);
@@ -387,7 +379,7 @@ class GameScene extends Phaser.Scene {
     } else if (this.cursors.S.isDown) {
       // this.player.anims.play('crouching', true);
       this.player.anims.play('crouched', true);
-    } else if (this.cursors.SPACE.isDown) {
+    } else if (this.cursors.W.isDown) {
       // this.player.anims.play('attack', true);
       this.sword.setX(this.player.body.center.x)
       this.sword.setY(this.player.body.center.y - 50)
@@ -400,9 +392,26 @@ class GameScene extends Phaser.Scene {
       this.player.anims.play('idle', true);
     }
 
-    if (this.cursors.W.isDown && this.player.body.blocked.down) {
-      this.player.setVelocityY(-330);
-      this.player.anims.play('jumping', true);
+    if(this.player.body.blocked.down) {
+      this.inventory.jumps = 2;
+    }
+
+    if (this.cursors.SPACE.isDown && this.inventory.jumps > 0) {
+      if (this.flipFlop) {
+        this.flipFlop = false;
+        this.player.setVelocityY(-330);
+        this.player.anims.play('jumping', true);
+        this.inventory.jumps--;
+        console.log('flip true, setting to false')
+      }
+    }
+    if (this.cursors.SPACE.isUp && !this.flipFlop) {
+      this.flipFlop = true;
+      console.log('flop false, setting to true')
+    }
+
+    if (this.cursors.S.isDown && !this.player.body.blocked.down) {
+      this.player.setVelocityY(330);
     }
 
 
