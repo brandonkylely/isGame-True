@@ -41,6 +41,7 @@ class GameScene extends Phaser.Scene {
     this.orcs = undefined;
     this.pigs = undefined;
     this.sword = undefined;
+    this.flipFlop = true;
   }
 
   preload() {
@@ -120,7 +121,7 @@ class GameScene extends Phaser.Scene {
     this.anims.create({
       key: 'banished',
       frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 48, end: 53 }),
-      frameRate: 10,
+      frameRate: 20,
       repeat: 0
     });
 
@@ -156,16 +157,7 @@ class GameScene extends Phaser.Scene {
 
     let tileset = map.addTilesetImage('Main-Tileset', 'tiles');
     let background = map.addTilesetImage('night-bg', 'Background');
-    var inventory = {
-      starsCollected: 0,
-      isSprinting: false,
-      enemiesDefeated: 0,
-      sword: false,
-      lives: 3,
-      health: 5
-      // stage: 1,
-      // difficulty: 1
-    };
+
     console.log(Phaser.Input.Keyboard.KeyCodes);
 
     const bgLayer = map.createLayer('Background', background, 0, 0);
@@ -184,32 +176,31 @@ class GameScene extends Phaser.Scene {
 
     this.player = this.physics.add.sprite(1500, 1000, DUDE_KEY).setScale(2);
     this.sword = this.physics.add
-      .staticSprite(1500, 1000, 'sword')
+      .sprite(1500, 1000, 'sword')
       .setScale(1.5);
+    this.sword.body.setSize(50, 30, 0, 0);
     this.sword.rotation = 1.5;
+
+    this.sword.body.setAllowGravity(false);
+    // this.sword.disableBody(true, false);
+
     this.player.setCollideWorldBounds(true);
 
     this.createAnimations();
 
+
     this.inventory = {
       starsCollected: 0,
-
       isSprinting: false,
       enemiesDefeated: 0,
-      sword: false,
+      // sword: false,
       lives: 3,
-      health: 5,
+      health: 3,
       stage: 1,
-      difficulty: 1
+      difficulty: 1,
+      hit: false,
+      gameOver: false
     };
-
-    function hitByEnemy(player, enemy) {
-      this.player.setTint(0xff0000);
-
-      this.player.anims.play('banished');
-
-      // gameOver = true;
-    }
 
     this.physics.add.collider(this.player, worldLayer);
     this.physics.add.overlap(this.player, stars, collectStar, null, this);
@@ -234,16 +225,63 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.orcs, worldLayer);
     this.physics.add.collider(this.orcs, this.pigs);
 
-    this.physics.add.collider(this.player, this.orcs, hitByEnemy, null, this);
-    this.physics.add.collider(this.player, this.pigs, hitByEnemy, null, this);
+    this.physics.add.collider(this.player, this.orcs, this.hitByEnemy, null, this);
+    this.physics.add.collider(this.player, this.pigs, this.hitByEnemy, null, this);
 
-    this.physics.add.overlap(this.sword, this.orcs);
-    this.physics.add.overlap(this.sword, this.pigs);
+    this.physics.add.overlap(this.sword, this.orcs, this.hitEnemy, null, this);
+    this.physics.add.overlap(this.sword, this.pigs, this.hitEnemy, null, this);
 
+    this.physics.add.collider(this.pigs, this.pigs);
+    this.physics.add.collider(this.orcs, this.orcs);
   }
 
   hitEnemy(sword, enemy) {
-    enemy.destroy();
+      enemy.disableBody(true, true);
+      // this.inventory.enemiesDefeated++;
+  }
+
+  hitByEnemy(player, enemy) {
+    // this.player.setTint(0xff0000);
+    if (!this.inventory.hit) {
+      this.inventory.hit = true;
+      this.inventory.health--;
+      console.log(this.inventory.health + ' health')
+      setTimeout(() => {
+        this.inventory.hit = false;
+      }, 500);
+    } else {
+      return
+    }
+
+    if (this.inventory.health === 0) {
+      this.inventory.lives--;
+      this.player.enableBody(true, true);
+      this.inventory.health = 3;
+      console.log(this.inventory.lives + ' lives')
+    }
+
+    if (this.inventory.lives === 0) {
+      this.inventory.gameOver = true;
+      console.log('Game Over :(')
+    }
+
+    // this.inventory.hit = true;
+
+    // this.inventory.lives--;
+
+
+    // this.player.disableBody(false, false);
+
+    // if (this.inventory.lives === 0){
+    //   this.inventory.gameOver = true;
+    // }
+
+    // setTimeout(() => {
+    //   
+    //   console.log(this.inventory.lives)
+    //   this.inventory.hit = false;
+    // }, 1000);
+    
   }
 
   orcSpawn() {
@@ -276,7 +314,13 @@ class GameScene extends Phaser.Scene {
     }
 
     for (let i = 0; i < entity.length; i++){
-  
+      if (entity[i].body.blocked.left) {
+        // entity[i].setVelocityX(500);
+        entity[i].setVelocityY(Phaser.Math.Between(200, 400))
+      }
+      if (entity[i].body.blocked.right) {
+        entity[i].setVelocityY(Phaser.Math.Between(-200, -400))
+      }
       if ((entity[i].body.velocity.y === 0) && entity[i].body.blocked.down) {
         entity[i].setVelocityY(Phaser.Math.Between(-200, -800));
         entity[i].setVelocityX(Phaser.Math.Between(-300, 300));
@@ -299,7 +343,16 @@ class GameScene extends Phaser.Scene {
     // if (keyP.isDown) {
     //     this.scene.pause();
     // }
-
+    if (this.player.flipX === false) {
+      this.sword.setX(this.player.body.center.x + 30)
+      this.sword.setY(this.player.body.center.y + 5)
+      this.sword.rotation = 1.5;
+    } else {
+      this.sword.setX(this.player.body.center.x - 30)
+      this.sword.setY(this.player.body.center.y + 5)
+      this.sword.rotation = -1.5;
+      this.sword.body.setSize(50, 30, -20, 0);
+    }
     // this.scene.resume();
     //this.inventoryy.starsCollected
     if (this.cursors.A.isDown) {
@@ -326,27 +379,47 @@ class GameScene extends Phaser.Scene {
     } else if (this.cursors.S.isDown) {
       // this.player.anims.play('crouching', true);
       this.player.anims.play('crouched', true);
-    } else if (this.cursors.SPACE.isDown) {
-      this.player.anims.play('attack', true);
+    } else if (this.cursors.W.isDown) {
+      // this.player.anims.play('attack', true);
+      this.sword.setX(this.player.body.center.x)
+      this.sword.setY(this.player.body.center.y - 50)
+      this.sword.rotation = 0;
+
+      // this.sword.enableBody(true, true);
+      // console.log(this.player.body.center)
     } else {
       this.player.setVelocityX(0);
       this.player.anims.play('idle', true);
     }
 
-    if (this.cursors.W.isDown && this.player.body.blocked.down) {
-      this.player.setVelocityY(-330);
-      this.player.anims.play('jumping', true);
+    if(this.player.body.blocked.down) {
+      this.inventory.jumps = 2;
     }
 
-    if (this.player.flipX === false) {
-      this.sword.setX(this.player.body.center.x + 30)
-      this.sword.setY(this.player.body.center.y + 5)
-      this.sword.rotation = 1.5;
-    } else {
-      this.sword.setX(this.player.body.center.x - 30)
-      this.sword.setY(this.player.body.center.y + 5)
-      this.sword.rotation = -1.5;
+    if (this.cursors.SPACE.isDown && this.inventory.jumps > 0) {
+      if (this.flipFlop) {
+        this.flipFlop = false;
+        this.player.setVelocityY(-330);
+        this.player.anims.play('jumping', true);
+        this.inventory.jumps--;
+        console.log('flip true, setting to false')
+      }
     }
+    if (this.cursors.SPACE.isUp && !this.flipFlop) {
+      this.flipFlop = true;
+      console.log('flop false, setting to true')
+    }
+
+    if (this.cursors.S.isDown && !this.player.body.blocked.down) {
+      this.player.setVelocityY(330);
+    }
+
+
+
+    // if (this.inventory.hit === true){
+    //   console.log(this.inventory.hit);
+    //   this.player.anims.play('banished', true)
+    // }
 
     this.entityBoost(orcGroup);
     this.entityBoost(pigGroup);
