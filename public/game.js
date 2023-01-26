@@ -184,9 +184,14 @@ class GameScene extends Phaser.Scene {
 
     this.player = this.physics.add.sprite(1500, 1000, DUDE_KEY).setScale(2);
     this.sword = this.physics.add
-      .staticSprite(1500, 1000, 'sword')
+      .sprite(1500, 1000, 'sword')
       .setScale(1.5);
+    this.sword.body.setSize(50, 30, 0, 0);
     this.sword.rotation = 1.5;
+
+    this.sword.body.setAllowGravity(false);
+    // this.sword.disableBody(true, false);
+
     this.player.setCollideWorldBounds(true);
 
     this.createAnimations();
@@ -237,13 +242,13 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player, this.orcs, hitByEnemy, null, this);
     this.physics.add.collider(this.player, this.pigs, hitByEnemy, null, this);
 
-    this.physics.add.overlap(this.sword, this.orcs);
-    this.physics.add.overlap(this.sword, this.pigs);
+    this.physics.add.overlap(this.sword, this.orcs, this.hitEnemy, null, this);
+    this.physics.add.overlap(this.sword, this.pigs, this.hitEnemy, null, this);
 
   }
 
   hitEnemy(sword, enemy) {
-    enemy.destroy();
+      enemy.disableBody(true, true);
   }
 
   orcSpawn() {
@@ -328,6 +333,9 @@ class GameScene extends Phaser.Scene {
       this.player.anims.play('crouched', true);
     } else if (this.cursors.SPACE.isDown) {
       this.player.anims.play('attack', true);
+
+      // this.sword.enableBody(true, true);
+      // console.log(this.player.body.center)
     } else {
       this.player.setVelocityX(0);
       this.player.anims.play('idle', true);
@@ -346,6 +354,7 @@ class GameScene extends Phaser.Scene {
       this.sword.setX(this.player.body.center.x - 30)
       this.sword.setY(this.player.body.center.y + 5)
       this.sword.rotation = -1.5;
+      this.sword.body.setSize(50, 30, -20, 0);
     }
 
     this.entityBoost(orcGroup);
