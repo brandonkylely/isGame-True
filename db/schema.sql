@@ -1,6 +1,5 @@
-
-DROP DATABASE IF EXISTS leaderboards;
-CREATE DATABASE leaderboards;
+DROP DATABASE IF EXISTS videogame_db;
+CREATE DATABASE videogame_db;
 
 -- USE leaderboards;
 
