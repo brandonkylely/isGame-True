@@ -76,6 +76,11 @@ class GameScene1 extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32
     });
+
+    this.load.audio('hitPig', 'assets/sfx/hitPig.wav');
+    this.load.audio('hitPig2', 'assets/sfx/hitPig2.wav');
+    this.load.audio('hitTaken', 'assets/sfx/hitTaken.wav');
+    this.load.audio('star', 'assets/sfx/star.wav');
   }
 
   createAnimations() {
@@ -180,6 +185,10 @@ class GameScene1 extends Phaser.Scene {
 //     this.timeValue++;
 //     this.timerText.setText(`Time: ${this.timeValue}`);
 //     }
+  quietSound(sound) {
+    this.song = this.sound.add(`${sound}`, {volume: 0.2});
+    this.song.play();
+  }
 
   createPlayer() {
     this.orcs = this.physics.add.group();
@@ -236,6 +245,8 @@ class GameScene1 extends Phaser.Scene {
     this.physics.add.collider(this.player, worldLayer);
     this.physics.add.overlap(this.player, stars, collectStar, null, this);
     function collectStar(player, star) {
+      this.quietSound('star')
+      // this.sound.play('star');
       star.disableBody(true, true);
       this.inventory.starsCollected += 1;
       this.score += 10;
@@ -284,10 +295,21 @@ class GameScene1 extends Phaser.Scene {
       enemy.disableBody(true, true);
       this.inventory.enemiesDefeated++;
       this.defeatsText.setText(`Defeats: ${this.inventory.enemiesDefeated}`)
+      
+      let rand = Math.floor(Math.random() * 2);
+      if (rand === 0) {
+        // this.sound.play('hitPig');
+        this.quietSound('hitPig')
+      } else {
+        // this.sound.play('hitPig2');
+        this.quietSound('hitPig2')
+      }
   }
 
   hitByEnemy(player, enemy) {
     // this.player.setTint(0xff0000);
+    // this.sound.play('hitTaken')
+    this.quietSound('hitTaken')
     if (!this.inventory.hit) {
       this.inventory.hit = true;
       this.inventory.health--;
