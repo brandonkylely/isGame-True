@@ -176,10 +176,10 @@ class GameScene1 extends Phaser.Scene {
     // }, this);
   }
 
-  timeUpdate() {
-    this.timeValue++;
-    this.timerText.setText(`Time: ${this.timeValue}`);
-    }
+//   timeUpdate() {
+//     this.timeValue++;
+//     this.timerText.setText(`Time: ${this.timeValue}`);
+//     }
 
   createPlayer() {
     this.orcs = this.physics.add.group();
