@@ -1,7 +1,5 @@
 // http://phaser.io/tutorials/making-your-first-phaser-3-game/part10
 // let game;
-let orcGroup = [];
-let pigGroup = [];
 const DUDE_KEY = 'dude';
 
 // window.addEventListener('load', () => {
@@ -43,7 +41,12 @@ class GameScene1 extends Phaser.Scene {
     this.sword = undefined;
     this.flipFlop = true;
     this.score = 0;
-    this.scoreText = '';
+    this.scoreText;
+    this.healthText;
+    this.livesText;
+    this.defeatsText;
+    this.orcGroup = [];
+    this.pigGroup = [];
   }
 
   preload() {
@@ -153,8 +156,6 @@ class GameScene1 extends Phaser.Scene {
 
     // this.input.on('pointerup', function (pointer) {
     //   this.scene.start('GameScene2');
-    //   orcGroup = [];
-    //   pigGroup = [];
     // }, this);
   }
 
@@ -216,7 +217,7 @@ class GameScene1 extends Phaser.Scene {
       star.disableBody(true, true);
       this.inventory.starsCollected += 1;
       this.score += 10;
-      this.scoreText.setText('Score: ' + this.score);
+      this.scoreText.setText(`Score: ${this.score}`);
       if (this.score % 50 === 0) {
         this.orcSpawn();
         this.pigSpawn();
@@ -225,10 +226,23 @@ class GameScene1 extends Phaser.Scene {
 
     // var score = 0;
     // var scoreText;
-    this.scoreText = this.add.text(16, 16, 'score: 0', {
-      fontSize: '32px',
+    this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
+      fontSize: '40px',
       fill: '#fff',
     });
+    this.healthText = this.add.text(3200, 16, `Health: ${this.inventory.health}`, {
+        fontSize: '40px',
+        fill: '#fff',
+    });
+    this.livesText = this.add.text(3200, 50, `Lives: ${this.inventory.lives}`, {
+        fontSize: '40px',
+        fill: '#fff',
+    });
+    this.defeatsText = this.add.text(3200, 84, `Defeats: ${this.inventory.enemiesDefeated}`, {
+        fontSize: '40px',
+        fill: '#fff',
+    });
+    
 
     this.physics.add.collider(this.orcs, worldLayer);
     this.physics.add.collider(this.orcs, this.pigs);
@@ -246,7 +260,8 @@ class GameScene1 extends Phaser.Scene {
 
   hitEnemy(sword, enemy) {
       enemy.disableBody(true, true);
-      // this.inventory.enemiesDefeated++;
+      this.inventory.enemiesDefeated++;
+      this.defeatsText.setText(`Defeats: ${this.inventory.enemiesDefeated}`)
   }
 
   hitByEnemy(player, enemy) {
@@ -255,6 +270,7 @@ class GameScene1 extends Phaser.Scene {
       this.inventory.hit = true;
       this.inventory.health--;
       console.log(this.inventory.health + ' health')
+      this.healthText.setText(`Health: ${this.inventory.health}`)
       setTimeout(() => {
         this.inventory.hit = false;
       }, 500);
@@ -267,6 +283,8 @@ class GameScene1 extends Phaser.Scene {
       this.player.enableBody(true, true);
       this.inventory.health = 3;
       console.log(this.inventory.lives + ' lives')
+      this.livesText.setText(`Lives: ${this.inventory.lives}`)
+      this.healthText.setText(`Health: ${this.inventory.health}`)
     }
 
     if (this.inventory.lives === 0) {
@@ -302,7 +320,7 @@ class GameScene1 extends Phaser.Scene {
     orc.setBounce(0);
     orc.setCollideWorldBounds(true);
     orc.setVelocity(Phaser.Math.Between(-200, 200), 20);
-    orcGroup.push(orc);
+    this.orcGroup.push(orc);
   }
 
   pigSpawn() {
@@ -314,7 +332,7 @@ class GameScene1 extends Phaser.Scene {
     pig.setBounce(0);
     pig.setCollideWorldBounds(true);
     pig.setVelocity(Phaser.Math.Between(-200, 200), 20);
-    pigGroup.push(pig);
+    this.pigGroup.push(pig);
   }
 
   entityBoost(entity) {
@@ -424,8 +442,8 @@ class GameScene1 extends Phaser.Scene {
     //   this.player.anims.play('banished', true)
     // }
 
-    this.entityBoost(orcGroup);
-    this.entityBoost(pigGroup);
+    this.entityBoost(this.orcGroup);
+    this.entityBoost(this.pigGroup);
     //   if (Phaser.Input.Keyboard.JustDown(this.cursors.P) && isPaused === false) {
     //     this.physics.pause();
     //     isPaused = true;
@@ -437,10 +455,8 @@ class GameScene1 extends Phaser.Scene {
     //   }
     // }
 
-    if (this.score === 100) {
+    if (this.score === 500) {
         this.scene.start('GameScene2');
-        orcGroup = [];
-        pigGroup = [];
     }
   }
 }

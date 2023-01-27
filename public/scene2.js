@@ -1,5 +1,5 @@
 class GameScene2 extends Phaser.Scene {
-    constructor () {
+    constructor() {
         super('GameScene2');
         this.player = undefined;
         this.cursors = undefined;
@@ -9,8 +9,17 @@ class GameScene2 extends Phaser.Scene {
         this.pigs = undefined;
         this.sword = undefined;
         this.flipFlop = true;
-    }
-    preload() {
+        this.score = 0;
+        this.scoreText;
+        this.healthText;
+        this.livesText;
+        this.defeatsText;
+        this.orcGroup = [];
+        this.pigGroup = [];
+      }
+    
+      preload() {
+
         this.load.spritesheet('orc', 'assets/orc.png', {
           frameWidth: 20,
           frameHeight: 20
@@ -147,6 +156,7 @@ class GameScene2 extends Phaser.Scene {
         this.sword.rotation = 1.5;
     
         this.sword.body.setAllowGravity(false);
+        // this.sword.disableBody(true, false);
     
         this.player.setCollideWorldBounds(true);
     
@@ -157,6 +167,7 @@ class GameScene2 extends Phaser.Scene {
           starsCollected: 0,
           isSprinting: false,
           enemiesDefeated: 0,
+          // sword: false,
           lives: 3,
           health: 3,
           stage: 1,
@@ -171,17 +182,32 @@ class GameScene2 extends Phaser.Scene {
           star.disableBody(true, true);
           this.inventory.starsCollected += 1;
           this.score += 10;
-          this.scoreText.setText('Score: ' + this.score);
+          this.scoreText.setText(`Score: ${this.score}`);
           if (this.score % 50 === 0) {
             this.orcSpawn();
             this.pigSpawn();
           }
         }
     
-        this.scoreText = this.add.text(16, 16, 'score: 0', {
-          fontSize: '32px',
+        // var score = 0;
+        // var scoreText;
+        this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
+          fontSize: '40px',
           fill: '#fff',
         });
+        this.healthText = this.add.text(3200, 16, `Health: ${this.inventory.health}`, {
+            fontSize: '40px',
+            fill: '#fff',
+        });
+        this.livesText = this.add.text(3200, 50, `Lives: ${this.inventory.lives}`, {
+            fontSize: '40px',
+            fill: '#fff',
+        });
+        this.defeatsText = this.add.text(3200, 84, `Defeats: ${this.inventory.enemiesDefeated}`, {
+            fontSize: '40px',
+            fill: '#fff',
+        });
+        
     
         this.physics.add.collider(this.orcs, worldLayer);
         this.physics.add.collider(this.orcs, this.pigs);
@@ -199,7 +225,8 @@ class GameScene2 extends Phaser.Scene {
     
       hitEnemy(sword, enemy) {
           enemy.disableBody(true, true);
-          // this.inventory.enemiesDefeated++;
+          this.inventory.enemiesDefeated++;
+          this.defeatsText.setText(`Defeats: ${this.inventory.enemiesDefeated}`)
       }
     
       hitByEnemy(player, enemy) {
@@ -208,6 +235,7 @@ class GameScene2 extends Phaser.Scene {
           this.inventory.hit = true;
           this.inventory.health--;
           console.log(this.inventory.health + ' health')
+          this.healthText.setText(`Health: ${this.inventory.health}`)
           setTimeout(() => {
             this.inventory.hit = false;
           }, 500);
@@ -220,6 +248,8 @@ class GameScene2 extends Phaser.Scene {
           this.player.enableBody(true, true);
           this.inventory.health = 3;
           console.log(this.inventory.lives + ' lives')
+          this.livesText.setText(`Lives: ${this.inventory.lives}`)
+          this.healthText.setText(`Health: ${this.inventory.health}`)
         }
     
         if (this.inventory.lives === 0) {
@@ -238,7 +268,7 @@ class GameScene2 extends Phaser.Scene {
         orc.setBounce(0);
         orc.setCollideWorldBounds(true);
         orc.setVelocity(Phaser.Math.Between(-200, 200), 20);
-        orcGroup.push(orc);
+        this.orcGroup.push(orc);
       }
     
       pigSpawn() {
@@ -250,7 +280,7 @@ class GameScene2 extends Phaser.Scene {
         pig.setBounce(0);
         pig.setCollideWorldBounds(true);
         pig.setVelocity(Phaser.Math.Between(-200, 200), 20);
-        pigGroup.push(pig);
+        this.pigGroup.push(pig);
       }
     
       entityBoost(entity) {
@@ -271,7 +301,6 @@ class GameScene2 extends Phaser.Scene {
             entity[i].setVelocityX(Phaser.Math.Between(-300, 300));
           }
         }
-
       }
       update() {
 
@@ -285,11 +314,13 @@ class GameScene2 extends Phaser.Scene {
           this.sword.rotation = -1.5;
           this.sword.body.setSize(50, 30, -20, 0);
         }
+
         if (this.cursors.A.isDown) {
           this.player.setVelocityX(-300);
           this.player.anims.play('running', true);
           this.player.flipX = true;
           } 
+
         
         if (this.cursors.D.isDown) {
           this.player.setVelocityX(300);
@@ -298,12 +329,15 @@ class GameScene2 extends Phaser.Scene {
           } 
     
         if (this.cursors.S.isDown) {
+          // this.player.anims.play('crouching', true);
           this.player.anims.play('crouched', true);
         } 
         if (this.cursors.W.isDown) {
           this.sword.setX(this.player.body.center.x)
           this.sword.setY(this.player.body.center.y - 50)
           this.sword.rotation = 0;
+    
+
         } 
         
         if(this.cursors.W.isUp && this.cursors.A.isUp && this.cursors.S.isUp && this.cursors.D.isUp && this.cursors.SPACE.isUp){
@@ -332,14 +366,15 @@ class GameScene2 extends Phaser.Scene {
         if (this.cursors.S.isDown && !this.player.body.blocked.down) {
           this.player.setVelocityY(330);
         }
-
-        this.entityBoost(orcGroup);
-        this.entityBoost(pigGroup);
+    
+    
+    
+    
+        this.entityBoost(this.orcGroup);
+        this.entityBoost(this.pigGroup);
 
     //     if (this.score === 500) {
-    //         this.scene.start('GameScene3');
-    //         orcGroup = [];
-    //         pigGroup = [];
+    //         this.scene.start('GameScene2');
     //     }
-      }
+    //   }
     }
