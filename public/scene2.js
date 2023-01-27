@@ -376,5 +376,6 @@ class GameScene2 extends Phaser.Scene {
     //     if (this.score === 500) {
     //         this.scene.start('GameScene2');
     //     }
-    //   }
+    
+      }
     }

@@ -1,6 +1,7 @@
 // http://phaser.io/tutorials/making-your-first-phaser-3-game/part10
 // let game;
 const DUDE_KEY = 'dude';
+let score = 0;
 
 // window.addEventListener('load', () => {
   // let config = {
@@ -40,13 +41,16 @@ class GameScene1 extends Phaser.Scene {
     this.pigs = undefined;
     this.sword = undefined;
     this.flipFlop = true;
-    this.score = 0;
+    this.score = score;
     this.scoreText;
     this.healthText;
     this.livesText;
     this.defeatsText;
     this.orcGroup = [];
     this.pigGroup = [];
+    // this.timeValue = 0;
+    // this.timer;
+    // this.timerText;
   }
 
   preload() {
@@ -154,10 +158,28 @@ class GameScene1 extends Phaser.Scene {
     this.cursors = this.input.keyboard.addKeys('W,S,A,D, SPACE, P, ESC');
     console.log('logging cursors', this.cursors);
 
+
+    // this.timerText = this.add.text(16, 50, `Time: ${this.timeValue}`, {
+    //     fontSize: '40px',
+    //     fill: '#fff',
+    //   });
+
+
+    // this.timer = this.time.addEvent({delay:1000})
+
+    // this.timer = this.time.addEvent({delay:1000, callback: this.timeUpdate(),})
+    
+    //   console.log(this.timer);
+
     // this.input.on('pointerup', function (pointer) {
     //   this.scene.start('GameScene2');
     // }, this);
   }
+
+  timeUpdate() {
+    this.timeValue++;
+    this.timerText.setText(`Time: ${this.timeValue}`);
+    }
 
   createPlayer() {
     this.orcs = this.physics.add.group();
@@ -436,6 +458,7 @@ class GameScene1 extends Phaser.Scene {
     }
 
 
+    // this.timeUpdate();
 
     // if (this.inventory.hit === true){
     //   console.log(this.inventory.hit);
@@ -458,5 +481,6 @@ class GameScene1 extends Phaser.Scene {
     if (this.score === 500) {
         this.scene.start('GameScene2');
     }
+
   }
 }

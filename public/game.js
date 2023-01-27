@@ -1,3 +1,4 @@
+window.addEventListener('load', () => {
 let config = {
   type: Phaser.AUTO,
   width: 3500,
@@ -22,3 +23,4 @@ let config = {
 };
 
 game = new Phaser.Game(config);
+});
