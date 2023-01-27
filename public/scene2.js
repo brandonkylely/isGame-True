@@ -9,17 +9,21 @@ class GameScene2 extends Phaser.Scene {
         this.pigs = undefined;
         this.sword = undefined;
         this.flipFlop = true;
-        this.score = 0;
+        this.score = score;
         this.scoreText;
         this.healthText;
         this.livesText;
         this.defeatsText;
         this.orcGroup = [];
         this.pigGroup = [];
+        // this.timeValue = 0;
+        // this.timer;
+        // this.timerText;
       }
     
       preload() {
-
+        // use to set link prefix to use phaser assets
+        // this.load.setBaseURL('http://labs.phaser.io');
         this.load.spritesheet('orc', 'assets/orc.png', {
           frameWidth: 20,
           frameHeight: 20
@@ -122,7 +126,28 @@ class GameScene2 extends Phaser.Scene {
         this.cursors = this.input.keyboard.addKeys('W,S,A,D, SPACE, P, ESC');
         console.log('logging cursors', this.cursors);
     
+    
+        // this.timerText = this.add.text(16, 50, `Time: ${this.timeValue}`, {
+        //     fontSize: '40px',
+        //     fill: '#fff',
+        //   });
+    
+    
+        // this.timer = this.time.addEvent({delay:1000})
+    
+        // this.timer = this.time.addEvent({delay:1000, callback: this.timeUpdate(),})
+        
+        //   console.log(this.timer);
+    
+        // this.input.on('pointerup', function (pointer) {
+        //   this.scene.start('GameScene2');
+        // }, this);
       }
+    
+    //   timeUpdate() {
+    //     this.timeValue++;
+    //     this.timerText.setText(`Time: ${this.timeValue}`);
+    //     }
     
       createPlayer() {
         this.orcs = this.physics.add.group();
@@ -257,6 +282,23 @@ class GameScene2 extends Phaser.Scene {
           console.log('Game Over :(')
         }
     
+        // this.inventory.hit = true;
+    
+        // this.inventory.lives--;
+    
+    
+        // this.player.disableBody(false, false);
+    
+        // if (this.inventory.lives === 0){
+        //   this.inventory.gameOver = true;
+        // }
+    
+        // setTimeout(() => {
+        //   
+        //   console.log(this.inventory.lives)
+        //   this.inventory.hit = false;
+        // }, 1000);
+        
       }
     
       orcSpawn() {
@@ -301,9 +343,23 @@ class GameScene2 extends Phaser.Scene {
             entity[i].setVelocityX(Phaser.Math.Between(-300, 300));
           }
         }
+        // else return
       }
       update() {
-
+        // console.log('inventory 3', this.inventory);
+        // if (keyP.isDown) this.isPause = !this.isPause;
+    
+        // if (this.isPause) return;
+        // depreciated cursor.left.isDown, etc since wasd is mapped
+        // cursors = this.input.keyboard.createCursorKeys();
+    
+        // pauses everything on screen when keyP is down
+        // player.on('animationstop', keyP.isDown)
+    
+        // also pauses everything
+        // if (keyP.isDown) {
+        //     this.scene.pause();
+        // }
         if (this.player.flipX === false) {
           this.sword.setX(this.player.body.center.x + 30)
           this.sword.setY(this.player.body.center.y + 5)
@@ -314,13 +370,14 @@ class GameScene2 extends Phaser.Scene {
           this.sword.rotation = -1.5;
           this.sword.body.setSize(50, 30, -20, 0);
         }
-
+        // this.scene.resume();
+        //this.inventoryy.starsCollected
         if (this.cursors.A.isDown) {
           this.player.setVelocityX(-300);
           this.player.anims.play('running', true);
           this.player.flipX = true;
           } 
-
+          //this.inventoryy.starsCollected
         
         if (this.cursors.D.isDown) {
           this.player.setVelocityX(300);
@@ -337,7 +394,8 @@ class GameScene2 extends Phaser.Scene {
           this.sword.setY(this.player.body.center.y - 50)
           this.sword.rotation = 0;
     
-
+          // this.sword.enableBody(true, true);
+          // console.log(this.player.body.center)
         } 
         
         if(this.cursors.W.isUp && this.cursors.A.isUp && this.cursors.S.isUp && this.cursors.D.isUp && this.cursors.SPACE.isUp){
@@ -368,14 +426,29 @@ class GameScene2 extends Phaser.Scene {
         }
     
     
+        // this.timeUpdate();
     
+        // if (this.inventory.hit === true){
+        //   console.log(this.inventory.hit);
+        //   this.player.anims.play('banished', true)
+        // }
     
         this.entityBoost(this.orcGroup);
         this.entityBoost(this.pigGroup);
-
-    //     if (this.score === 500) {
-    //         this.scene.start('GameScene2');
-    //     }
+        //   if (Phaser.Input.Keyboard.JustDown(this.cursors.P) && isPaused === false) {
+        //     this.physics.pause();
+        //     isPaused = true;
+        //     console.log('pausing', isPaused);
+        //   } else if (Phaser.Input.Keyboard.JustDown(keyP) && isPaused === true) {
+        //     this.physics.resume();
+        //     isPaused = false;
+        //     console.log('resuming', isPaused);
+        //   }
+        // }
+    
+        // if (this.score === 500) {
+        //     this.scene.start('GameScene2');
+        // }
     
       }
     }
