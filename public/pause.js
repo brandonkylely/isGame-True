@@ -3,6 +3,7 @@ class PauseScene extends Phaser.Scene {
         super('PauseScene');
         this.cursors = undefined;
         this.pauseText;
+        this.pauseOverlay;
     };
     preload() {
 
@@ -11,7 +12,10 @@ class PauseScene extends Phaser.Scene {
         this.cursors = this.input.keyboard.addKeys('W,S,A,D, SPACE, P, ESC');
         console.log('logging cursors', this.cursors);
 
-        this.pauseText = this.add.text(1650, 700, `Paused`, {
+        this.pauseOverlay = this.add.rectangle(1750, 850, 3500, 1700, 0x000000);
+        this.pauseOverlay.alpha = 0.3;
+
+        this.pauseText = this.add.text(1550, 700, `Paused :)`, {
             fontSize: '60px',
             fill: '#fff',
           });
