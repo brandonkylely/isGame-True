@@ -24,7 +24,7 @@ let config = {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
   pixleArt: true,
-  scene: [GameScene1, GameScene2]
+  scene: [GameScene1, PauseScene, GameScene2]
 };
 
 game = new Phaser.Game(config);

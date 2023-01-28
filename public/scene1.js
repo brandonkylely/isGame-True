@@ -414,6 +414,12 @@ class GameScene1 extends Phaser.Scene {
     // if (keyP.isDown) {
     //     this.scene.pause();
     // }
+
+    if (this.cursors.P.isDown) {
+      this.scene.launch('PauseScene');
+      this.scene.pause('GameScene1')
+      } 
+
     if (this.player.flipX === false) {
       this.sword.setX(this.player.body.center.x + 30)
       this.sword.setY(this.player.body.center.y + 5)
