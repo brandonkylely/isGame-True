@@ -66,6 +66,41 @@
         }, 
         {
          "draworder":"topdown",
+         "id":11,
+         "name":"Door",
+         "objects":[
+                {
+                 "class":"",
+                 "gid":46,
+                 "height":70,
+                 "id":86,
+                 "name":"",
+                 "rotation":0,
+                 "visible":true,
+                 "width":70,
+                 "x":3360,
+                 "y":770
+                }, 
+                {
+                 "class":"",
+                 "gid":58,
+                 "height":70,
+                 "id":87,
+                 "name":"",
+                 "rotation":0,
+                 "visible":true,
+                 "width":70,
+                 "x":3360,
+                 "y":840
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":7,
          "name":"Stars",
          "objects":[
@@ -1090,8 +1125,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":11,
- "nextobjectid":86,
+ "nextlayerid":12,
+ "nextobjectid":88,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",
