@@ -11,7 +11,7 @@ class MusicScene extends Phaser.Scene {
     };
 
     quietSound(sound) {
-        this.song = this.sound.add(`${sound}`, {volume: 0.2});
+        this.song = this.sound.add(`${sound}`, {volume: 0.2, loop: true});
         this.song.play();
       }
 

@@ -393,8 +393,8 @@ class GameScene1 extends Phaser.Scene {
         entity[i].setVelocityY(Phaser.Math.Between(-200, -400))
       }
       if ((entity[i].body.velocity.y === 0) && entity[i].body.blocked.down) {
-        entity[i].setVelocityY(Phaser.Math.Between(-200, -800));
-        entity[i].setVelocityX(Phaser.Math.Between(-300, 300));
+        entity[i].setVelocityY(Phaser.Math.Between(-200, -1000));
+        entity[i].setVelocityX(Phaser.Math.Between(-500, 500));
       }
     }
     // else return
