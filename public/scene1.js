@@ -48,6 +48,7 @@ class GameScene1 extends Phaser.Scene {
     this.defeatsText;
     this.orcGroup = [];
     this.pigGroup = [];
+    this.totalStars = 0;
     // this.timeValue = 0;
     // this.timer;
     // this.timerText;
@@ -204,7 +205,9 @@ class GameScene1 extends Phaser.Scene {
     const worldLayer = map.createLayer('World Layer', tileset, 0, 0);
     worldLayer.setCollisionByProperty({ Collides: true });
     this.starLayer = map.getObjectLayer('Stars')['objects'];
+    this.doorLayer = map.getObjectLayer('Door')['objects'];
     const stars = this.physics.add.staticGroup();
+    const doors = this.physics.add.staticGroup();
 
     this.starLayer.forEach((object) => {
       let obj = stars.create(object.x + 35, object.y - 20, 'star-image');
@@ -212,7 +215,16 @@ class GameScene1 extends Phaser.Scene {
       obj.setOrigin(0.5);
       obj.body.width = object.width;
       obj.body.height = object.height;
+      this.totalStars += 1;
     });
+
+    this.doorLayer.forEach((object) => {
+      let obj = doors.create(object.x + 15, object.y -25);
+      obj.setOrigin(0.4, 1);
+      obj.body.width = object.width;
+      obj.body.height = object.height;
+      obj.alpha = 0;
+    })
 
     this.player = this.physics.add.sprite(1500, 1000, DUDE_KEY).setScale(2);
     this.sword = this.physics.add
@@ -244,6 +256,7 @@ class GameScene1 extends Phaser.Scene {
 
     this.physics.add.collider(this.player, worldLayer);
     this.physics.add.overlap(this.player, stars, collectStar, null, this);
+    this.physics.add.overlap(this.player, doors, nextLevel, null, this);
     function collectStar(player, star) {
       this.quietSound('star')
       // this.sound.play('star');
@@ -254,6 +267,12 @@ class GameScene1 extends Phaser.Scene {
       if (this.score % 50 === 0) {
         this.orcSpawn();
         this.pigSpawn();
+      }
+    }
+    function nextLevel(player, door) {
+      if (this.inventory.starsCollected >= this.totalStars) {
+        this.scene.start('GameScene2');
+        this.scene.stop('GameScene1');
       }
     }
 
@@ -509,11 +528,6 @@ class GameScene1 extends Phaser.Scene {
     //     console.log('resuming', isPaused);
     //   }
     // }
-
-    if (this.score === 1000) {
-        this.scene.start('GameScene2');
-        this.scene.stop('GameScene1')
-    }
 
   }
 }
