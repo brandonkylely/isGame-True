@@ -12,7 +12,7 @@ let config = {
   physics: {
     default: 'arcade',
     arcade: {
-      debug: true,
+      debug: false,
       gravity: {
         y: 220
       }
@@ -24,7 +24,7 @@ let config = {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
   pixleArt: true,
-  scene: [GameScene1, PauseScene, GameScene2]
+  scene: [StartScene, GameScene1, PauseScene, GameScene2]
 };
 
 game = new Phaser.Game(config);
