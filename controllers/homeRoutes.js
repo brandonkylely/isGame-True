@@ -33,17 +33,23 @@ router.get('/signup', (req, res) => {
 router.get('/scores', async (req, res) => {
 try {
     const scoreData = await Score.findAll({
-      // attributes: {},
-      include: [{ model: User }],
+      include: [{ model: User, attributes: ['username']}],
+      attributes: {
+        exclude: ['userId', 'id']
+    },
       order: [['scoreValue', 'DESC']],
     });
 
-    const allScores = scoreData.map((allScores) => allScores.get({ plain: true }));
 
-    res.render('leaderboard', allScores );
+
+    const allScores = scoreData.map((scores) => scores.get({ plain: true }));
+    res.status(200).json(allScores);
+    // res.render('leaderboard', allScores );
   } catch (err) {
     res.status(500).json(err);
   }
 });
+
+'SELECT score(quantity) AS total_in_section, MAX(quantity) AS max_quantity, MIN(quantity) AS min_quantity, AVG(quantity) AS avg_quantity FROM favorite_books GROUP BY section'
 
 module.exports = router;
