@@ -10,7 +10,6 @@ router.get('/game', async (req, res) => {
     res.redirect('/login');
     return;
   }
-  console.log('HELLO ');
   res.render('startgame');
 });
 
@@ -24,57 +23,24 @@ router.get('/login', (req, res) => {
 
 router.get('/signup', (req, res) => {
   if (req.session.loggedIn) {
-    console.log('logged in');
+    // console.log('logged in');
     res.redirect('/game');
-
     return;
   }
   res.render('signup');
 });
 
-// router.get('/scores', async (req, res) => {
-// try {
-//     const scoreData = await User.findAll({
-//       include: [
-//         {
-//           model: Score,
-//           attributes: ['scoreValue'],
-//         },
-//       ],
-//     });
-
-
-
-//     res.render('leaderboard', scoreValue );
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
-
 router.get('/scores', async (req, res) => {
-  try {
+try {
     const scoreData = await Score.findAll({
-      include: {model: User},
-      attributes: {
-        include: [
-          [
-            sequelize.literal(
-              '(SELECT max(scoreValue) FROM score)'
-            ),
-            'highScore',
-          ],
-        ],
-      },
+      // attributes: {},
+      include: [{ model: User }],
+      order: [['scoreValue', 'DESC']],
     });
 
-    if (!scoreData) {
-      res.status(404).json({ message: 'No score found.' });
-      return;
-    }
-    const highscore = scoreData.map((scoreValue) => scoreValue.get({ plain: true }));
+    const allScores = scoreData.map((allScores) => allScores.get({ plain: true }));
 
-
-    res.render('leaderboard', {highscore} );
+    res.render('leaderboard', allScores );
   } catch (err) {
     res.status(500).json(err);
   }

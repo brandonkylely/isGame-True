@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Score } = require('../../models');
+const { Score, User } = require('../../models');
 
 router.post('/', async (req, res) => {
     try {
@@ -14,7 +14,33 @@ router.post('/', async (req, res) => {
     }
   });
 
+router.post('/submit', async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        id: req.body.userId
+      }
+    });
 
+    if (!user) {
+      res.redirect('/game');
+      return;
+    }
+
+    const score = await Score.create({
+        scoreValue: req.body.scoreValue
+      });
+
+    req.session.save(() => {
+        req.session.scoreValue = score.scoreValue;
+  })
+
+
+      res.redirect('/score');
+  } catch (err) {
+    res.status(400).json({ message: 'No user account found!' });
+  }
+});
 
 
 

@@ -4,6 +4,12 @@
     font-family: Andale Mono, monospace;
 }
 
+#submitScore {
+    float: left;
+    margin-right: 20px;
+    font-family: Andale Mono, monospace;
+}
+
 h2 {
     font-size: 2.7rem;
     font-weight: bold;
