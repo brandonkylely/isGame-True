@@ -7,12 +7,16 @@
     {{/if}}
 </div> --}}
 
+ <script>
+ console.log(JSON.stringify(allScores));
+ </script>
+
  {{#if allScores}}
 <h3 id="leaderboardheader">global leaderboard!</h3>
 
 <ul id="leaderboardlist"></ul>
-{{#each allScores}}
-<li id="leaderboarditem">{{allScores}}</li>
+{{#each allScores as |score|}}
+<li id="leaderboarditem">{{score.user.username}}: {{score.scoreValue}}</li>
 {{/each}}
 </ul>
 {{else}}
