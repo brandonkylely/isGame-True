@@ -278,7 +278,7 @@ class GameScene1 extends Phaser.Scene {
     
 
     this.physics.add.collider(this.orcs, worldLayer);
-    this.physics.add.collider(this.orcs, this.pigs);
+    // this.physics.add.collider(this.orcs, this.pigs);
 
     this.physics.add.collider(this.player, this.orcs, this.hitByEnemy, null, this);
     this.physics.add.collider(this.player, this.pigs, this.hitByEnemy, null, this);
@@ -358,8 +358,8 @@ class GameScene1 extends Phaser.Scene {
   orcSpawn() {
     let x =
       this.player.x < 1750
-        ? Phaser.Math.Between(1750, 3500)
-        : Phaser.Math.Between(0, 1750);
+        ? Phaser.Math.Between(1750, 3300)
+        : Phaser.Math.Between(200, 1750);
     let orc = this.orcs.create(x, 10, 'orc').setScale(3);
     orc.setBounce(0);
     orc.setCollideWorldBounds(true);
@@ -370,8 +370,8 @@ class GameScene1 extends Phaser.Scene {
   pigSpawn() {
     let x =
       this.player.x < 1750
-        ? Phaser.Math.Between(1750, 3500)
-        : Phaser.Math.Between(0, 1750);
+        ? Phaser.Math.Between(1750, 3300)
+        : Phaser.Math.Between(200, 1750);
     let pig = this.pigs.create(x, 10, 'pig').setScale(3);
     pig.setBounce(0);
     pig.setCollideWorldBounds(true);
@@ -393,8 +393,12 @@ class GameScene1 extends Phaser.Scene {
         entity[i].setVelocityY(Phaser.Math.Between(-200, -400))
       }
       if ((entity[i].body.velocity.y === 0) && entity[i].body.blocked.down) {
-        entity[i].setVelocityY(Phaser.Math.Between(-200, -1000));
-        entity[i].setVelocityX(Phaser.Math.Between(-500, 500));
+        if (this.player.body.center.x > entity[i].body.center.x){
+        entity[i].setVelocityX(Phaser.Math.Between(200, 500));
+      } else {
+        entity[i].setVelocityX(Phaser.Math.Between(-200, -500));
+      }
+      entity[i].setVelocityY(Phaser.Math.Between(-200, -1000));
       }
     }
     // else return
@@ -506,7 +510,7 @@ class GameScene1 extends Phaser.Scene {
     //   }
     // }
 
-    if (this.score === 600) {
+    if (this.score === 1000) {
         this.scene.start('GameScene2');
         this.scene.stop('GameScene1')
     }

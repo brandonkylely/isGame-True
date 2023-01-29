@@ -246,7 +246,7 @@ class GameScene2 extends Phaser.Scene {
     
 
     this.physics.add.collider(this.orcs, worldLayer);
-    this.physics.add.collider(this.orcs, this.pigs);
+    // this.physics.add.collider(this.orcs, this.pigs);
 
     this.physics.add.collider(this.player, this.orcs, this.hitByEnemy, null, this);
     this.physics.add.collider(this.player, this.pigs, this.hitByEnemy, null, this);
