@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { User, Score } = require('../models');
 
 router.get('/', async (req, res) => {
   res.render('login');
@@ -10,7 +11,7 @@ router.get('/game', async (req, res) => {
     return;
   }
   console.log('HELLO ');
-  res.render('game', { layout: 'startgame' });
+  res.render('startgame');
 });
 
 router.get('/login', (req, res) => {
@@ -29,6 +30,25 @@ router.get('/signup', (req, res) => {
     return;
   }
   res.render('signup');
+});
+
+router.get('/scores', async (req, res) => {
+try {
+    const scoreData = await User.findAll({
+      include: [
+        {
+          model: Score,
+          attributes: ['scoreValue'],
+        },
+      ],
+    });
+
+    const score = scoreData.map((scoreValue) => scoreValue.get({ plain: true }));
+
+    res.render('leaderboard', );
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;

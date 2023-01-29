@@ -14,10 +14,35 @@ router.post('/', async (req, res) => {
     }
   });
 
-// router.get('/', async (req, res) => {
+router.get('/id', async (req, res) => {
+    try {
+      const scoreData = await Score.findAll(req.params.id, {
+        include: {model: Score},
+        attributes: {
+          include: [
+            [
+              sequelize.literal(
+                '(SELECT max(scoreValue) FROM score)'
+              ),
+              'highScore',
+            ],
+          ],
+        },
+      });
+  
+      if (!scoreData) {
+        res.status(404).json({ message: 'No score found.' });
+        return;
+      }
+  
+      res.status(200).json(scoreData);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
 
 
-// })
+
 
 // db.query('SELECT score(quantity) AS total_in_section, MAX(quantity) AS max_quantity, MIN(quantity) AS min_quantity, AVG(quantity) AS avg_quantity FROM favorite_books GROUP BY section', function (err, results) {
 //     console.log(results);

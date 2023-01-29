@@ -13,5 +13,5 @@ User.hasMany(Score, {
 
 //exports all 3 models as a module
 module.exports = {
-  User
+  User, Score
 };
