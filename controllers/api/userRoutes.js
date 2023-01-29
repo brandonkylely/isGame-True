@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { User } = require('../../models');
+// const score = require('../../public/scene1');
 
 // POST /api/users is a registration route for creating a new user
 router.post('/', async (req, res) => {
@@ -9,12 +10,6 @@ router.post('/', async (req, res) => {
       username: req.body.username,
       password: req.body.password
     });
-    // res.status(200).json(newUser);
-    // req.session.save(() => {
-    //   req.session.userId = newUser.id;
-    //   req.session.username = newUser.username;
-    //   req.session.loggedIn = true;
-    // });
     //need to only be redirecting, not also rendering, that was the bug
     res.redirect('/game');
   } catch (err) {
@@ -22,6 +17,13 @@ router.post('/', async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+// router.post('/game', async (req, res) => {
+//   console.log(req.body);
+//   try {
+//     await score.update
+//   }
+// });
 
 // POST /api/users/login is a login route for an existing user
 router.post('/login', async (req, res) => {
