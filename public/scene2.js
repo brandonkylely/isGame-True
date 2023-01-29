@@ -254,8 +254,8 @@ class GameScene2 extends Phaser.Scene {
     this.physics.add.overlap(this.sword, this.orcs, this.hitEnemy, null, this);
     this.physics.add.overlap(this.sword, this.pigs, this.hitEnemy, null, this);
 
-    this.physics.add.collider(this.pigs, this.pigs);
-    this.physics.add.collider(this.orcs, this.orcs);
+    // this.physics.add.collider(this.pigs, this.pigs);
+    // this.physics.add.collider(this.orcs, this.orcs);
 
   }
 
