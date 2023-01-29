@@ -154,7 +154,7 @@ class GameScene2 extends Phaser.Scene {
 //     this.timerText.setText(`Time: ${this.timeValue}`);
 //     }
   quietSound(sound) {
-    this.song = this.sound.add(`${sound}`, {volume: 0.2});
+    this.song = this.sound.add(`${sound}`, {volume: 0.05});
     this.song.play();
   }
 
@@ -246,7 +246,7 @@ class GameScene2 extends Phaser.Scene {
     
 
     this.physics.add.collider(this.orcs, worldLayer);
-    // this.physics.add.collider(this.orcs, this.pigs);
+    this.physics.add.collider(this.orcs, this.pigs);
 
     this.physics.add.collider(this.player, this.orcs, this.hitByEnemy, null, this);
     this.physics.add.collider(this.player, this.pigs, this.hitByEnemy, null, this);
@@ -254,8 +254,8 @@ class GameScene2 extends Phaser.Scene {
     this.physics.add.overlap(this.sword, this.orcs, this.hitEnemy, null, this);
     this.physics.add.overlap(this.sword, this.pigs, this.hitEnemy, null, this);
 
-    // this.physics.add.collider(this.pigs, this.pigs);
-    // this.physics.add.collider(this.orcs, this.orcs);
+    this.physics.add.collider(this.pigs, this.pigs);
+    this.physics.add.collider(this.orcs, this.orcs);
 
   }
 
