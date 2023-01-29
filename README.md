@@ -33,5 +33,11 @@ Thank you to our instructor Chad and our TA Nick for constant help
 ## License
 no license currently
 
+## Visuals
+![login-screenshot](./images/Screen%20Shot%202023-01-28%20at%2010.56.06%20PM.png)
+![signup-screenshot](./images/Screen%20Shot%202023-01-28%20at%2010.56.17%20PM.png)
+![game-screenshot](./images/Screen%20Shot%202023-01-28%20at%2010.56.39%20PM.png)
+
 ## Deployed Application
 [link-to-webgame]https://isgame-true.herokuapp.com/
+
