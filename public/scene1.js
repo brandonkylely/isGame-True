@@ -1,33 +1,34 @@
 // http://phaser.io/tutorials/making-your-first-phaser-3-game/part10
 // let game;
+
 const DUDE_KEY = 'dude';
-let score = 0;
+// let score = 0;
 
 // window.addEventListener('load', () => {
-  // let config = {
-  //   type: Phaser.AUTO,
-  //   width: 3500,
-  //   height: 1400,
-  //   backgroundColor: 0x9900e3,
-  //   physics: {
-  //     default: 'arcade',
-  //     arcade: {
-  //       debug: true,
-  //       gravity: {
-  //         y: 220
-  //       }
-  //     }
-  //   },
-  //   scale: {
-  //     parent: 'thegame',
-  //     mode: Phaser.Scale.FIT,
-  //     autoCenter: Phaser.Scale.CENTER_BOTH
-  //   },
-  //   pixleArt: true,
-  //   scene: [GameScene1, GameScene2]
-  // };
+// let config = {
+//   type: Phaser.AUTO,
+//   width: 3500,
+//   height: 1400,
+//   backgroundColor: 0x9900e3,
+//   physics: {
+//     default: 'arcade',
+//     arcade: {
+//       debug: true,
+//       gravity: {
+//         y: 220
+//       }
+//     }
+//   },
+//   scale: {
+//     parent: 'thegame',
+//     mode: Phaser.Scale.FIT,
+//     autoCenter: Phaser.Scale.CENTER_BOTH
+//   },
+//   pixleArt: true,
+//   scene: [GameScene1, GameScene2]
+// };
 
-  // game = new Phaser.Game(config);
+// game = new Phaser.Game(config);
 // });
 
 class GameScene1 extends Phaser.Scene {
@@ -41,7 +42,7 @@ class GameScene1 extends Phaser.Scene {
     this.pigs = undefined;
     this.sword = undefined;
     this.flipFlop = true;
-    this.score = score;
+    this.score = 0;
     this.scoreText;
     this.healthText;
     this.livesText;
@@ -164,30 +165,31 @@ class GameScene1 extends Phaser.Scene {
     this.cursors = this.input.keyboard.addKeys('W,S,A,D, SPACE, P, ESC');
     console.log('logging cursors', this.cursors);
 
-
     // this.timerText = this.add.text(16, 50, `Time: ${this.timeValue}`, {
     //     fontSize: '40px',
     //     fill: '#fff',
     //   });
 
-
     // this.timer = this.time.addEvent({delay:1000})
 
     // this.timer = this.time.addEvent({delay:1000, callback: this.timeUpdate(),})
-    
+
     //   console.log(this.timer);
 
     // this.input.on('pointerup', function (pointer) {
     //   this.scene.start('GameScene2');
     // }, this);
+    this.cameras.main.setBounds(0, 0, 3500, 1400);
+    this.cameras.main.setViewport(0, 0, 3500, 1400);
+    this.cameras.main.startFollow(this.player);
   }
 
-//   timeUpdate() {
-//     this.timeValue++;
-//     this.timerText.setText(`Time: ${this.timeValue}`);
-//     }
+  //   timeUpdate() {
+  //     this.timeValue++;
+  //     this.timerText.setText(`Time: ${this.timeValue}`);
+  //     }
   quietSound(sound) {
-    this.song = this.sound.add(`${sound}`, {volume: 0.05});
+    this.song = this.sound.add(`${sound}`, { volume: 0.05 });
     this.song.play();
   }
 
@@ -217,19 +219,18 @@ class GameScene1 extends Phaser.Scene {
       obj.body.height = object.height;
       this.totalStars += 1;
     });
-
-    this.doorLayer.forEach((object) => {
-      let obj = doors.create(object.x + 15, object.y -25);
+    console.log(this.doorLayer);
+    function makeDoor(doorTile) {
+      let obj = doors.create(doorTile.x + 15, doorTile.y - 25);
       obj.setOrigin(0.4, 1);
-      obj.body.width = object.width;
-      obj.body.height = object.height;
+      obj.body.width = doorTile.width;
+      obj.body.height = doorTile.height;
       obj.alpha = 0;
-    })
+    }
+    makeDoor(this.doorLayer[0]);
 
     this.player = this.physics.add.sprite(1500, 1000, DUDE_KEY).setScale(2);
-    this.sword = this.physics.add
-      .sprite(1500, 1000, 'sword')
-      .setScale(1.5);
+    this.sword = this.physics.add.sprite(1500, 1000, 'sword').setScale(1.5);
     this.sword.body.setSize(50, 30, 0, 0);
     this.sword.rotation = 1.5;
 
@@ -239,7 +240,6 @@ class GameScene1 extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
 
     this.createAnimations();
-
 
     this.inventory = {
       starsCollected: 0,
@@ -258,7 +258,7 @@ class GameScene1 extends Phaser.Scene {
     this.physics.add.overlap(this.player, stars, collectStar, null, this);
     this.physics.add.overlap(this.player, doors, nextLevel, null, this);
     function collectStar(player, star) {
-      this.quietSound('star')
+      this.quietSound('star');
       // this.sound.play('star');
       star.disableBody(true, true);
       this.inventory.starsCollected += 1;
@@ -269,9 +269,23 @@ class GameScene1 extends Phaser.Scene {
         this.pigSpawn();
       }
     }
+
     function nextLevel(player, door) {
-      if (this.inventory.starsCollected >= this.totalStars) {
-        this.scene.start('GameScene2');
+      if (this.inventory.starsCollected >= this.totalStars - 80) {
+        //score multiplier formula
+        console.log('before change', this.score);
+        this.score =
+          this.score +
+          this.score * this.inventory.lives +
+          (this.score * this.inventory.health) / 4;
+        console.log('after change', this.score);
+        this.score = Math.floor(this.score / 10) * 10;
+        console.log('after round', this.score);
+        this.scene.start('GameScene2', {
+          score: this.score,
+          difficulty: this.difficulty,
+          kills: this.inventory.enemiesDefeated
+        });
         this.scene.stop('GameScene1');
       }
     }
@@ -280,85 +294,104 @@ class GameScene1 extends Phaser.Scene {
     // var scoreText;
     this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
       fontSize: '40px',
-      fill: '#fff',
+      fill: '#fff'
     });
-    this.healthText = this.add.text(3200, 16, `Health: ${this.inventory.health}`, {
+    this.healthText = this.add.text(
+      3200,
+      16,
+      `Health: ${this.inventory.health}`,
+      {
         fontSize: '40px',
-        fill: '#fff',
-    });
+        fill: '#fff'
+      }
+    );
     this.livesText = this.add.text(3200, 50, `Lives: ${this.inventory.lives}`, {
-        fontSize: '40px',
-        fill: '#fff',
+      fontSize: '40px',
+      fill: '#fff'
     });
-    this.defeatsText = this.add.text(3200, 84, `Defeats: ${this.inventory.enemiesDefeated}`, {
+    this.defeatsText = this.add.text(
+      3200,
+      84,
+      `Defeats: ${this.inventory.enemiesDefeated}`,
+      {
         fontSize: '40px',
-        fill: '#fff',
-    });
-    
+        fill: '#fff'
+      }
+    );
 
     this.physics.add.collider(this.orcs, worldLayer);
     this.physics.add.collider(this.orcs, this.pigs);
 
-    this.physics.add.collider(this.player, this.orcs, this.hitByEnemy, null, this);
-    this.physics.add.collider(this.player, this.pigs, this.hitByEnemy, null, this);
+    this.physics.add.collider(
+      this.player,
+      this.orcs,
+      this.hitByEnemy,
+      null,
+      this
+    );
+    this.physics.add.collider(
+      this.player,
+      this.pigs,
+      this.hitByEnemy,
+      null,
+      this
+    );
 
     this.physics.add.overlap(this.sword, this.orcs, this.hitEnemy, null, this);
     this.physics.add.overlap(this.sword, this.pigs, this.hitEnemy, null, this);
 
     this.physics.add.collider(this.pigs, this.pigs);
     this.physics.add.collider(this.orcs, this.orcs);
-
   }
 
   hitEnemy(sword, enemy) {
-      enemy.disableBody(true, true);
-      this.inventory.enemiesDefeated++;
-      this.defeatsText.setText(`Defeats: ${this.inventory.enemiesDefeated}`)
-      
-      let rand = Math.floor(Math.random() * 2);
-      if (rand === 0) {
-        // this.sound.play('hitPig');
-        this.quietSound('hitPig')
-      } else {
-        // this.sound.play('hitPig2');
-        this.quietSound('hitPig2')
-      }
+    enemy.disableBody(true, true);
+    this.inventory.enemiesDefeated++;
+    this.defeatsText.setText(`Defeats: ${this.inventory.enemiesDefeated}`);
+
+    let rand = Math.floor(Math.random() * 2);
+    if (rand === 0) {
+      // this.sound.play('hitPig');
+      this.quietSound('hitPig');
+    } else {
+      // this.sound.play('hitPig2');
+      this.quietSound('hitPig2');
+    }
   }
 
   hitByEnemy(player, enemy) {
     // this.player.setTint(0xff0000);
     // this.sound.play('hitTaken')
     if (!this.inventory.hit) {
-      this.quietSound('hitTaken')
+      this.quietSound('hitTaken');
       this.inventory.hit = true;
       this.inventory.health--;
-      console.log(this.inventory.health + ' health')
-      this.healthText.setText(`Health: ${this.inventory.health}`)
+      console.log(this.inventory.health + ' health');
+      this.healthText.setText(`Health: ${this.inventory.health}`);
       setTimeout(() => {
         this.inventory.hit = false;
       }, 500);
     } else {
-      return
+      return;
     }
 
     if (this.inventory.health === 0) {
       this.inventory.lives--;
       this.player.enableBody(true, true);
       this.inventory.health = 3;
-      console.log(this.inventory.lives + ' lives')
-      this.livesText.setText(`Lives: ${this.inventory.lives}`)
-      this.healthText.setText(`Health: ${this.inventory.health}`)
+      console.log(this.inventory.lives + ' lives');
+      this.livesText.setText(`Lives: ${this.inventory.lives}`);
+      this.healthText.setText(`Health: ${this.inventory.health}`);
     }
 
     if (this.inventory.lives === 0) {
       this.inventory.gameOver = true;
-      console.log('Game Over :(')
+      console.log('Game Over :(');
     }
 
     // this.inventory.hit = true;
 
     // this.inventory.lives--;
-
 
     // this.player.disableBody(false, false);
 
@@ -367,11 +400,10 @@ class GameScene1 extends Phaser.Scene {
     // }
 
     // setTimeout(() => {
-    //   
+    //
     //   console.log(this.inventory.lives)
     //   this.inventory.hit = false;
     // }, 1000);
-    
   }
 
   orcSpawn() {
@@ -400,24 +432,24 @@ class GameScene1 extends Phaser.Scene {
 
   entityBoost(entity) {
     if (entity.length === 0) {
-      return
+      return;
     }
 
-    for (let i = 0; i < entity.length; i++){
+    for (let i = 0; i < entity.length; i++) {
       if (entity[i].body.blocked.left) {
         // entity[i].setVelocityX(500);
-        entity[i].setVelocityY(Phaser.Math.Between(200, 400))
+        entity[i].setVelocityY(Phaser.Math.Between(200, 400));
       }
       if (entity[i].body.blocked.right) {
-        entity[i].setVelocityY(Phaser.Math.Between(-200, -400))
+        entity[i].setVelocityY(Phaser.Math.Between(-200, -400));
       }
-      if ((entity[i].body.velocity.y === 0) && entity[i].body.blocked.down) {
-        if (this.player.body.center.x > entity[i].body.center.x){
-        entity[i].setVelocityX(Phaser.Math.Between(200, 500));
-      } else {
-        entity[i].setVelocityX(Phaser.Math.Between(-200, -500));
-      }
-      entity[i].setVelocityY(Phaser.Math.Between(-200, -1000));
+      if (entity[i].body.velocity.y === 0 && entity[i].body.blocked.down) {
+        if (this.player.body.center.x > entity[i].body.center.x) {
+          entity[i].setVelocityX(Phaser.Math.Between(200, 500));
+        } else {
+          entity[i].setVelocityX(Phaser.Math.Between(-200, -500));
+        }
+        entity[i].setVelocityY(Phaser.Math.Between(-200, -1000));
       }
     }
     // else return
@@ -440,16 +472,16 @@ class GameScene1 extends Phaser.Scene {
 
     if (this.cursors.P.isDown) {
       this.scene.launch('PauseScene');
-      this.scene.pause('GameScene1')
-      } 
+      this.scene.pause('GameScene1');
+    }
 
     if (this.player.flipX === false) {
-      this.sword.setX(this.player.body.center.x + 30)
-      this.sword.setY(this.player.body.center.y + 5)
+      this.sword.setX(this.player.body.center.x + 30);
+      this.sword.setY(this.player.body.center.y + 5);
       this.sword.rotation = 1.5;
     } else {
-      this.sword.setX(this.player.body.center.x - 30)
-      this.sword.setY(this.player.body.center.y + 5)
+      this.sword.setX(this.player.body.center.x - 30);
+      this.sword.setY(this.player.body.center.y + 5);
       this.sword.rotation = -1.5;
       this.sword.body.setSize(50, 30, -20, 0);
     }
@@ -459,34 +491,40 @@ class GameScene1 extends Phaser.Scene {
       this.player.setVelocityX(-300);
       this.player.anims.play('running', true);
       this.player.flipX = true;
-      } 
-      //this.inventoryy.starsCollected
-    
+    }
+    //this.inventoryy.starsCollected
+
     if (this.cursors.D.isDown) {
       this.player.setVelocityX(300);
       this.player.anims.play('running', true);
       this.player.flipX = false;
-      } 
+    }
 
     if (this.cursors.S.isDown) {
       // this.player.anims.play('crouching', true);
       this.player.anims.play('crouched', true);
-    } 
+    }
     if (this.cursors.W.isDown) {
-      this.sword.setX(this.player.body.center.x)
-      this.sword.setY(this.player.body.center.y - 50)
+      this.sword.setX(this.player.body.center.x);
+      this.sword.setY(this.player.body.center.y - 50);
       this.sword.rotation = 0;
 
       // this.sword.enableBody(true, true);
       // console.log(this.player.body.center)
-    } 
-    
-    if(this.cursors.W.isUp && this.cursors.A.isUp && this.cursors.S.isUp && this.cursors.D.isUp && this.cursors.SPACE.isUp){
+    }
+
+    if (
+      this.cursors.W.isUp &&
+      this.cursors.A.isUp &&
+      this.cursors.S.isUp &&
+      this.cursors.D.isUp &&
+      this.cursors.SPACE.isUp
+    ) {
       this.player.setVelocityX(0);
       this.player.anims.play('idle', true);
     }
 
-    if(this.player.body.blocked.down) {
+    if (this.player.body.blocked.down) {
       this.inventory.jumps = 2;
     }
 
@@ -496,18 +534,17 @@ class GameScene1 extends Phaser.Scene {
         this.player.setVelocityY(-330);
         this.player.anims.play('jumping', true);
         this.inventory.jumps--;
-        console.log('flip true, setting to false')
+        console.log('flip true, setting to false');
       }
     }
     if (this.cursors.SPACE.isUp && !this.flipFlop) {
       this.flipFlop = true;
-      console.log('flop false, setting to true')
+      console.log('flop false, setting to true');
     }
 
     if (this.cursors.S.isDown && !this.player.body.blocked.down) {
       this.player.setVelocityY(330);
     }
-
 
     // this.timeUpdate();
 
@@ -528,6 +565,5 @@ class GameScene1 extends Phaser.Scene {
     //     console.log('resuming', isPaused);
     //   }
     // }
-
   }
 }
