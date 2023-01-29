@@ -1,4 +1,4 @@
-const submitScore = async (event) => {
+const submitScore = async function(event) {
     event.preventDefault();
   
     // TODO: figure out how to grab score from phaser
@@ -20,4 +20,4 @@ const submitScore = async (event) => {
     }
   };
   
-  document.querySelector('.submitScore').addEventListener('submit', submitScore);
+  document.querySelector('#submitScore').addEventListener('click', submitScore);

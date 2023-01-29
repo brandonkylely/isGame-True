@@ -7,8 +7,8 @@ router.post('/', async (req, res) => {
     const userData = await User.create(req.body);
 
     req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
+      req.session.userIdd = userData.id;
+      req.session.loggedIn = true;
     });
     //need to only be redirecting, not also rendering, that was the bug
     res.redirect('/game')
