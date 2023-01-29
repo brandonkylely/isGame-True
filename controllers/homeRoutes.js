@@ -40,8 +40,6 @@ try {
       order: [['scoreValue', 'DESC']],
     });
 
-
-
     const allScores = scoreData.map((scores) => scores.get({ plain: true }));
     // res.status(200).json(allScores);
     res.render('leaderboard', {allScores});

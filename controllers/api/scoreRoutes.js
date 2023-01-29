@@ -16,12 +16,15 @@ const { Score, User } = require('../../models');
 
 router.post('/submit', async (req, res) => {
   try {
-
-    const score = await Score.create({
-        userId: req.body.userId,
-        scoreValue: req.body.scoreValue
-      });
-
+      const userData = await User.findOne({
+          where: {id: req.session.userId},
+        });
+      
+      const scoreData = await Score.create({
+          userId: userData.id,
+          scoreValue: req.body.scoreValue
+        });
+        
 //     req.session.save(() => {
 //         req.session.scoreValue = score.scoreValue;
 //   })
