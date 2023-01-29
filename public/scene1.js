@@ -278,7 +278,7 @@ class GameScene1 extends Phaser.Scene {
     
 
     this.physics.add.collider(this.orcs, worldLayer);
-    this.physics.add.collider(this.orcs, this.pigs);
+    // this.physics.add.collider(this.orcs, this.pigs);
 
     this.physics.add.collider(this.player, this.orcs, this.hitByEnemy, null, this);
     this.physics.add.collider(this.player, this.pigs, this.hitByEnemy, null, this);
@@ -286,8 +286,8 @@ class GameScene1 extends Phaser.Scene {
     this.physics.add.overlap(this.sword, this.orcs, this.hitEnemy, null, this);
     this.physics.add.overlap(this.sword, this.pigs, this.hitEnemy, null, this);
 
-    this.physics.add.collider(this.pigs, this.pigs);
-    this.physics.add.collider(this.orcs, this.orcs);
+    // this.physics.add.collider(this.pigs, this.pigs);
+    // this.physics.add.collider(this.orcs, this.orcs);
 
   }
 
@@ -309,8 +309,8 @@ class GameScene1 extends Phaser.Scene {
   hitByEnemy(player, enemy) {
     // this.player.setTint(0xff0000);
     // this.sound.play('hitTaken')
-    this.quietSound('hitTaken')
     if (!this.inventory.hit) {
+      this.quietSound('hitTaken')
       this.inventory.hit = true;
       this.inventory.health--;
       console.log(this.inventory.health + ' health')
@@ -393,8 +393,12 @@ class GameScene1 extends Phaser.Scene {
         entity[i].setVelocityY(Phaser.Math.Between(-200, -400))
       }
       if ((entity[i].body.velocity.y === 0) && entity[i].body.blocked.down) {
-        entity[i].setVelocityY(Phaser.Math.Between(-200, -800));
-        entity[i].setVelocityX(Phaser.Math.Between(-300, 300));
+        if (this.player.body.center.x > entity[i].body.center.x){
+        entity[i].setVelocityX(Phaser.Math.Between(200, 500));
+      } else {
+        entity[i].setVelocityX(Phaser.Math.Between(-200, -500));
+      }
+      entity[i].setVelocityY(Phaser.Math.Between(-200, -1000));
       }
     }
     // else return
@@ -506,8 +510,9 @@ class GameScene1 extends Phaser.Scene {
     //   }
     // }
 
-    if (this.score === 500) {
+    if (this.score === 1000) {
         this.scene.start('GameScene2');
+        this.scene.stop('GameScene1')
     }
 
   }
