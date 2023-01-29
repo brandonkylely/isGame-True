@@ -358,8 +358,8 @@ class GameScene1 extends Phaser.Scene {
   orcSpawn() {
     let x =
       this.player.x < 1750
-        ? Phaser.Math.Between(1750, 3300)
-        : Phaser.Math.Between(200, 1750);
+        ? Phaser.Math.Between(1750, 3500)
+        : Phaser.Math.Between(0, 1750);
     let orc = this.orcs.create(x, 10, 'orc').setScale(3);
     orc.setBounce(0);
     orc.setCollideWorldBounds(true);
@@ -370,8 +370,8 @@ class GameScene1 extends Phaser.Scene {
   pigSpawn() {
     let x =
       this.player.x < 1750
-        ? Phaser.Math.Between(1750, 3300)
-        : Phaser.Math.Between(200, 1750);
+        ? Phaser.Math.Between(1750, 3500)
+        : Phaser.Math.Between(0, 1750);
     let pig = this.pigs.create(x, 10, 'pig').setScale(3);
     pig.setBounce(0);
     pig.setCollideWorldBounds(true);
