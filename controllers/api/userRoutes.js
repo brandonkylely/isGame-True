@@ -7,7 +7,7 @@ router.post('/', async (req, res) => {
     const userData = await User.create(req.body);
 
     req.session.save(() => {
-      req.session.userIdd = userData.id;
+      req.session.userId = userData.id;
       req.session.loggedIn = true;
     });
     //need to only be redirecting, not also rendering, that was the bug
