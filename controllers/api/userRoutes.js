@@ -1,29 +1,39 @@
 const router = require('express').Router();
 const { User } = require('../../models');
-// const score = require('../../public/scene1');
 
 // POST /api/users is a registration route for creating a new user
 router.post('/', async (req, res) => {
-  console.log(req.body);
   try {
-    await User.create({
-      username: req.body.username,
-      password: req.body.password
+    const userData = await User.create(req.body);
+
+    req.session.save(() => {
+      req.session.userId = userData.id;
+      req.session.loggedIn = true;
     });
     //need to only be redirecting, not also rendering, that was the bug
-    res.redirect('/game');
+    res.redirect('/game')
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
 });
 
-// router.post('/game', async (req, res) => {
+// // POST /api/users is a registration route for creating a new user
+// router.post('/', async (req, res) => {
 //   console.log(req.body);
 //   try {
-//     await score.update
+//     await User.create({
+//       username: req.body.username,
+//       password: req.body.password
+//     });
+//     //need to only be redirecting, not also rendering, that was the bug
+//     res.redirect('/game');
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json(err);
 //   }
 // });
+
 
 // POST /api/users/login is a login route for an existing user
 router.post('/login', async (req, res) => {
@@ -48,7 +58,6 @@ router.post('/login', async (req, res) => {
 
     req.session.save(() => {
       req.session.userId = user.id;
-      req.session.username = user.username;
       req.session.loggedIn = true;
 
       res.redirect('/game');

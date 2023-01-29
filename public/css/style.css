@@ -4,6 +4,12 @@
     font-family: Andale Mono, monospace;
 }
 
+#submitScore {
+    float: left;
+    margin-right: 20px;
+    font-family: Andale Mono, monospace;
+}
+
 h2 {
     font-size: 2.7rem;
     font-weight: bold;
@@ -33,4 +39,42 @@ body {
 
 #thegame {
     width: 20%;
+}
+
+.noscore {
+    font-size: 2.7rem;
+    font-weight: bold;
+    font-family: Andale Mono, monospace;
+    margin-top: 15px;
+    padding: 10;
+    color: #000;
+    text-align: center;
+}
+
+#leaderboardheader {
+    font-size: 2.7rem;
+    font-weight: bold;
+    font-family: Andale Mono, monospace;
+    margin-top: 15px;
+    padding: 10;
+    color: #000;
+    text-align: center;
+}
+
+#leaderboardlist {
+    font-size: 30px;
+    font-family: Andale Mono, monospace;
+    margin-top: 15px;
+    padding: 10;
+    color: #000;
+}
+
+#leaderboarditem {
+    list-style: none;
+    font-size: 30px;
+    font-family: Andale Mono, monospace;
+    margin-top: 15px;
+    padding: 10;
+    color: #000;
+    text-align: center;
 }

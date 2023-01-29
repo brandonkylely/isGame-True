@@ -16,10 +16,12 @@ User.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
+      unique: true,
       autoIncrement: true
     },
     username: {
       type: DataTypes.STRING,
+      unique: true,
       allowNull: false
     },
     password: {
