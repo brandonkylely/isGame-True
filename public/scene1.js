@@ -309,8 +309,8 @@ class GameScene1 extends Phaser.Scene {
   hitByEnemy(player, enemy) {
     // this.player.setTint(0xff0000);
     // this.sound.play('hitTaken')
-    this.quietSound('hitTaken')
     if (!this.inventory.hit) {
+      this.quietSound('hitTaken')
       this.inventory.hit = true;
       this.inventory.health--;
       console.log(this.inventory.health + ' health')
