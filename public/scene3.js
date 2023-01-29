@@ -1,6 +1,6 @@
-class GameScene2 extends Phaser.Scene {
+class GameScene3 extends Phaser.Scene {
   constructor() {
-    super('GameScene2');
+    super('GameScene3');
     this.player = undefined;
     this.cursors = undefined;
     this.starLayer = undefined;
@@ -22,10 +22,8 @@ class GameScene2 extends Phaser.Scene {
     // this.timer;
     // this.timerText;
   }
-  
 
   init(data) {
-    console.log('total stars', this.totalStars)
     console.log('init', data);
     this.score = data.score;
     this.totalKills = data.kills;
@@ -34,7 +32,6 @@ class GameScene2 extends Phaser.Scene {
   }
 
   preload() {
-    console.log('total stars', this.totalStars)
     // use to set link prefix to use phaser assets
     // this.load.setBaseURL('http://labs.phaser.io');
     this.load.spritesheet('orc', 'assets/orc.png', {
@@ -197,17 +194,16 @@ class GameScene2 extends Phaser.Scene {
       obj.body.width = object.width;
       obj.body.height = object.height;
       this.totalStars += 1;
-      console.log('total stars', this.totalStars)
     });
 
-    function makeDoor(doorTile){
+    function makeDoor(doorTile) {
       let obj = doors.create(doorTile.x + 15, doorTile.y - 25);
       obj.setOrigin(0.4, 1);
       obj.body.width = doorTile.width;
       obj.body.height = doorTile.height;
       obj.alpha = 0;
     }
-    makeDoor(this.doorLayer[0])
+    makeDoor(this.doorLayer[0]);
 
     this.player = this.physics.add.sprite(1500, 1000, DUDE_KEY).setScale(2);
     this.sword = this.physics.add.sprite(1500, 1000, 'sword').setScale(1.5);
@@ -236,7 +232,7 @@ class GameScene2 extends Phaser.Scene {
 
     this.physics.add.collider(this.player, worldLayer);
     this.physics.add.overlap(this.player, stars, collectStar, null, this);
-    this.physics.add.overlap(this.player, doors, nextLevel2, null, this);
+    this.physics.add.overlap(this.player, doors, nextLevel, null, this);
     function collectStar(player, star) {
       this.quietSound('star');
       // this.sound.play('star');
@@ -249,20 +245,33 @@ class GameScene2 extends Phaser.Scene {
         this.pigSpawn();
       }
     }
-    function nextLevel2(player, door) {
-      console.log('running nextLevel2')
-      if (this.inventory.starsCollected >= this.totalStars-80) {
+    function nextLevel(player, door) {
+      if (this.inventory.starsCollected >= this.totalStars - 80) {
         //score multiplier formula
-        this.score = this.score + (this.score * this.inventory.lives) + (this.score * this.inventory.health/4)
-        // this.score = Math.floor(this.score / 10) * 10;
-        console.log('score', this.score)
-        this.scene.start('GameScene3', {score: this.score, difficulty: this.difficulty, kills: this.inventory.enemiesDefeated+this.totalKills});
-        this.scene.stop('GameScene2');
-      }
-      else {
-        console.log('not enough stars')
-        console.log('have', this.inventory.starsCollected)
-        console.log('need', this.totalStars-80)
+        console.log('before change', this.score);
+        this.score =
+          this.score +
+          this.score * this.inventory.lives +
+          (this.score * this.inventory.health) / 4;
+        console.log('after change', this.score);
+        this.score = Math.ceil(this.score / 10) * 10;
+        console.log('after round', this.score);
+        this.scene.start('VictoryScene', {
+          score: this.score,
+          difficulty: this.difficulty,
+          kills: this.inventory.enemiesDefeated + this.totalKills
+        });
+        this.scene.stop('GameScene3');
+        console.log('victoryscene load');
+        console.log('final score', this.score);
+        console.log(
+          'final kills',
+          this.inventory.enemiesDefeated + this.totalKills
+        );
+      } else {
+        console.log('not enough stars');
+        console.log('have', this.inventory.starsCollected);
+        console.log('need', this.totalStars - 80);
       }
     }
 
@@ -448,7 +457,7 @@ class GameScene2 extends Phaser.Scene {
 
     if (this.cursors.P.isDown) {
       this.scene.launch('PauseScene');
-      this.scene.pause('GameScene1');
+      this.scene.pause('GameScene3');
     }
 
     if (this.player.flipX === false) {
