@@ -1,20 +1,20 @@
 <div>
-    {{#if score}}
+    {{#if highscore}}
     <h3 id="scoreheader">your high score!</h3>
-    <p id="playerscore">{{username}}:{{score}}</p>
+    <p id="playerscore">{{username}}:{{highscore}}</p>
     {{else}}
     <p class="noscore">you don't have any scores! :(</p>
     {{/if}}
 </div>
 
- {{#if score}}
+ {{#if highscore}}
 <h3 id="leaderboardheader">global leaderboard!</h3>
 {{else}}
 <h3 id="leaderboardheader">oops</h3>
 {{/if}}
 
 <ul id="leaderboardlist">
-{{#each score}}
+{{#each highscore}}
 <li id="leaderboarditem">{{this}}</li>
 {{else}}
 <p class="noscore">no scores here!</p>

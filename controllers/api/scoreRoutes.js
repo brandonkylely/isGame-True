@@ -14,32 +14,6 @@ router.post('/', async (req, res) => {
     }
   });
 
-router.get('/id', async (req, res) => {
-    try {
-      const scoreData = await Score.findAll(req.params.id, {
-        include: {model: Score},
-        attributes: {
-          include: [
-            [
-              sequelize.literal(
-                '(SELECT max(scoreValue) FROM score)'
-              ),
-              'highScore',
-            ],
-          ],
-        },
-      });
-  
-      if (!scoreData) {
-        res.status(404).json({ message: 'No score found.' });
-        return;
-      }
-  
-      res.status(200).json(scoreData);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  });
 
 
 

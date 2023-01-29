@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "prepare": "husky install",
+    "seed": "node seeds/seed.js",
     "lint": "",
     "lint:fix": "",
     "format": "npx prettier **/* -w --ignore-unknown"

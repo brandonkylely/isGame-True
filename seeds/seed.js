@@ -1,25 +1,16 @@
-const sequelize = require('../config/connection');
-const { User, Score } = require('../models');
+const sequelize = require('../config/index');
 
-const userData = require('./userData.json');
-const scoreData = require('./scoreData.json');
+const seedScore = require('./scoreData');
+const seedUser = require('./userData');
 
-const seedDatabase = async () => {
+const seedAll = async () => {
   await sequelize.sync({ force: true });
 
-  const users = await User.bulkCreate(userData, {
-    individualHooks: true,
-    returning: true,
-  });
-
-  for (const score of scoreData) {
-    await Score.create({
-      ...score,
-      scoreValue: users[Math.floor(Math.random() * users.length)].id,
-    });
-  }
+  await seedUser();
+  
+  await seedScore();
 
   process.exit(0);
 };
 
-seedDatabase();
+seedAll();
