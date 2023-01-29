@@ -77,9 +77,13 @@ class StartScene extends Phaser.Scene {
         //     this.leaderboardButton.text.fill(0x808080)
         // });
 
-        // this.leaderboardButton.on('pointerdown', () => {
-        //     this.scene.start('LeaderboardScene')
-        // });
+        this.leaderboardButton.on('pointerdown', () => {
+            // this.scene.start('LeaderboardScene')
+
+            // testing victory scene
+            this.scene.start('VictoryScene');
+            this.scene.stop('StartScene');
+        });
 
         this.creditsButton.setInteractive();
         // this.creditsButton.on('pointeron',  () => {
@@ -90,8 +94,8 @@ class StartScene extends Phaser.Scene {
             // this.scene.start('CreditsScene')
 
             // testing game over scene
-            // this.scene.start('GameOver');
-            // this.scene.stop('StartScene');
+            this.scene.start('GameOver');
+            this.scene.stop('StartScene');
         });
     };
     update() {
