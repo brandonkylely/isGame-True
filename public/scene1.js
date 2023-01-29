@@ -506,8 +506,9 @@ class GameScene1 extends Phaser.Scene {
     //   }
     // }
 
-    if (this.score === 500) {
+    if (this.score === 600) {
         this.scene.start('GameScene2');
+        this.scene.stop('GameScene1')
     }
 
   }
