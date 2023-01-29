@@ -33,7 +33,7 @@ router.get('/signup', (req, res) => {
 router.get('/scores', async (req, res) => {
 try {
     const scoreData = await Score.findAll({
-    //   include: [{ model: User, attributes: ['username']}],
+      include: [{ model: User, attributes: ['username']}],
       attributes: {
         exclude: ['userId', 'id']
     },
