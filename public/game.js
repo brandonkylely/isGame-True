@@ -28,4 +28,6 @@ let config = {
 };
 
 game = new Phaser.Game(config);
+// manager = new SceneManager(game, config);
+// console.log(manager.getScene(GameScene1));
 });

@@ -62,11 +62,10 @@ body {
 }
 
 #leaderboardlist {
-    font-size: 30px;
-    font-family: Andale Mono, monospace;
-    margin-top: 15px;
-    padding: 10;
-    color: #000;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 100vh;
 }
 
 #leaderboarditem {
@@ -74,7 +73,8 @@ body {
     font-size: 30px;
     font-family: Andale Mono, monospace;
     margin-top: 15px;
-    padding: 10;
+    padding-right: 50px;
     color: #000;
-    text-align: center;
+    color: #000;
+    /* text-align: left; */
 }
