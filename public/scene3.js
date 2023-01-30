@@ -31,6 +31,8 @@ class GameScene3 extends Phaser.Scene {
     //kills
   }
 
+ 
+
   preload() {
     // use to set link prefix to use phaser assets
     // this.load.setBaseURL('http://labs.phaser.io');
@@ -245,6 +247,7 @@ class GameScene3 extends Phaser.Scene {
         this.pigSpawn();
       }
     }
+    
     function nextLevel(player, door) {
       if (this.inventory.starsCollected >= this.totalStars - 80) {
         //score multiplier formula
@@ -261,6 +264,8 @@ class GameScene3 extends Phaser.Scene {
           difficulty: this.difficulty,
           kills: this.inventory.enemiesDefeated + this.totalKills
         });
+        this.orcGroup = [];
+        this.pigGroup = [];
         this.scene.stop('GameScene3');
         console.log('victoryscene load');
         console.log('final score', this.score);
@@ -480,7 +485,7 @@ class GameScene3 extends Phaser.Scene {
     //this.inventoryy.starsCollected
 
     if (this.cursors.D.isDown) {
-      this.player.setVelocityX(300);
+      this.player.setVelocityX(1000);
       this.player.anims.play('running', true);
       this.player.flipX = false;
     }
@@ -516,7 +521,7 @@ class GameScene3 extends Phaser.Scene {
     if (this.cursors.SPACE.isDown && this.inventory.jumps > 0) {
       if (this.flipFlop) {
         this.flipFlop = false;
-        this.player.setVelocityY(-330);
+        this.player.setVelocityY(-1000);
         this.player.anims.play('jumping', true);
         this.inventory.jumps--;
         console.log('flip true, setting to false');
