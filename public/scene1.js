@@ -468,14 +468,14 @@ class GameScene1 extends Phaser.Scene {
     // this.scene.resume();
     //this.inventoryy.starsCollected
     if (this.cursors.A.isDown) {
-      this.player.setVelocityX(-300);
+      this.player.setVelocityX(-500);
       this.player.anims.play('running', true);
       this.player.flipX = true;
     }
     //this.inventoryy.starsCollected
 
     if (this.cursors.D.isDown) {
-      this.player.setVelocityX(1000);
+      this.player.setVelocityX(500);
       this.player.anims.play('running', true);
       this.player.flipX = false;
     }
@@ -511,7 +511,7 @@ class GameScene1 extends Phaser.Scene {
     if (this.cursors.SPACE.isDown && this.inventory.jumps > 0) {
       if (this.flipFlop) {
         this.flipFlop = false;
-        this.player.setVelocityY(-1000);
+        this.player.setVelocityY(-500);
         this.player.anims.play('jumping', true);
         this.inventory.jumps--;
         console.log('flip true, setting to false');
@@ -523,7 +523,7 @@ class GameScene1 extends Phaser.Scene {
     }
 
     if (this.cursors.S.isDown && !this.player.body.blocked.down) {
-      this.player.setVelocityY(330);
+      this.player.setVelocityY(550);
     }
 
     // this.timeUpdate();
