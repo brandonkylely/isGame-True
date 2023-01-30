@@ -32,8 +32,7 @@
 
 <script>
 
-const submitScore = async function(event) {
-    event.preventDefault();
+const submitScore = async function() {
     {{!-- console.log(totalScore) --}}
 
     // TODO: figure out how to grab score from phaser
@@ -52,6 +51,7 @@ const submitScore = async function(event) {
       } else {
         console.log(response.statusText);
       }
+       {{!-- window.location.reload() --}}
     }
   };
   
