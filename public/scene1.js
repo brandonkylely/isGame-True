@@ -3,6 +3,7 @@
 
 const DUDE_KEY = 'dude';
 let totalScore = 0;
+let currentScene = 1;
 
 class GameScene1 extends Phaser.Scene {
   constructor() {
@@ -168,6 +169,7 @@ class GameScene1 extends Phaser.Scene {
   }
 
   createPlayer() {
+    currentScene = 1;
     this.orcs = this.physics.add.group();
     this.pigs = this.physics.add.group();
     const map = this.make.tilemap({ key: 'tileset' });
@@ -248,6 +250,7 @@ class GameScene1 extends Phaser.Scene {
       if (this.inventory.starsCollected >= this.totalStars - 80) {
         //score multiplier formula
         console.log('before change', this.score);
+        currentScene = 2;
         this.score =
           this.score +
           this.score * this.inventory.lives +

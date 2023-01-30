@@ -62,6 +62,7 @@ class GameScene2 extends Phaser.Scene {
     this.load.audio('hitPig2', 'assets/sfx/hitPig2.wav');
     this.load.audio('hitTaken', 'assets/sfx/hitTaken.wav');
     this.load.audio('star', 'assets/sfx/star.wav');
+    this.load.audio('spring-sound', 'assets/sfx/spring.wav')
   }
 
   createAnimations() {
@@ -268,9 +269,11 @@ class GameScene2 extends Phaser.Scene {
     function springBoard() {
       this.player.setVelocityY('-100')
       this.inventory.jumps = 2;
+      this.quietSound('spring-sound');
     }
 
     function nextLevel2(player, door) {
+      currentScene = 3;
       if (this.inventory.starsCollected >= this.totalStars - 80) {
         //score multiplier formula
         this.score =

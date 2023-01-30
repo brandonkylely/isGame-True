@@ -29,7 +29,7 @@ class VictoryScene extends Phaser.Scene {
 
         this.platform.add(this.title);
 
-        this.returnButton = this.add.text(1750, 300, `Return to menu?`, {
+        this.returnButton = this.add.text(1750, 300, `Submit Score?`, {
             fontSize: '100px',
             fill: '#fff',
         });
