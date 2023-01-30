@@ -9,5 +9,5 @@ module.exports = {
 
   add_1: (index) => {
     return index + 1;
-  }
+  },
 };

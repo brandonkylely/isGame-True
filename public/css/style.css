@@ -61,21 +61,20 @@ body {
     text-align: center;
 }
 
-/* #leaderboardlist {
-    font-size: 30px;
-    font-family: Andale Mono, monospace;
-    margin-top: 15px;
-    color: #000;
-} */
+#leaderboardlist {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 100vh;
+}
 
 #leaderboarditem {
     list-style: none;
     font-size: 30px;
     font-family: Andale Mono, monospace;
     margin-top: 15px;
+    padding-right: 50px;
     color: #000;
-    padding: 10;
-    padding-left: 40vw;
     color: #000;
     /* text-align: left; */
 }
