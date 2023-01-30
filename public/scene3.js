@@ -49,9 +49,9 @@ class GameScene3 extends Phaser.Scene {
 
     this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
     this.load.image('star-image', 'assets/star.png');
-    this.load.image('Background', 'assets/night.png');
+    this.load.image('background-tile1', 'assets/Snow-Map.png');
     this.load.image('sword', 'assets/sword.png');
-    this.load.tilemapTiledJSON('tileset', 'map-2.json');
+    this.load.tilemapTiledJSON('tileset3', 'Map-3.json');
     this.load.spritesheet(DUDE_KEY, 'assets/redhood-spritesheet.png', {
       frameWidth: 32,
       frameHeight: 32
@@ -174,15 +174,15 @@ class GameScene3 extends Phaser.Scene {
   createPlayer() {
     this.orcs = this.physics.add.group();
     this.pigs = this.physics.add.group();
-    const map = this.make.tilemap({ key: 'tileset' });
+    const map = this.make.tilemap({ key: 'tileset3' });
 
-    let tileset = map.addTilesetImage('Main-Tileset', 'tiles');
-    let background = map.addTilesetImage('night-bg', 'Background');
+    let tileset3 = map.addTilesetImage('Main-Tileset', 'tiles');
+    let background3 = map.addTilesetImage('Snow-Tori', 'background-tile1');
 
     console.log(Phaser.Input.Keyboard.KeyCodes);
 
-    const bgLayer = map.createLayer('Background', background, 0, 0);
-    const worldLayer = map.createLayer('World Layer', tileset, 0, 0);
+    const bgLayer = map.createLayer('Background', background3, 0, 0);
+    const worldLayer = map.createLayer('World Layer', tileset3, 0, 0);
     worldLayer.setCollisionByProperty({ Collides: true });
     this.starLayer = map.getObjectLayer('Stars')['objects'];
     this.doorLayer = map.getObjectLayer('Door')['objects'];
