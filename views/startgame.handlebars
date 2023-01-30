@@ -38,7 +38,7 @@ const submitScore = async function() {
     // TODO: figure out how to grab score from phaser
     const score = totalScore;
 
-    if (score) {
+    if (totalScore) {
       // Send a POST request to the API endpoint
       const response = await fetch('/api/score/submit', {
         method: 'POST',
