@@ -8,11 +8,12 @@
     {{/if}}
 </div> --}}
 
-<a href="#" id="return" type="button" class="btn btn-light" >Return To Game</a>
+<a href="#" id="return" type="button" class="btn btn-light" >Return To Menu</a>
 
 <script> 
     function returnToGame() {
-        window.location.replace('https://isgame-true.herokuapp.com/game')
+        {{!-- window.location.replace('https://isgame-true.herokuapp.com/game') --}}
+        window.location.replace('http://localhost:3001/game')
     }
     document.querySelector('#return').addEventListener('click', returnToGame);
 </script>
