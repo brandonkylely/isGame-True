@@ -65,7 +65,7 @@ class VictoryScene extends Phaser.Scene {
         // });
 
         this.returnButton.on('pointerdown', () => {
-            this.pullData()
+            submitScore()
             window.location.reload()
         });
 
