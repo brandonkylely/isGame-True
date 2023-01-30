@@ -1,7 +1,8 @@
 {{!-- <div>
-    {{#if highscore}}
-    <h3 id="scoreheader">your high score!</h3>
-    <p id="playerscore">{{username}}:{{highscore}}</p>
+    {{#if allScores}}
+    {{#each (limit allScores 10) as |score|}}
+    <h3 id="scoreheader">your high scores!</h3>
+    <p id="playerscore">{{score.username}}:{{score.scoreValue}}</p>
     {{else}}
     <p class="noscore">you don't have any scores! :(</p>
     {{/if}}
@@ -10,11 +11,11 @@
  {{#if allScores}}
 <h3 id="leaderboardheader">global leaderboard!</h3>
 
-<ul id="leaderboardlist"></ul>
+<ol id="leaderboardlist">
 {{#each (limit allScores 10) as |score|}}
-<li id="leaderboarditem">{{score.user.username}}: {{score.scoreValue}}</li>
+<li id="leaderboarditem">{{add_1 @index}}: {{score.user.username}}: {{score.scoreValue}}</li>
 {{/each}}
-</ul>
+</ol>
 {{else}}
 <h3 id="leaderboardheader">oops</h3>
 <p class="noscore">no scores here!</p>

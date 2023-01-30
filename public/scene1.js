@@ -2,7 +2,7 @@
 // let game;
 
 const DUDE_KEY = 'dude';
-// let score = 0;
+let finalScore = GameScene1.score;
 
 // window.addEventListener('load', () => {
 // let config = {

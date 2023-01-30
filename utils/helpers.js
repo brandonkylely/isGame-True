@@ -5,5 +5,9 @@ module.exports = {
     } else {
       return arr.slice(0, limit);
     }
+  },
+
+  add_1: (index) => {
+    return index + 1;
   }
 };
