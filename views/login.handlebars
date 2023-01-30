@@ -1,22 +1,22 @@
 {{!-- https://mdbootstrap.com/docs/standard/extended/login/#section-login-register --}}
 {{!-- <div class="bg-dark w-100 h-100"> --}}
 
-{{!-- <h2 class="text-white">ISGAME:TRUE</h2>
+<h2 class="text-white">ISGAME:TRUE</h2>
 
-<h5 class="text-white"> WELCOME TO OUR GAME, PLEASE LOGIN: </h5> --}}
+<h5 class="text-white"> WELCOME TO OUR GAME, PLEASE LOGIN: </h5>
 
-<h2>ISGAME:TRUE</h2>
+{{!-- <h2>ISGAME:TRUE</h2>
 
-<h5> WELCOME TO OUR GAME, PLEASE LOGIN: </h5>
+<h5> WELCOME TO OUR GAME, PLEASE LOGIN: </h5> --}}
 
 <form id="login-form" class="card-body" method="POST" action="/api/user/login">
   <div class="form-outline mb-4">
-    <label class="form-label" for="loginName">Username</label>
+    <label class="text-white form-label" for="loginName">Username</label>
     <input name="username" type="text" id="loginName" class="form-control"/>
   </div>
 
   <div class="form-outline mb-4">
-    <label for="password-input-login" class="form-label">Password</label>
+    <label for="password-input-login" class="text-white form-label">Password</label>
     <input name="password" type="password" id="loginPassword" class="form-control" />
   </div>
 

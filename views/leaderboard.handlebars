@@ -19,15 +19,15 @@
 
 
  {{#if allScores}}
-<h3 id="leaderboardheader">global leaderboard!</h3>
+<h3 id="leaderboardheader" class="text-white">global leaderboard!</h3>
 
-<ol id="leaderboardlist">
+<ol id="leaderboardlist" class="text-white">
 {{#each (limit allScores 100) as |score|}}
-<li id="leaderboarditem">{{add_1 @index}}: {{score.user.username}}: {{score.scoreValue}}</li>
+<li id="leaderboarditem" class="text-white">{{add_1 @index}}: {{score.user.username}}: {{score.scoreValue}}</li>
 {{/each}}
 </ol>
 {{else}}
-<h3 id="leaderboardheader">oops</h3>
-<p class="noscore">no scores here!</p>
+<h3 id="leaderboardheader" class="text-white">oops</h3>
+<p class="noscore" class="text-white">no scores here!</p>
 {{/if}}
 
