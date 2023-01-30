@@ -374,10 +374,10 @@ class GameScene3 extends Phaser.Scene {
       this.healthText.setText(`Health: ${this.inventory.health}`);
     }
 
-    if (this.inventory.lives === 0) {
-      this.inventory.gameOver = true;
-      console.log('Game Over :(');
-    }
+    if (this.inventory.lives < 1 ) {
+      this.scene.start('GameOver');
+      this.scene.stop('GameScene3');
+    };
 
     // this.inventory.hit = true;
 
