@@ -260,7 +260,7 @@ class GameScene2 extends Phaser.Scene {
           this.score +
           this.score * this.inventory.lives +
           (this.score * this.inventory.health) / 4;
-        // this.score = Math.floor(this.score / 10) * 10;
+        this.score = Math.floor(this.score / 10) * 10;
         console.log('score', this.score);
         this.scene.start('GameScene3', {
           score: this.score,

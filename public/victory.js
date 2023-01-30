@@ -13,9 +13,7 @@ class VictoryScene extends Phaser.Scene {
         this.score = data.score;
     }
 
-    pullData() {
-        totalScore = this.score;
-      }
+    
 
     preload() {
     };
@@ -65,8 +63,8 @@ class VictoryScene extends Phaser.Scene {
         // });
 
         this.returnButton.on('pointerdown', () => {
+            totalScore = this.score;
             submitScore()
-            window.location.reload()
         });
 
 
