@@ -2,34 +2,7 @@
 // let game;
 
 const DUDE_KEY = 'dude';
-let finalScore = GameScene1.score;
-
-// window.addEventListener('load', () => {
-// let config = {
-//   type: Phaser.AUTO,
-//   width: 3500,
-//   height: 1400,
-//   backgroundColor: 0x9900e3,
-//   physics: {
-//     default: 'arcade',
-//     arcade: {
-//       debug: true,
-//       gravity: {
-//         y: 220
-//       }
-//     }
-//   },
-//   scale: {
-//     parent: 'thegame',
-//     mode: Phaser.Scale.FIT,
-//     autoCenter: Phaser.Scale.CENTER_BOTH
-//   },
-//   pixleArt: true,
-//   scene: [GameScene1, GameScene2]
-// };
-
-// game = new Phaser.Game(config);
-// });
+let totalScore = 0;
 
 class GameScene1 extends Phaser.Scene {
   constructor() {
@@ -53,6 +26,10 @@ class GameScene1 extends Phaser.Scene {
     // this.timeValue = 0;
     // this.timer;
     // this.timerText;
+  }
+
+  pullData() {
+    totalScore = this.score;
   }
 
   preload() {
@@ -280,6 +257,7 @@ class GameScene1 extends Phaser.Scene {
           (this.score * this.inventory.health) / 4;
         console.log('after change', this.score);
         this.score = Math.floor(this.score / 10) * 10;
+        this.pullData();
         console.log('after round', this.score);
         this.scene.start('GameScene2', {
           score: this.score,
@@ -567,3 +545,7 @@ class GameScene1 extends Phaser.Scene {
     // }
   }
 }
+
+
+console.log(GameScene1);
+// console.log(GameScene1.data.get());

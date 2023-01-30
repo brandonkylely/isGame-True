@@ -31,11 +31,13 @@
 </html>
 
 <script>
+
 const submitScore = async function(event) {
     event.preventDefault();
-  
+    {{!-- console.log(totalScore) --}}
+
     // TODO: figure out how to grab score from phaser
-    const score = 200;
+    const score = totalScore;
 
     if (score) {
       // Send a POST request to the API endpoint

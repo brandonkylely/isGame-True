@@ -78,11 +78,14 @@ class StartScene extends Phaser.Scene {
         // });
 
         this.leaderboardButton.on('pointerdown', () => {
+            // window.open('https://isgame-true.herokuapp.com/scores');
+            window.open('http://localhost:3001/scores');
+
             // this.scene.start('LeaderboardScene')
 
             // testing victory scene
-            this.scene.start('VictoryScene');
-            this.scene.stop('StartScene');
+            // this.scene.start('VictoryScene');
+            // this.scene.stop('StartScene');
         });
 
         this.creditsButton.setInteractive();
