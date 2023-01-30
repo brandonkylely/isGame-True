@@ -11,7 +11,7 @@
 <h3 id="leaderboardheader">global leaderboard!</h3>
 
 <ul id="leaderboardlist"></ul>
-{{#each allScores as |score|}}
+{{#each (limit allScores 10) as |score|}}
 <li id="leaderboarditem">{{score.user.username}}: {{score.scoreValue}}</li>
 {{/each}}
 </ul>
