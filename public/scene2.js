@@ -49,6 +49,7 @@ class GameScene2 extends Phaser.Scene {
 
     this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
     this.load.image('star-image', 'assets/star.png');
+    this.load.image('spring-image', 'assets/springboardUp.png')
     this.load.image('background-tile', 'assets/level2mapfull.png');
     this.load.image('sword', 'assets/sword.png');
     this.load.tilemapTiledJSON('tileset2', 'Forest-Map.json');
@@ -191,7 +192,9 @@ class GameScene2 extends Phaser.Scene {
     worldLayer.setCollisionByProperty({ Collides: true });
     this.starLayer = map.getObjectLayer('Stars')['objects'];
     this.doorLayer = map.getObjectLayer('Door')['objects'];
+    this.springLayer = map.getObjectLayer('Springs')['objects'];
     const stars = this.physics.add.staticGroup();
+    const springs = this.physics.add.staticGroup();
     const doors = this.physics.add.staticGroup();
 
     this.starLayer.forEach((object) => {
@@ -203,6 +206,13 @@ class GameScene2 extends Phaser.Scene {
       this.totalStars += 1;
       console.log('total stars', this.totalStars);
     });
+    
+    this.springLayer.forEach((object) => {
+      let obj = springs.create(object.x + 35, object.y - 35, 'spring-image');
+      obj.setOrigin(0.5);
+      obj.body.width = object.width;
+      obj.body.height = object.height;
+    })
 
     function makeDoor(doorTile) {
       let obj = doors.create(doorTile.x + 15, doorTile.y - 25);
@@ -241,6 +251,7 @@ class GameScene2 extends Phaser.Scene {
     this.physics.add.collider(this.player, worldLayer);
     this.physics.add.overlap(this.player, stars, collectStar, null, this);
     this.physics.add.overlap(this.player, doors, nextLevel2, null, this);
+    this.physics.add.overlap(this.player, springs, springBoard, null, this);
     function collectStar(player, star) {
       this.quietSound('star');
       // this.sound.play('star');
@@ -253,6 +264,12 @@ class GameScene2 extends Phaser.Scene {
         this.pigSpawn();
       }
     }
+
+    function springBoard() {
+      this.player.setVelocityY('-100')
+      this.inventory.jumps = 2;
+    }
+
     function nextLevel2(player, door) {
       if (this.inventory.starsCollected >= this.totalStars - 80) {
         //score multiplier formula
@@ -475,14 +492,14 @@ class GameScene2 extends Phaser.Scene {
     // this.scene.resume();
     //this.inventoryy.starsCollected
     if (this.cursors.A.isDown) {
-      this.player.setVelocityX(-300);
+      this.player.setVelocityX(-550);
       this.player.anims.play('running', true);
       this.player.flipX = true;
     }
     //this.inventoryy.starsCollected
 
     if (this.cursors.D.isDown) {
-      this.player.setVelocityX(1000);
+      this.player.setVelocityX(550);
       this.player.anims.play('running', true);
       this.player.flipX = false;
     }
@@ -507,7 +524,7 @@ class GameScene2 extends Phaser.Scene {
       this.cursors.D.isUp &&
       this.cursors.SPACE.isUp
     ) {
-      this.player.setVelocityX(0);
+      // this.player.setVelocityX(0);
       this.player.anims.play('idle', true);
     }
 
@@ -518,7 +535,7 @@ class GameScene2 extends Phaser.Scene {
     if (this.cursors.SPACE.isDown && this.inventory.jumps > 0) {
       if (this.flipFlop) {
         this.flipFlop = false;
-        this.player.setVelocityY(-1000);
+        this.player.setVelocityY(-500);
         this.player.anims.play('jumping', true);
         this.inventory.jumps--;
         console.log('flip true, setting to false');
@@ -530,7 +547,7 @@ class GameScene2 extends Phaser.Scene {
     }
 
     if (this.cursors.S.isDown && !this.player.body.blocked.down) {
-      this.player.setVelocityY(330);
+      this.player.setVelocityY(550);
     }
 
     // this.timeUpdate();
