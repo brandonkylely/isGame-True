@@ -13,15 +13,15 @@ class InstructionsScene extends Phaser.Scene {
         this.background = this.add.rectangle(1750, 850, 3500, 1700, 0x0000);
         this.platform = this.physics.add.staticGroup()
 
-        this.title = this.add.text(1750, 800, `isGame:True Instructions`, {
-            fontSize: '250px',
+        this.title = this.add.text(1750, 800, `hasInstructions:True`, {
+            fontSize: '200px',
             fill: '#fff',
           });
         this.title.setOrigin(0.5,0);
 
         this.platform.add(this.title);
 
-        this.returnButton = this.add.text(1750, 300, `Return to menu?`, {
+        this.returnButton = this.add.text(1750, 350, `Return to menu?`, {
             fontSize: '100px',
             fill: '#fff',
         });
@@ -31,18 +31,18 @@ class InstructionsScene extends Phaser.Scene {
         this.physics.add.existing(this.returnButton);
         this.returnButton.body.bounce.y = 0.8;
 
-        this.instructionsText = this.add.text(1750, 150, `
+        this.instructionsText = this.add.text(1750, -200, `
             Move Left = "A"
             Move Right = "D"
             Crouch = "S"
             Aim Sword Up = "W"
             Jump = "Space"
-            `, {
-            fontSize: '100px',
+            Pause = "P"`, {
+            fontSize: '80px',
             fill: '#fff',
         });
 
-        this.instructionsText.setOrigin(0.5, 0);
+        this.instructionsText.setOrigin(0.67, 0);
 
         this.physics.add.existing(this.instructionsText);
         this.instructionsText.body.bounce.y = 0.8;

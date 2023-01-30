@@ -8,6 +8,16 @@
     {{/if}}
 </div> --}}
 
+<a href="#" id="return" type="button" class="btn btn-light" >Return To Game</a>
+
+<script> 
+    function returnToGame() {
+        window.location.replace('https://isgame-true.herokuapp.com/game')
+    }
+    document.querySelector('#return').addEventListener('click', returnToGame);
+</script>
+
+
  {{#if allScores}}
 <h3 id="leaderboardheader">global leaderboard!</h3>
 

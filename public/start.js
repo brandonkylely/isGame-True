@@ -90,8 +90,9 @@ class StartScene extends Phaser.Scene {
         // });
 
         this.leaderboardButton.on('pointerdown', () => {
-            // window.open('https://isgame-true.herokuapp.com/scores');
-            window.open('http://localhost:3001/scores');
+            window.location.replace('https://isgame-true.herokuapp.com/scores');
+            // window.open('http://localhost:3001/scores');
+            // window.location.replace('http://localhost:3001/scores');
 
             // this.scene.start('LeaderboardScene')
 
