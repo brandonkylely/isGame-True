@@ -54,7 +54,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ## Art Attribution
-Level 2 Background Art: © 2012-2013 Julien Jorge <julien.jorge@stuff-o-matic.com>
+Level 1 & 3 Background Art by Tori, @torean.art on instagram
+
+Level 2 Background Art Credit, © 2012-2013 Julien Jorge <julien.jorge@stuff-o-matic.com>
+
+Platform Tiles, Stars and Springs by Kenny, https://www.kenney.nl/assets/platformer-art-deluxe
+
+Protagonist Spritesheet by Penzilla, https://penzilla.itch.io/hooded-protagonist
+
+Sword Art by SnoopethDuckDuck, https://snoopethduckduck.itch.io/swords
+
+Sound Effects: 8 bit + 16 bit Sound Effects © 2022 by ivy is licensed under CC BY 4.0, https://ivyism.itch.io/8-16-bit-half-life
+
+Enemy Sprites by Kacper Woźniak, This work is licensed under a Creative Commons Attribution 4.0 International License, https://thkaspar.itch.io/micro-character-bases
 
 ## Visuals
 ![login-screenshot](./images/Screen%20Shot%202023-01-28%20at%2010.56.06%20PM.png)
