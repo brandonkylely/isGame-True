@@ -354,6 +354,8 @@ class GameScene2 extends Phaser.Scene {
   hitEnemy(sword, enemy) {
     enemy.disableBody(true, true);
     this.inventory.enemiesDefeated++;
+    this.score += 50;
+    this.scoreText.setText(`Score: ${this.score}`);
     this.defeatsText.setText(`Defeats: ${this.inventory.enemiesDefeated}`);
 
     let rand = Math.floor(Math.random() * 2);
@@ -391,10 +393,10 @@ class GameScene2 extends Phaser.Scene {
       this.healthText.setText(`Health: ${this.inventory.health}`);
     }
 
-    if (this.inventory.lives === 0) {
-      this.inventory.gameOver = true;
-      console.log('Game Over :(');
-    }
+    if (this.inventory.lives < 1 ) {
+      this.scene.start('GameOver');
+      this.scene.stop('GameScene2');
+    };
 
     // this.inventory.hit = true;
 
@@ -415,10 +417,10 @@ class GameScene2 extends Phaser.Scene {
 
   orcSpawn() {
     let x =
-      this.player.x < 1750
-        ? Phaser.Math.Between(1750, 3500)
-        : Phaser.Math.Between(0, 1750);
-    let orc = this.orcs.create(x, 10, 'orc').setScale(3);
+      this.player.x < 8190
+        ? Phaser.Math.Between(100, 1000)
+        : Phaser.Math.Between(-100, -1000);
+    let orc = this.orcs.create(this.player.x + x, 10, 'orc').setScale(3);
     orc.setBounce(0);
     orc.setCollideWorldBounds(true);
     orc.setVelocity(Phaser.Math.Between(-200, 200), 20);
@@ -427,10 +429,10 @@ class GameScene2 extends Phaser.Scene {
 
   pigSpawn() {
     let x =
-      this.player.x < 1750
-        ? Phaser.Math.Between(1750, 3500)
-        : Phaser.Math.Between(0, 1750);
-    let pig = this.pigs.create(x, 10, 'pig').setScale(3);
+    this.player.x < 8900
+      ? Phaser.Math.Between(100, 1000)
+      : Phaser.Math.Between(-100, -1000);
+    let pig = this.pigs.create(this.player.x + x, 10, 'pig').setScale(3);
     pig.setBounce(0);
     pig.setCollideWorldBounds(true);
     pig.setVelocity(Phaser.Math.Between(-200, 200), 20);

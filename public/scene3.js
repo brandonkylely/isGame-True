@@ -337,6 +337,8 @@ class GameScene3 extends Phaser.Scene {
   hitEnemy(sword, enemy) {
     enemy.disableBody(true, true);
     this.inventory.enemiesDefeated++;
+    this.score += 50;
+    this.scoreText.setText(`Score: ${this.score}`);
     this.defeatsText.setText(`Defeats: ${this.inventory.enemiesDefeated}`);
 
     let rand = Math.floor(Math.random() * 2);
@@ -374,10 +376,10 @@ class GameScene3 extends Phaser.Scene {
       this.healthText.setText(`Health: ${this.inventory.health}`);
     }
 
-    if (this.inventory.lives === 0) {
-      this.inventory.gameOver = true;
-      console.log('Game Over :(');
-    }
+    if (this.inventory.lives < 1 ) {
+      this.scene.start('GameOver');
+      this.scene.stop('GameScene3');
+    };
 
     // this.inventory.hit = true;
 
