@@ -354,6 +354,8 @@ class GameScene2 extends Phaser.Scene {
   hitEnemy(sword, enemy) {
     enemy.disableBody(true, true);
     this.inventory.enemiesDefeated++;
+    this.score += 50;
+    this.scoreText.setText(`Score: ${this.score}`);
     this.defeatsText.setText(`Defeats: ${this.inventory.enemiesDefeated}`);
 
     let rand = Math.floor(Math.random() * 2);
