@@ -67,7 +67,7 @@ class StartScene extends Phaser.Scene {
         // });
 
         this.startButton.on('pointerdown', () => {
-            this.scene.start('GameScene1');
+            this.scene.restart('GameScene1');
             this.scene.start('MusicScene');
             this.scene.stop('StartScene');
         });

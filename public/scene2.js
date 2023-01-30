@@ -22,10 +22,9 @@ class GameScene2 extends Phaser.Scene {
     // this.timer;
     // this.timerText;
   }
-  
 
   init(data) {
-    console.log('total stars', this.totalStars)
+    console.log('total stars', this.totalStars);
     console.log('init', data);
     this.score = data.score;
     this.totalKills = data.kills;
@@ -34,7 +33,7 @@ class GameScene2 extends Phaser.Scene {
   }
 
   preload() {
-    console.log('total stars', this.totalStars)
+    console.log('total stars', this.totalStars);
     // use to set link prefix to use phaser assets
     // this.load.setBaseURL('http://labs.phaser.io');
     this.load.spritesheet('orc', 'assets/orc.png', {
@@ -50,9 +49,9 @@ class GameScene2 extends Phaser.Scene {
 
     this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
     this.load.image('star-image', 'assets/star.png');
-    this.load.image('Background', 'assets/night.png');
+    this.load.image('background-tile', 'assets/level2mapfull.png');
     this.load.image('sword', 'assets/sword.png');
-    this.load.tilemapTiledJSON('tileset', 'map-2.json');
+    this.load.tilemapTiledJSON('tileset2', 'Forest-Map.json');
     this.load.spritesheet(DUDE_KEY, 'assets/redhood-spritesheet.png', {
       frameWidth: 32,
       frameHeight: 32
@@ -136,6 +135,7 @@ class GameScene2 extends Phaser.Scene {
   }
 
   create() {
+    this.physics.world.setBounds(0, 0, 9940, 1400);
     this.createPlayer();
     console.log('inventory 2', this.inventory);
 
@@ -158,7 +158,7 @@ class GameScene2 extends Phaser.Scene {
     // this.input.on('pointerup', function (pointer) {
     //   this.scene.start('GameScene2');
     // }, this);
-    this.cameras.main.setBounds(0, 0, 3500, 1400);
+    this.cameras.main.setBounds(0, 0, 9940, 1400);
     this.cameras.main.setViewport(0, 0, 3500, 1400);
     this.cameras.main.startFollow(this.player);
   }
@@ -175,15 +175,19 @@ class GameScene2 extends Phaser.Scene {
   createPlayer() {
     this.orcs = this.physics.add.group();
     this.pigs = this.physics.add.group();
-    const map = this.make.tilemap({ key: 'tileset' });
+    const map = this.make.tilemap({ key: 'tileset2' });
 
-    let tileset = map.addTilesetImage('Main-Tileset', 'tiles');
-    let background = map.addTilesetImage('night-bg', 'Background');
+    let tileset2 = map.addTilesetImage('Main-Tileset', 'tiles');
+    let background2 = map.addTilesetImage(
+      'Forest-Background',
+      'background-tile'
+    );
 
     console.log(Phaser.Input.Keyboard.KeyCodes);
-
-    const bgLayer = map.createLayer('Background', background, 0, 0);
-    const worldLayer = map.createLayer('World Layer', tileset, 0, 0);
+    console.log('tileset', tileset2);
+    console.log('background', background2);
+    const bgLayer = map.createLayer('Background', background2, 0, 0);
+    const worldLayer = map.createLayer('World Layer', tileset2, 0, 0);
     worldLayer.setCollisionByProperty({ Collides: true });
     this.starLayer = map.getObjectLayer('Stars')['objects'];
     this.doorLayer = map.getObjectLayer('Door')['objects'];
@@ -197,17 +201,17 @@ class GameScene2 extends Phaser.Scene {
       obj.body.width = object.width;
       obj.body.height = object.height;
       this.totalStars += 1;
-      console.log('total stars', this.totalStars)
+      console.log('total stars', this.totalStars);
     });
 
-    function makeDoor(doorTile){
+    function makeDoor(doorTile) {
       let obj = doors.create(doorTile.x + 15, doorTile.y - 25);
       obj.setOrigin(0.4, 1);
       obj.body.width = doorTile.width;
       obj.body.height = doorTile.height;
       obj.alpha = 0;
     }
-    makeDoor(this.doorLayer[0])
+    makeDoor(this.doorLayer[0]);
 
     this.player = this.physics.add.sprite(1500, 1000, DUDE_KEY).setScale(2);
     this.sword = this.physics.add.sprite(1500, 1000, 'sword').setScale(1.5);
@@ -250,19 +254,26 @@ class GameScene2 extends Phaser.Scene {
       }
     }
     function nextLevel2(player, door) {
-      console.log('running nextLevel2')
-      if (this.inventory.starsCollected >= this.totalStars-80) {
+      if (this.inventory.starsCollected >= this.totalStars - 80) {
         //score multiplier formula
-        this.score = this.score + (this.score * this.inventory.lives) + (this.score * this.inventory.health/4)
+        this.score =
+          this.score +
+          this.score * this.inventory.lives +
+          (this.score * this.inventory.health) / 4;
         // this.score = Math.floor(this.score / 10) * 10;
-        console.log('score', this.score)
-        this.scene.start('GameScene3', {score: this.score, difficulty: this.difficulty, kills: this.inventory.enemiesDefeated+this.totalKills});
+        console.log('score', this.score);
+        this.scene.start('GameScene3', {
+          score: this.score,
+          difficulty: this.difficulty,
+          kills: this.inventory.enemiesDefeated + this.totalKills
+        });
+        this.orcGroup = [];
+        this.pigGroup = [];
         this.scene.stop('GameScene2');
-      }
-      else {
-        console.log('not enough stars')
-        console.log('have', this.inventory.starsCollected)
-        console.log('need', this.totalStars-80)
+      } else {
+        console.log('not enough stars');
+        console.log('have', this.inventory.starsCollected);
+        console.log('need', this.totalStars - 80);
       }
     }
 
@@ -448,7 +459,7 @@ class GameScene2 extends Phaser.Scene {
 
     if (this.cursors.P.isDown) {
       this.scene.launch('PauseScene');
-      this.scene.pause('GameScene1');
+      this.scene.pause('GameScene2');
     }
 
     if (this.player.flipX === false) {
@@ -471,7 +482,7 @@ class GameScene2 extends Phaser.Scene {
     //this.inventoryy.starsCollected
 
     if (this.cursors.D.isDown) {
-      this.player.setVelocityX(300);
+      this.player.setVelocityX(1000);
       this.player.anims.play('running', true);
       this.player.flipX = false;
     }
@@ -507,7 +518,7 @@ class GameScene2 extends Phaser.Scene {
     if (this.cursors.SPACE.isDown && this.inventory.jumps > 0) {
       if (this.flipFlop) {
         this.flipFlop = false;
-        this.player.setVelocityY(-330);
+        this.player.setVelocityY(-1000);
         this.player.anims.play('jumping', true);
         this.inventory.jumps--;
         console.log('flip true, setting to false');

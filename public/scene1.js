@@ -27,10 +27,7 @@ class GameScene1 extends Phaser.Scene {
     // this.timer;
     // this.timerText;
   }
-
-  pullData() {
-    totalScore = this.score;
-  }
+  
 
   preload() {
     // use to set link prefix to use phaser assets
@@ -48,9 +45,9 @@ class GameScene1 extends Phaser.Scene {
 
     this.load.image('tiles', 'assets/Tilemap/tiles_spritesheet.png');
     this.load.image('star-image', 'assets/star.png');
-    this.load.image('Background', 'assets/night.png');
+    this.load.image('Background', 'assets/level-one.jpeg');
     this.load.image('sword', 'assets/sword.png');
-    this.load.tilemapTiledJSON('tileset', 'map-2.json');
+    this.load.tilemapTiledJSON('tileset', 'Map-1.json');
     this.load.spritesheet(DUDE_KEY, 'assets/redhood-spritesheet.png', {
       frameWidth: 32,
       frameHeight: 32
@@ -176,7 +173,7 @@ class GameScene1 extends Phaser.Scene {
     const map = this.make.tilemap({ key: 'tileset' });
 
     let tileset = map.addTilesetImage('Main-Tileset', 'tiles');
-    let background = map.addTilesetImage('night-bg', 'Background');
+    let background = map.addTilesetImage('Tori', 'Background');
 
     console.log(Phaser.Input.Keyboard.KeyCodes);
 
@@ -264,7 +261,9 @@ class GameScene1 extends Phaser.Scene {
           difficulty: this.difficulty,
           kills: this.inventory.enemiesDefeated
         });
-        this.scene.stop('GameScene1');
+        this.orcGroup = [];
+        this.pigGroup = [];
+        this.scene.destroy('GameScene1');
       }
     }
 
@@ -473,7 +472,7 @@ class GameScene1 extends Phaser.Scene {
     //this.inventoryy.starsCollected
 
     if (this.cursors.D.isDown) {
-      this.player.setVelocityX(300);
+      this.player.setVelocityX(1000);
       this.player.anims.play('running', true);
       this.player.flipX = false;
     }
@@ -509,7 +508,7 @@ class GameScene1 extends Phaser.Scene {
     if (this.cursors.SPACE.isDown && this.inventory.jumps > 0) {
       if (this.flipFlop) {
         this.flipFlop = false;
-        this.player.setVelocityY(-330);
+        this.player.setVelocityY(-1000);
         this.player.anims.play('jumping', true);
         this.inventory.jumps--;
         console.log('flip true, setting to false');
@@ -545,7 +544,6 @@ class GameScene1 extends Phaser.Scene {
     // }
   }
 }
-
 
 console.log(GameScene1);
 // console.log(GameScene1.data.get());

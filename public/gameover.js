@@ -55,8 +55,7 @@ class GameOver extends Phaser.Scene {
         // });
 
         this.returnButton.on('pointerdown', () => {
-            this.scene.start('StartScene');
-            this.scene.stop('GameOver');
+            window.location.reload()
         });
 
 

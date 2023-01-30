@@ -6,7 +6,17 @@ class VictoryScene extends Phaser.Scene {
         this.title;
         this.returnButton;
         this.victoryText;
+        this.score;
     };
+
+    init(data) {
+        this.score = data.score;
+    }
+
+    pullData() {
+        totalScore = this.score;
+      }
+
     preload() {
     };
     create() {
@@ -55,8 +65,8 @@ class VictoryScene extends Phaser.Scene {
         // });
 
         this.returnButton.on('pointerdown', () => {
-            this.scene.start('StartScene');
-            this.scene.stop('VictoryScene');
+            this.pullData()
+            window.location.reload()
         });
 
 
