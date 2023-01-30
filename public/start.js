@@ -42,7 +42,7 @@ class StartScene extends Phaser.Scene {
         this.physics.add.existing(this.leaderboardButton);
         this.leaderboardButton.body.bounce.y = 0.8;
 
-        this.creditsButton = this.add.text(1750, 450, `credits`, {
+        this.creditsButton = this.add.text(1750, 450, `Credits`, {
             fontSize: '100px',
             fill: '#fff',
         });
@@ -52,6 +52,16 @@ class StartScene extends Phaser.Scene {
         this.physics.add.existing(this.creditsButton);
         this.creditsButton.body.bounce.y = 0.8;
 
+        this.instructionsButton = this.add.text(1750, 600, `Instructions`, {
+            fontSize: '100px',
+            fill: '#fff',
+        });
+
+        this.instructionsButton.setOrigin(0.5, 0);
+
+        this.physics.add.existing(this.instructionsButton);
+        this.instructionsButton.body.bounce.y = 0.8;
+
 
         this.physics.add.collider(this.startButton, this.leaderboardButton);
         this.physics.add.collider(this.startButton, this.creditsButton);
@@ -59,6 +69,8 @@ class StartScene extends Phaser.Scene {
         this.physics.add.collider(this.startButton, this.title);
         this.physics.add.collider(this.leaderboardButton, this.title);
         this.physics.add.collider(this.creditsButton, this.title);
+        this.physics.add.collider(this.creditsButton, this.instructionsButton);
+        this.physics.add.collider(this.instructionsButton, this.title);
 
 
         this.startButton.setInteractive();
@@ -98,6 +110,17 @@ class StartScene extends Phaser.Scene {
 
             // testing game over scene
             this.scene.start('GameOver');
+            this.scene.stop('StartScene');
+        });
+
+        this.instructionsButton.setInteractive();
+        // this.instructionsButton.on('pointeron',  () => {
+        //     this.instructionsButton.text.fill(0x808080)
+        // });
+
+        this.instructionsButton.on('pointerdown', () => {
+
+            this.scene.start('InstructionsScene');
             this.scene.stop('StartScene');
         });
     };
