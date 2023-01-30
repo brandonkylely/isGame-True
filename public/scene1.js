@@ -238,7 +238,7 @@ class GameScene1 extends Phaser.Scene {
       this.inventory.starsCollected += 1;
       this.score += 10;
       this.scoreText.setText(`Score: ${this.score}`);
-      if (this.score % 50 === 0) {
+      if (this.inventory.starsCollected % 5 === 0) {
         this.orcSpawn();
         this.pigSpawn();
       }
