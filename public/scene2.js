@@ -529,7 +529,7 @@ class GameScene2 extends Phaser.Scene {
       this.cursors.D.isUp &&
       this.cursors.SPACE.isUp
     ) {
-      // this.player.setVelocityX(0);
+      this.player.setVelocityX(0);
       this.player.anims.play('idle', true);
     }
 
