@@ -1,81 +1,119 @@
-## Name
-isGame:True
+  # isGame:True 🎮
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Description
-After a long day at work, or just needing to get your mind off things, what could be better than playing a video game? We have crafted a web game called “isGame: True” with the help of phaser.io that tests your reaction time and speed. It involves different scenes as you progress, a health bar that decreases every time you collide with the enemy, and a sword to help you defend yourself. The goal is to avoid all of the enemies and get as many stars as you can in the meantime. Also with the help of sequelize, you can sign up and save your data for the next time you need a lil break!
+    if (app.isGame) {
+      playGame();
+      relax();
+      checkOutDeveloperGithubs()
+    }
 
-## Technologies Used
-Express.js
-Node.js
-Sequelize
-Phaser.io
-Handlebars.js
-RESTful API
-mysql
-Heroku
-HTML
-CSS
+  isGame:True is a short, single-player platformer RPG. 🤺
 
-## Usage
-To be able to access our webgame, use the deployed Heroku link, then register for an account, login to verify you have the correct username and password, and begin to enjoy the game! 
-To jump, use the space bar key.
-Use the WASD keys for direction movement.
+  Assume the role of a hooded swordsman in this 8-bit style RPG adventure! Orcs 👹 and pigs 🐷 spawn throughout each level to try and stop you in your tracks, so only the bravest adventurers will make it through. At the end of each game, users can submit their total scores to a global leaderboard to see how they stack up against the best of the best!
 
-## Roadmap
-Would like to add more players
-Would like to add customized player options “choose your player”
-Would like to add more to styling 
+  ## Site Link 💡
+  
+  https://isgame-true.herokuapp.com/
 
-## Authors and acknowledgment
-Made by Brandon Ly, Chris Poturalski, Logan Senn, Mirjana Dukic
-Thank you to our instructor Chad and our TA Nick for constant help
 
-## License
-MIT License
+  ## Table of Contents 📃
 
-Copyright (c) 2018 samme and contributors
+  [Technologies Used ⚙️](#technologies-used-⚙️)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+  [Usage 🤔](#usage-🤔)
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+  [Developer Roadmap 🗺️](#developer-roadmap-🗺️)
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+  [Developers 🤓🤓🤓🤓](#developers-🤓🤓🤓🤓)
 
-## Art Attribution
-Level 1 & 3 Background Art by Tori, @torean.art on instagram
+  [Visuals 📺](#visuals-📺)
 
-Level 2 Background Art Credit, © 2012-2013 Julien Jorge <julien.jorge@stuff-o-matic.com>, https://opengameart.org/content/large-forest-background
+  [Acknowledgements 🤝](#acknowledgements-🤝)
 
-Platform Tiles, Stars and Springs by Kenny, https://www.kenney.nl/assets/platformer-art-deluxe
+  [License](#license)
 
-Protagonist Spritesheet by Penzilla, https://penzilla.itch.io/hooded-protagonist
+  ## Technologies Used ⚙️
 
-Sword Art by SnoopethDuckDuck, https://snoopethduckduck.itch.io/swords
+  Express.js, Node.js, Sequelize ORM, Phaser.io, Tiled, Handlebars.js, RESTful API, MySQL, Heroku, HTML, CSS
 
-Sound Effects: 8 bit + 16 bit Sound Effects © 2022 by ivy is licensed under CC BY 4.0, https://ivyism.itch.io/8-16-bit-half-life
+  ## Usage 🤔
+  First time users will need to, register for an account. Returning users can login with their existing credentials. After login, users will be redirected to the game menu, where you can start a new game, see the instructions, or navigate to the leaderboards. 
+  
+  ### Game Instructions
 
-Enemy Sprites by Kacper Woźniak, This work is licensed under a Creative Commons Attribution 4.0 International License, https://thkaspar.itch.io/micro-character-bases
+  Use space bar to jump and WASD keys for direction movement and sword aiming. Use P to pause the game and take a break 💤. Collect coins and defeat enemies to gain points, and enter the door to move to the next stage! Avoid being hit too many times, as getting hit reduces your end-of-stage point multiplier and losing all lives will result in a game over!
 
-Background Music - Music : Sakura Girl - Morning Sun Link : https://youtu.be/OQAQ8WjszZM
+  ## Developer Roadmap 🗺️
 
-## Visuals
-![login-screenshot](./images/Screen%20Shot%202023-01-30%20at%207.33.37%20PM.png)
-![signup-screenshot](./images/Screen%20Shot%202023-01-30%20at%207.33.42%20PM.png)
-![start-game](./images/Screen%20Shot%202023-01-30%20at%207.34.02%20PM.png)
-![game-screenshot](./images/Screen%20Shot%202023-01-30%20at%207.34.13%20PM.png)
+  - Coop functionality.
 
-## Deployed Application
-[link-to-webgame]https://isgame-true.herokuapp.com/
+  - Customizable player sprites.
 
+  - More levels.
+
+  - Procedurally generated levels.
+
+  ## Developers 🤓🤓🤓🤓 
+
+  Brandon Ly 🫠 : [Github](https://github.com/brandonkylely) & [LinkedIn](https://www.linkedin.com/in/brandon-ly-7300b1205/) & [Email](mailto:brandonkly@ucla.edu)
+
+  Chris Poturalski 🧐 : [Github](https://github.com/chrispoturalski) & [LinkedIn](https://www.linkedin.com/in/chris-poturalski-2a8997118/) & [Email](mailto:)
+
+  Logan Senn 😎 : [Github](https://github.com/lsenn404) & [LinkedIn](https://www.linkedin.com/in/logansenn/) & [Email](mailto:logsenn2@gmail.com)
+
+  Mirjana Dukic 🥹 : [Github](https://github.com/mjdukic) & [LinkedIn](https://www.linkedin.com/in/mirjanadukic/) & [Email](mailto:mirjanadukicc@gmail.com)
+
+  ## Visuals 📺
+  
+  ![login-screenshot](./images/Screen%20Shot%202023-01-30%20at%207.33.37%20PM.png)
+  ![start-game](./images/Screen%20Shot%202023-01-30%20at%207.34.02%20PM.png)
+  ![game-screenshot](./images/Screen%20Shot%202023-01-30%20at%207.34.13%20PM.png)
+
+  ## Acknowledgements 🤝
+
+  ### Special Thanks ❤️
+  
+  Chad Tao : [Github](https://github.com/chadtao206)
+
+  Nick Graffis : [Github](https://github.com/nickgraffis)
+
+  ## Art Credits 🪙
+
+  Level 1 & 3 Background Art by Tori, @torean.art on instagram
+
+  Level 2 Background Art Credit, © 2012-2013 Julien Jorge <julien.jorge@stuff-o-matic.com>, https://opengameart.org/content/large-forest-background
+
+  Platform Tiles, Stars and Springs by Kenny, https://www.kenney.nl/assets/platformer-art-deluxe
+
+  Protagonist Spritesheet by Penzilla, https://penzilla.itch.io/hooded-protagonist
+
+  Sword Art by SnoopethDuckDuck, https://snoopethduckduck.itch.io/swords
+
+  Sound Effects: 8 bit + 16 bit Sound Effects © 2022 by ivy is licensed under CC BY 4.0, https://ivyism.itch.io/8-16-bit-half-life
+
+  Enemy Sprites by Kacper Woźniak, This work is licensed under a Creative Commons Attribution 4.0 International License, https://thkaspar.itch.io/micro-character-bases
+
+  Background Music - Music : Sakura Girl - Morning Sun Link : https://youtu.be/OQAQ8WjszZM
+
+  ## License
+  MIT License
+
+  Copyright (c) 2018 samme and contributors
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
