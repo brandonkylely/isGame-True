@@ -18,32 +18,35 @@
 
   ## Table of Contents 📃
 
-  [Technologies Used ⚙️](#technologies-used-⚙️)
+  [Technologies Used ⚙️](#technologies-used)
 
-  [Usage 🤔](#usage-🤔)
+  [Usage 🤔](#usage)
 
-  [Developer Roadmap 🗺️](#developer-roadmap-🗺️)
+  [Developer Roadmap 🗺️](#developer-roadmap)
 
-  [Developers 🤓🤓🤓🤓](#developers-🤓🤓🤓🤓)
+  [Developers 🤓🤓🤓🤓](#developers)
 
-  [Visuals 📺](#visuals-📺)
+  [Visuals 📺](#visuals)
 
-  [Acknowledgements 🤝](#acknowledgements-🤝)
+  [Acknowledgements 🤝](#acknowledgements)
 
   [License](#license)
 
-  ## Technologies Used ⚙️
+  ## Technologies Used 
+  ⚙️
 
   Express.js, Node.js, Sequelize ORM, Phaser.io, Tiled, Handlebars.js, RESTful API, MySQL, Heroku, HTML, CSS
 
-  ## Usage 🤔
+  ## Usage 
+  🤔
   First time users will need to, register for an account. Returning users can login with their existing credentials. After login, users will be redirected to the game menu, where you can start a new game, see the instructions, or navigate to the leaderboards. 
   
   ### Game Instructions
 
   Use space bar to jump and WASD keys for direction movement and sword aiming. Use P to pause the game and take a break 💤. Collect coins and defeat enemies to gain points, and enter the door to move to the next stage! Avoid being hit too many times, as getting hit reduces your end-of-stage point multiplier and losing all lives will result in a game over!
 
-  ## Developer Roadmap 🗺️
+  ## Developer Roadmap 
+  🗺️
 
   - Coop functionality.
 
@@ -53,7 +56,8 @@
 
   - Procedurally generated levels.
 
-  ## Developers 🤓🤓🤓🤓 
+  ## Developers 
+  🤓🤓🤓🤓 
 
   Brandon Ly 🫠 : [Github](https://github.com/brandonkylely) & [LinkedIn](https://www.linkedin.com/in/brandon-ly-7300b1205/) & [Email](mailto:brandonkly@ucla.edu)
 
@@ -63,13 +67,15 @@
 
   Mirjana Dukic 🥹 : [Github](https://github.com/mjdukic) & [LinkedIn](https://www.linkedin.com/in/mirjanadukic/) & [Email](mailto:mirjanadukicc@gmail.com)
 
-  ## Visuals 📺
+  ## Visuals 
+  📺
   
   ![login-screenshot](./images/Screen%20Shot%202023-01-30%20at%207.33.37%20PM.png)
   ![start-game](./images/Screen%20Shot%202023-01-30%20at%207.34.02%20PM.png)
   ![game-screenshot](./images/Screen%20Shot%202023-01-30%20at%207.34.13%20PM.png)
 
-  ## Acknowledgements 🤝
+  ## Acknowledgements 
+  🤝
 
   ### Special Thanks ❤️
   
@@ -77,7 +83,8 @@
 
   Nick Graffis : [Github](https://github.com/nickgraffis)
 
-  ## Art Credits 🪙
+  ## Art Credits 
+  🪙
 
   Level 1 & 3 Background Art by Tori, @torean.art on instagram
 
