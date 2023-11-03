@@ -7,14 +7,18 @@
       checkOutDeveloperGithubs()
     }
 
-  isGame:True is a short, single-player platformer RPG. 🤺
+  isGame:True is a short, single-player platformer RPG.
 
-  Assume the role of a hooded swordsman in this 8-bit style RPG adventure! Orcs 👹 and pigs 🐷 spawn throughout each level to try and stop you in your tracks, so only the bravest adventurers will make it through. At the end of each game, users can submit their total scores to a global leaderboard to see how they stack up against the best of the best!
+  Assume the role of a hooded swordsman in this 8-bit style RPG adventure! Orcs and pigs spawn throughout each level to try and stop you in your tracks, so only the bravest adventurers will make it through. At the end of each game, users can submit their total scores to a global leaderboard to see how they stack up against the best of the best!
 
   ## Site Link 💡
-  
-  https://isgame-true.herokuapp.com/
 
+  (UPDATED): https://isgame-two-89dd87bf525a.herokuapp.com/
+
+  [isGameTwo](https://github.com/brandonkylely/isGameTwo) is a continuation of development for this project.
+
+  (OLD): https://isgame-true.herokuapp.com/
+  
 
   ## Table of Contents 📃
 
